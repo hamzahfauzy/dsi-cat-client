@@ -1,0 +1,62 @@
+.cat-section {
+  max-width: 100%;
+
+  .kelas-konten {
+    background-color: #fff;
+    padding: 25px;
+    height: calc(100vh - 180px - 50px);
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+
+  .row {
+    margin: 0px;
+
+    .col {
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+  }
+
+  .sidebar {
+    height: calc(100vh - 180px);
+    overflow-x: hidden;
+    overflow-y: scroll;
+    background-color: #fff;
+    .md-icon.md-icon-font.md-theme-default:not(.completed) {
+      color: #000 !important;
+    }
+    .completed {
+      color: green !important;
+    }
+    .md-list-item-content {
+      min-height: 40px !important;
+      &.md-ripple {
+        font-size: 13px;
+        font-weight: 600;
+      }
+    }
+    .item-child-content {
+      font-weight: 400;
+      i.md-icon {
+        margin-right: 10px;
+      }
+    }
+
+    .md-list-item.md-inset .md-list-item-content {
+      padding-left: 15px;
+    }
+
+    .md-list-item-content > .md-icon {
+      margin-right: 10px;
+    }
+
+    .md-subheader.md-theme-default {
+      font-weight: 800;
+    }
+  }
+
+  .navigasi-konten {
+    float: right;
+  }
+}

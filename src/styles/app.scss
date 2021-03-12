@@ -1,0 +1,123 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800&display=swap");
+
+@import "bootstrap.min.css";
+@import "../fonts/font-awesome/css/font-awesome.min.css";
+@import "../fonts/flaticon/font/flaticon.css";
+
+@import "layouts/cat-header.scss";
+@import "layouts/header.scss";
+@import "layouts/footer.scss";
+
+@import "components/homepage.scss";
+@import "components/login.scss";
+@import "components/search.scss";
+@import "components/cat.scss";
+
+@import "skins/default.css";
+@import "vue-material/dist/theme/engine.scss";
+
+body {
+  font-family: "Montserrat", sans-serif !important;
+  min-height: 100%;
+  background-color: rgba(197, 234, 181, 0.18);
+  // padding-bottom:50px;
+}
+
+.loader {
+  width: 100%;
+  height: 300px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.list-kelas {
+  .md-list-item-text {
+    span {
+      font-weight: bold;
+    }
+  }
+}
+
+.list-kelas {
+  .md-icon.md-icon-font.md-theme-default {
+    color: #063a69 !important;
+  }
+}
+
+.profile-dialog {
+  min-width: 500px;
+  label {
+    font-weight: bold;
+  }
+  label,
+  span {
+    display: block;
+  }
+}
+
+.md-complete {
+  .md-progress-bar-fill {
+    background-color: green !important;
+  }
+}
+.md-success-btn,
+.md-badge-complete {
+  background-color: green !important;
+}
+
+.md-orange {
+  background-color: #f9a507 !important;
+}
+
+.nav-active {
+  color: #f9a507 !important;
+}
+
+.md-avatar.custom-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 1em;
+}
+
+.md-divider.md-inset.custom-divider {
+  margin-left: 0px;
+}
+
+.progress-section {
+  position: relative;
+  margin-bottom: 8px !important;
+  // &.flex {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  line-height: 1.25em;
+  white-space: nowrap;
+  // }
+  b {
+    font-weight: bold !important;
+    color: #333;
+  }
+}
+
+.nav-progress {
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 10px;
+  margin-top: -70px;
+  padding-top: 10px;
+  background-color: rgba(255, 255, 255, 0.07);
+  position: relative;
+  padding-bottom: 10px;
+  border-radius: 1rem;
+  color: #fff;
+  b {
+    color: #fff;
+  }
+  .md-badge {
+    right: 0 !important;
+  }
+}
