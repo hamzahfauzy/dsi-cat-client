@@ -61,7 +61,7 @@ import Swal from 'sweetalert2';
 import Loading from 'vue-loading-overlay';
 export default {
     components:{
-        Loading
+        Loading 
     },
     data(){
         return {
