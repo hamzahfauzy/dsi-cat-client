@@ -10,7 +10,7 @@
         <div class="cat-section">
             <loading :active.sync="isLoading" :is-full-page="fullPage" class="loader"></loading>
             <div class="row" v-if="!isLoading">
-                <div class="col-12 col-sm-3 col">
+                <div class="col-12 col-xs-6 col-sm-4 col-md-3 col">
                     <div class="sidebar">
                         <md-list>
                             <md-subheader>
@@ -18,15 +18,15 @@
                             </md-subheader>
                             
                             <md-list-item md-expand v-for="(content, index) in konten" :key="index">
-                                <md-icon :class="{'completed':content.status=='finish'}">check_circle_outline</md-icon>
-                                <span class="md-list-item-text">{{content.title}}</span>
+                                <md-icon>check_circle_outline</md-icon>
+                                <span class="md-list-item-text">{{content.nm_konten}}</span>
 
                                 <md-list slot="md-expand">
-                                    <md-list-item class="md-inset" v-for="(children,idx) in content.childs" :key="idx" @click="alert(children.title)">
+                                    <md-list-item class="md-inset" v-for="(children,idx) in content.refMateris" :key="idx" @click="loadMateri(children.id_materi)">
                                         <div class="item-child-content">
                                             <md-icon :class="{'completed':children.status=='finish'}">check_circle_outline</md-icon>
-                                            <md-icon>{{tipe_konten[children.type]}}</md-icon>
-                                            {{children.title}}
+                                            <!-- <md-icon>{{tipe_konten[children.type]}}</md-icon> -->
+                                            {{children.nm_materi}}
                                         </div>
                                     </md-list-item>
                                 </md-list>
@@ -34,11 +34,12 @@
                         </md-list>
                     </div>
                 </div>
-                <div class="col-12 col-sm-9 col">
+                <div class="col-12 col-xs-6 col-sm-8 col-md-9 col">
                     <div class="kelas-konten">
                         <loading :active.sync="isContentLoading" :is-full-page="fullPage" class="loader"></loading>
-                        <h2>Title</h2>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas quidem recusandae tenetur maxime temporibus, soluta magni corrupti, numquam veritatis non quaerat facere quo voluptates perspiciatis totam eius repudiandae quibusdam necessitatibus!</p>
+                        <div class="responsive-content" v-if="!isContentLoading">
+                            <iframe v-if="materi.nm_file" :src="materi.nm_file" frameborder="0" class="responsive-iframe"></iframe>
+                        </div>
                     </div>
                     <div class="navigasi-konten">
                         <md-button class="md-raised md-primary">
@@ -73,83 +74,8 @@ export default {
                 'konten_video':'slow_motion_video',
                 'exam':'create',
             },
-            konten:[
-                {
-                    title:'Konten Kelas 1',
-                    status:'waiting',
-                    childs:[
-                        {
-                            title:'Sub 1 Konten Kelas 1',
-                            type:'konten_video',
-                            status:'finish'
-                        },
-                        {
-                            title:'Sub 2 Konten Kelas 1',
-                            type:'konten_video',
-                            status:'finish'
-                        },
-                        {
-                            title:'Sub 3 Konten Kelas 1',
-                            type:'konten_dokumen',
-                            status:'waiting'
-                        },
-                        {
-                            title:'Mid Test Konten Kelas 1',
-                            type:'exam'
-                        }
-                    ]
-                },
-                {
-                    title:'Konten Kelas 2',
-                    status:'waiting',
-                    childs:[
-                        {
-                            title:'Sub 1 Konten Kelas 2',
-                            type:'konten_video',
-                            status:'waiting'
-                        },
-                        {
-                            title:'Sub 2 Konten Kelas 2',
-                            type:'konten_video',
-                            status:'waiting'
-                        },
-                        {
-                            title:'Sub 3 Konten Kelas 2',
-                            type:'konten_dokumen',
-                            status:'waiting'
-                        },
-                        {
-                            title:'Mid Test Konten Kelas 2',
-                            type:'exam'
-                        }
-                    ]
-                },
-                {
-                    title:'Konten Kelas 3',
-                    status:'waiting',
-                    childs:[
-                        {
-                            title:'Sub 1 Konten Kelas 3',
-                            type:'konten_video',
-                            status:'waiting'
-                        },
-                        {
-                            title:'Sub 2 Konten Kelas 3',
-                            type:'konten_video',
-                            status:'waiting'
-                        },
-                        {
-                            title:'Sub 3 Konten Kelas 3',
-                            type:'konten_dokumen',
-                            status:'waiting'
-                        },
-                        {
-                            title:'Mid Test Konten Kelas 3',
-                            type:'exam'
-                        }
-                    ]
-                }
-            ]
+            konten:[],
+            materi:{}
         }
     },
     async created(){
@@ -161,10 +87,24 @@ export default {
             Swal.fire('Oops...', 'Authorized Content!', 'error')
         else
         {
-            this.kelas = request.data
+            this.konten = request.data
         }
         this.isLoading = false
         
+    },
+    methods:{
+        alert(val){
+            window.alert(val)
+        },
+        async loadMateri(id_materi){
+            this.isContentLoading = true
+            var request = await this.$store.dispatch('kelas/fetchMateri',id_materi)
+            if(request.status == 401)
+                Swal.fire('Oops...', 'Authorized Content!', 'error')
+            else
+                this.materi = request.data
+            this.isContentLoading = false
+        }
     }
 }
 </script>

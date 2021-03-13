@@ -37,15 +37,22 @@ export default {
             // });
         },
         login(state, payload){
-            return axios.post(env.base_url+'login', payload, {
-                headers: { "Content-Type": "multipart/form-data" }
+            return new Promise(function(resolve, reject) {
+                axios.post(env.base_url+'site/login', payload, {
+                    headers: { "Content-Type": "multipart/form-data" }
+                }).then(response => {
+                    // commit('SET_SINGLE_KELAS',response.data)
+                    resolve(response)
+                }).catch(error => {
+                    resolve(error.response)
+                    // console.log(error)
+                })
             })
         },
         validateToken(state, payload){
-            return axios.post(env.base_url+'validate-token', payload, {
+            return axios.get(env.base_url+'site/index', {
                 headers: { 
-                    "Content-Type": "multipart/form-data",
-                    "Authorization": payload.get('token')
+                    "Authorization": "Bearer "+payload.get('token')
                 }
             })
         },

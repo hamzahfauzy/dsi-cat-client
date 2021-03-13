@@ -29,21 +29,21 @@ export default [
             title: 'Login'
         },
     },
-    {
-        name:'Dashboard',
-        path: '/dashboard',
-        component:Dashboard,
-        meta: {
-            title: 'Dashboard - FPKAD'
-        },
-        async beforeEnter(to, from, next) {
-            var data = await store.dispatch('global/fetchGeneralData')
-            if(data)
-                next()
-            else
-                next({'name':'Login'})
-        }
-    },
+    // {
+    //     name:'Dashboard',
+    //     path: '/dashboard',
+    //     component:Dashboard,
+    //     meta: {
+    //         title: 'Dashboard - FPKAD'
+    //     },
+    //     async beforeEnter(to, from, next) {
+    //         var data = await store.dispatch('global/fetchGeneralData')
+    //         if(data)
+    //             next()
+    //         else
+    //             next({'name':'Login'})
+    //     }
+    // },
     {
         name:'KelasSaya',
         path: '/kelas-saya',

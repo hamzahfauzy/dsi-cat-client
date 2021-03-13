@@ -16,10 +16,10 @@
                                     <span>Filter</span>
                                 </md-subheader>
 
-                                <md-list-item @click="loadKelas('kelas-saya')">Semua Kelas</md-list-item>
-                                <md-list-item @click="loadKelas('kelas-saya-dikerjakan')">Sedang Dikerjakan</md-list-item>
-                                <md-list-item @click="loadKelas('kelas-saya-selesai-materi')">Selesai Materi</md-list-item>
-                                <md-list-item @click="loadKelas('kelas-saya-selesai-test')">Selesai Test</md-list-item>
+                                <md-list-item @click="loadKelas('site/kelas-saya')">Semua Kelas</md-list-item>
+                                <md-list-item @click="loadKelas('site/kelas-saya')">Sedang Dikerjakan</md-list-item>
+                                <md-list-item @click="loadKelas('site/kelas-saya')">Selesai Materi</md-list-item>
+                                <md-list-item @click="loadKelas('site/kelas-saya')">Selesai Test</md-list-item>
                             </md-list>
                         </div>
                     </div>
@@ -29,16 +29,16 @@
                             <div v-for="(kelas,index) in list_kelas" :key="index">
                                 <md-list-item  style="padding-top:10px;padding-bottom:10px;">
                                     <md-avatar class="custom-avatar">
-                                        <img :src="kelas.image" :alt="kelas.name">
+                                        <img :src="kelas.image?kelas.image:'https://183263-537949-raikfcquaxqncofqfm.stackpathdns.com/wp-content/uploads/2018/05/shutterstock_285147194.jpg'" :alt="kelas.name">
                                     </md-avatar>
 
                                     <div class="md-list-item-text">
-                                        <span>{{kelas.name}}</span>
-                                        <p>{{kelas.deskripsi}}</p>
+                                        <span>{{kelas.nm_pelatihan}}</span>
+                                        <p> </p>
                                         <div style="margin-top:10px;">
-                                            <progress-bar v-if="kelas.status != ''" :progress_percent="kelas.progress_percent" :flex="1" :title="'Progress Kelas'" />
-                                            <md-button class="md-raised md-primary" style="width:auto!important;text-transform:capitalize" v-if="kelas.status=='Mengikuti'" @click="$router.push('/details/'+kelas.id)">Lanjutkan</md-button>
-                                            <md-button class="md-raised md-primary md-success-btn" style="width:auto!important;text-transform:capitalize" v-if="kelas.status == 'Selesai'" @click="$router.push('/details/'+kelas.id)">Selesai</md-button>
+                                            <!-- <progress-bar v-if="kelas.status != ''" :progress_percent="kelas.progress_percent" :flex="1" :title="'Progress Kelas'" /> -->
+                                            <md-button class="md-raised md-primary" style="width:auto!important;text-transform:capitalize" @click="$router.push('/details/'+kelas.id_pelatihan)">Ikuti</md-button>
+                                            <!-- <md-button class="md-raised md-primary md-success-btn" style="width:auto!important;text-transform:capitalize" v-if="kelas.status == 'Selesai'" @click="$router.push('/details/'+kelas.id)">Selesai</md-button> -->
                                         </div>
                                     </div>
 
@@ -77,7 +77,7 @@ export default {
     },
     async created(){
         this.$store.dispatch('global/setHeader','kelas-saya')
-        await this.loadKelas('kelas-saya')
+        await this.loadKelas('site/kelas-saya')
     },
     methods:{
         alert () {

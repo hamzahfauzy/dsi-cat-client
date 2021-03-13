@@ -47,6 +47,24 @@ section.top {
     }
   }
 
+  @media screen and (max-width: 735px) {
+    .title-section h4 {
+      font-size: 1.2rem;
+    }
+  }
+
+  @media screen and (max-width: 660px) {
+    .title-section h4 {
+      font-size: 1rem;
+    }
+  }
+
+  @media screen and (max-width: 560px) {
+    .title-section {
+      display: none;
+    }
+  }
+
   .logo {
     z-index: 1;
     width: 55px;

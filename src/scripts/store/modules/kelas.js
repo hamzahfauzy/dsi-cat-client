@@ -24,9 +24,7 @@ export default {
             var token = this.state.global.token
             return new Promise(function(resolve, reject) {
                 axios.get(env.base_url+endpoint,{
-                    headers: {
-                        'Authorization' : token
-                    }
+                    headers: {'Authorization':'Bearer '+token}
                 }).then(response => {
                     resolve(response)
                 }).catch(error => {
@@ -38,12 +36,27 @@ export default {
         fetchSingleKelas({commit}, id){
             var token = this.state.global.token
             return new Promise(function(resolve, reject) {
-                axios.get(env.base_url+'single-kelas&id='+id,{
+                axios.get(env.base_url+'site/konten?id_pelatihan='+id,{
                     headers: {
-                        'Authorization' : token
+                        'Authorization':'Bearer '+token
                     }
                 }).then(response => {
                     commit('SET_SINGLE_KELAS',response.data)
+                    resolve(response)
+                }).catch(error => {
+                    resolve(error.response)
+                    // console.log(error)
+                })
+            })
+        },
+        fetchMateri({commit}, id){
+            var token = this.state.global.token
+            return new Promise(function(resolve, reject) {
+                axios.get(env.base_url+'site/single-materi?id_materi='+id,{
+                    headers: {
+                        'Authorization':'Bearer '+token
+                    }
+                }).then(response => {
                     resolve(response)
                 }).catch(error => {
                     resolve(error.response)

@@ -32,7 +32,7 @@
             </div>
             <div class="logo" style="background-image:url(dist/images/logo_app_small.png)"></div>
             <div class="title-section">
-                <router-link to="/dashboard">
+                <router-link to="/kelas-saya">
                     <h4>KEMENTRIAN DALAM NEGERI</h4>
                     <span>Fasilitasi Pengembangan Kapasitas Aparatur Desa ( FPKAD )</span>
                 </router-link>
