@@ -8,9 +8,6 @@
                         <router-link to="/kelas-saya" :class="{'nav-active':header_aktif=='kelas-saya'}">Kelas Saya</router-link>
                     </li>
                     <li>
-                        <a href="javascript:void(0)" @click="$store.dispatch('dialog/setDialogStatus',true)">{{authData.hasOwnProperty('data')?authData.data.nama_lengkap:'User'}}</a>
-                    </li>
-                    <li>
                         <md-menu md-size="medium" md-align-trigger md-direction="bottom-end" class="account-toggle">
                             <md-button md-menu-trigger>
                                 <md-icon>account_circle</md-icon>

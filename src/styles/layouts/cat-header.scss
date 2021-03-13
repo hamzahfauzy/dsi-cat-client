@@ -49,11 +49,11 @@ section.top.cat {
     /* On screens that are 992px or less, set the background color to blue */
   }
 
-  @media screen and (max-width: 480px) {
-    .title-section {
-      display: none;
-    }
-  }
+  // @media screen and (max-width: 480px) {
+  //   .title-section {
+  //     display: none;
+  //   }
+  // }
 
   .logo {
     z-index: 1;

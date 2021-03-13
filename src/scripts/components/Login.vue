@@ -42,7 +42,7 @@
                                 </div>
                             </form>
                             <loading :active.sync="isLoading" :is-full-page="fullPage" class="loader-full"></loading>
-                            <!-- <p align="center">Help & Support</p> -->
+                            <p align="center"><a :href="app_link">Kembali</a></p>
                             <div class="social-list" style="text-align:center">
                                 <a href="#">
                                     <i class="fa fa-facebook"></i>
@@ -74,11 +74,15 @@ export default {
     components:{
         Loading
     },
+    created(){
+        this.app_link = env.app_link
+    },
     data() {
         return {
             isLoading:false,
             isContentLoading:false,
             fullPage:true,
+            app_link:'',
             errors: {
                 username:'',
                 password:''

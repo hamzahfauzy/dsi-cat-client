@@ -1,7 +1,7 @@
 <template>
     <div class="profile-dialog">
         <md-dialog :md-active.sync="showDialog">
-            <md-dialog-title>Profil Ku</md-dialog-title>
+            <md-dialog-title>Profil</md-dialog-title>
 
             <md-dialog-content md-dynamic-height>
                 <lembaga v-if="profile.hasOwnProperty('id_lembaga')"></lembaga>

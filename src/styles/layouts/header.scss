@@ -60,8 +60,10 @@ section.top {
   }
 
   @media screen and (max-width: 560px) {
-    .title-section {
-      display: none;
+    &:not(.cat) {
+      .title-section {
+        display: none;
+      }
     }
   }
 
