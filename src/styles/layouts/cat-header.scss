@@ -1,6 +1,6 @@
 section.top.cat {
   position: relative;
-  height: 180px;
+  height: 80px;
   background-image: url(../images/img-2.jpg);
   background-position: center;
   background-size: cover;
@@ -9,7 +9,7 @@ section.top.cat {
     content: "";
     background-color: rgba(6, 58, 105, 0.8);
     width: 100%;
-    height: 180px;
+    height: 80px;
   }
 
   &.min {
@@ -27,7 +27,7 @@ section.top.cat {
   .title-section {
     margin-left: 30px;
     padding: 15px;
-    padding-top: 20px;
+    padding-top: 11px;
     color: #fff;
     position: relative;
     z-index: 1;
@@ -62,7 +62,7 @@ section.top.cat {
     background-size: contain;
     position: absolute;
     background-repeat: no-repeat;
-    top: 25px;
+    top: 15px;
   }
 
   .right-menu {
@@ -70,7 +70,7 @@ section.top.cat {
     z-index: 2;
     // width: 100%;
     float: right;
-    margin-top: 25px;
+    margin-top: 20px;
     color: #fff;
 
     ul {

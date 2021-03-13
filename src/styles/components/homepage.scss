@@ -37,6 +37,8 @@
     }
 
     .sidebar {
+      border-radius: 1rem;
+      overflow: hidden;
       .md-list-item-content {
         min-height: 40px !important;
         &.md-ripple {
@@ -44,11 +46,21 @@
           font-weight: 600;
         }
       }
+      .md-list {
+        border-radius: 1rem;
+        border: 1px solid rgba(6, 58, 105, 0.8);
+      }
     }
 
-    .md-list {
-      // border: 1px solid #f9a507;
-      border: 1px solid rgba(6, 58, 105, 0.8);
+    .kelas-list {
+      .md-list {
+        padding: 0px;
+      }
+      .md-list-item-content {
+        background-color: rgba(6, 58, 105, 0.08);
+        border-radius: 1rem;
+        border: 1px solid rgba(6, 58, 105, 0.1);
+      }
     }
 
     .main-title-container {

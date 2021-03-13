@@ -34,19 +34,17 @@ export default {
     async created(){
         // console.log(this.$route.params.token)
         var token = this.$route.params.token
-        var formdata = new FormData;
-        formdata.append('token',token)
-        var login = await this.$store.dispatch('global/validateToken',formdata)
-        if(login.data.status == 'gagal')
+        var login = await this.$store.dispatch('global/validateToken',token)
+        if(login.status == 404)
         {
             Swal.fire('Oops...', 'Token anda tidak valid!', 'error')
             this.$router.push('/login')
+            return
         }
-        else
-        {
-            window.localStorage.setItem('token',token)
-            this.$router.push('/dashboard')
-        }
+
+        window.localStorage.setItem('token',token)
+        this.$router.push('/kelas-saya')
+        
         return
     }
 }

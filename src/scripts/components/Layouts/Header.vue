@@ -8,7 +8,7 @@
                         <router-link to="/kelas-saya" :class="{'nav-active':header_aktif=='kelas-saya'}">Kelas Saya</router-link>
                     </li>
                     <li>
-                        <a href="javascript:void(0)" @click="$store.dispatch('dialog/setDialogStatus',true)">Hamzah Fauzi</a>
+                        <a href="javascript:void(0)" @click="$store.dispatch('dialog/setDialogStatus',true)">{{authData.hasOwnProperty('data')?authData.data.nama_lengkap:'User'}}</a>
                     </li>
                     <li>
                         <md-menu md-size="medium" md-align-trigger md-direction="bottom-end" class="account-toggle">
@@ -19,11 +19,11 @@
                             <md-menu-content>
                                 <md-menu-item @click="$store.dispatch('dialog/setDialogStatus',true)">
                                     <md-icon>account_circle</md-icon>
-                                    <span>My Profile</span> 
+                                    <span>Profil Saya</span> 
                                 </md-menu-item>
                                 <md-menu-item @click="doLogout()">
                                     <md-icon>logout</md-icon>
-                                    <span>Log Out</span> 
+                                    <span>Keluar</span> 
                                 </md-menu-item>
                             </md-menu-content>
                         </md-menu>
@@ -33,8 +33,8 @@
             <div class="logo" style="background-image:url(dist/images/logo_app_small.png)"></div>
             <div class="title-section">
                 <router-link to="/kelas-saya">
-                    <h4>KEMENTRIAN DALAM NEGERI</h4>
-                    <span>Fasilitasi Pengembangan Kapasitas Aparatur Desa ( FPKAD )</span>
+                    <h4>FPKAD-CAT</h4>
+                    <span>Kementerian Dalam Negeri</span>
                 </router-link>
             </div>
         </div>
@@ -44,6 +44,9 @@
 import { mapGetters } from 'vuex'
 import Swal from 'sweetalert2';
 export default {
+    created(){
+        // this.$store.dispatch('global/setHeader',val)
+    },
     methods: {
         Alert(val){
             Swal.fire(val)
@@ -57,6 +60,7 @@ export default {
     computed: {
         ...mapGetters({
             headerAktif: 'global/getHeaderAktif',
+            authData: 'global/getAuthData',
         }),
         header_aktif: {
             get(){

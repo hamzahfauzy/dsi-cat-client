@@ -9,26 +9,26 @@
                     <div class="col-lg-7 pad-0 form-info">
                         <div class="form-section align-self-center">
                             <div class="btn-section clearfix">
-                                <h3>Fasilitasi Pengembangan Kapasitas Aparatur Desa ( FPKAD )</h3>
+                                <h3>FPKAD - CAT<br>Kementerian Dalam Negeri</h3>
                             </div>
                             <div class="logo">
                                 <a href="login-4.html">
                                     <img src="dist/images/logo_app_small.png" alt="logo">
                                 </a>
                             </div>
-                            <h1>Welcome!</h1>
-                            <h3>Sign into your account</h3>
+                            <h1>Selamat Datang!</h1>
+                            <h3>Masuk ke akun CAT anda untuk memulai pelatihan.</h3>
                             <div class="clearfix"></div>
                             <form @submit="doLogin">
                                 <div class="form-group form-box">
-                                    <label>Email address</label>
+                                    <label>Alamat Email</label>
                                     <input v-model="username" type="email" name="email" class="input-text" placeholder="Email Address">
                                 </div>
                                 <div class="form-group form-box clearfix">
-                                    <label>Password</label>
+                                    <label>Kata Sandi</label>
                                     <input v-model="password" type="password" name="Password" class="input-text" placeholder="Password">
                                 </div>
-                                <div class="checkbox form-group clearfix">
+                                <!-- <div class="checkbox form-group clearfix">
                                     <div class="form-check checkbox-theme">
                                         <input class="form-check-input" type="checkbox" value="" id="rememberMe">
                                         <label class="form-check-label" for="rememberMe">
@@ -36,13 +36,13 @@
                                         </label>
                                     </div>
                                     <a href="" class="forgot-password">Forgot Password</a>
-                                </div>
+                                </div> -->
                                 <div class="form-group clearfix">
-                                    <button type="submit" class="btn-md btn-theme btn-block">Login</button>
+                                    <button type="submit" class="btn-md btn-theme btn-block">Masuk</button>
                                 </div>
                             </form>
                             <loading :active.sync="isLoading" :is-full-page="fullPage" class="loader-full"></loading>
-                            <p align="center">Help & Support</p>
+                            <!-- <p align="center">Help & Support</p> -->
                             <div class="social-list" style="text-align:center">
                                 <a href="#">
                                     <i class="fa fa-facebook"></i>
@@ -51,13 +51,7 @@
                                     <i class="fa fa-twitter"></i>
                                 </a>
                                 <a href="#">
-                                    <i class="fa fa-google"></i>
-                                </a>
-                                <a href="#">
-                                    <i class="fa fa-linkedin"></i>
-                                </a>
-                                <a href="#">
-                                    <i class="fa fa-pinterest"></i>
+                                    <i class="fa fa-instagram"></i>
                                 </a>
                                 <a href="#">
                                     <i class="fa fa-youtube"></i>

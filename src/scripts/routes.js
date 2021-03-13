@@ -15,8 +15,8 @@ export default [
         },
         async beforeEnter(to, from, next) {
             var data = await store.dispatch('global/fetchGeneralData')
-            if(data)
-                next({'name':'Dashboard'})
+            if(data.hasOwnProperty('token'))
+                next({'name':'KelasSaya'})
             else
                 next()
         }
@@ -53,7 +53,7 @@ export default [
         },
         async beforeEnter(to, from, next) {
             var data = await store.dispatch('global/fetchGeneralData')
-            if(data)
+            if(data.hasOwnProperty('token'))
                 next()
             else
                 next({'name':'Login'})
@@ -68,7 +68,7 @@ export default [
         },
         async beforeEnter(to, from, next) {
             var data = await store.dispatch('global/fetchGeneralData')
-            if(data)
+            if(data.hasOwnProperty('token'))
                 next()
             else
                 next({'name':'Login'})

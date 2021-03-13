@@ -4,7 +4,7 @@
   .kelas-konten {
     background-color: #fff;
     padding: 25px;
-    height: calc(100vh - 180px - 50px);
+    height: calc(100vh - 80px - 50px);
     overflow-x: hidden;
     overflow-y: scroll;
 
@@ -36,16 +36,24 @@
   }
 
   .sidebar {
-    height: calc(100vh - 180px);
+    height: calc(100vh - 80px);
     overflow-x: hidden;
     overflow-y: scroll;
     background-color: #fff;
+    .materi_active {
+      font-weight: 500 !important;
+      color: rgba(6, 58, 105, 0.8);
+      .md-icon.md-icon-font.md-theme-default:not(.completed) {
+        color: rgba(6, 58, 105, 0.8) !important;
+      }
+    }
     .md-icon.md-icon-font.md-theme-default:not(.completed) {
       color: #000 !important;
     }
     .completed {
       color: green !important;
     }
+
     .md-list-item-content {
       min-height: 40px !important;
       &.md-ripple {

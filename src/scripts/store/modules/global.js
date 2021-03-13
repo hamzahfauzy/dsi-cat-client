@@ -4,6 +4,8 @@ export default {
         auth_data:{},
         token:'',
         header_aktif:'',
+        nav_sidebar:0,
+        profile:{}
     },
 
     mutations: {
@@ -16,21 +18,48 @@ export default {
         SET_HEADER_AKTIF(state, value) {
             state.header_aktif = value
         },
+        SET_PROFILE(state, value) {
+            state.profile = value
+        },
+        SET_NAV_SIDEBAR(state, value){
+            state.nav_sidebar = value
+        }
     },
 
     getters: {
         getAuthData: (state) => state.auth_data,
         getHeaderAktif: (state) => state.header_aktif,
+        getProfile: (state) => state.profile,
+        getNavSidebar: (state) => state.nav_sidebar,
+        getToken: (state) => state.token,
     },
 
     actions: {
         setHeader({commit},value){
             commit('SET_HEADER_AKTIF',value)
         },
+        toggleNavSidebar({commit, getters}){
+            var s = !getters.getNavSidebar
+            commit('SET_NAV_SIDEBAR',s)
+        },
+        closeNavSidebar({commit}){
+            commit('SET_NAV_SIDEBAR',0)
+        },
         fetchGeneralData({commit}){
             var token = window.localStorage.getItem('token')
-            commit("SET_TOKEN", token);
-            return token
+            if(token)
+            return new Promise(function(resolve, reject) {
+                axios.get(env.base_url+'site/validate-token?token='+token)
+                .then(response => {
+                    commit("SET_TOKEN", token);
+                    commit('SET_AUTH_DATA',response.data)
+                    resolve(response.data)
+                }).catch(error => {
+                    window.localStorage.removeItem('token')
+                    resolve(error.response)
+                })
+            });
+            return false
             // return axios.get(ADMIN.endpoint + "/general/data")
             // .then(response => {
             //     commit("SET_AUTH_DATA", response.data);
@@ -49,12 +78,30 @@ export default {
                 })
             })
         },
-        validateToken(state, payload){
-            return axios.get(env.base_url+'site/index', {
-                headers: { 
-                    "Authorization": "Bearer "+payload.get('token')
-                }
-            })
+        validateToken(state, token){
+            return new Promise(function(resolve, reject) {
+                axios.get(env.base_url+'site/validate-token?token='+token)
+                .then(response => {
+                    resolve(response.data)
+                }).catch(error => {
+                    resolve(error.response)
+                })
+            });
+        },
+        fetchProfile({getters,commit}){
+            var token = getters.getToken
+            return new Promise(function(resolve, reject) {
+                axios.get(env.base_url+'site/profile', {
+                    headers: { 
+                        "Authorization": "Bearer "+token
+                    }
+                }).then(response => {
+                    commit('SET_PROFILE',response.data)
+                    resolve(response)
+                }).catch(error => {
+                    resolve(error.response)
+                })
+            });
         },
         logout(){
             window.localStorage.removeItem('token')

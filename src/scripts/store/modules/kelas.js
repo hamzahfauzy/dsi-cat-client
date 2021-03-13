@@ -36,7 +36,7 @@ export default {
         fetchSingleKelas({commit}, id){
             var token = this.state.global.token
             return new Promise(function(resolve, reject) {
-                axios.get(env.base_url+'site/konten?id_pelatihan='+id,{
+                axios.get(env.base_url+'site/single-kelas?id_pelatihan='+id,{
                     headers: {
                         'Authorization':'Bearer '+token
                     }

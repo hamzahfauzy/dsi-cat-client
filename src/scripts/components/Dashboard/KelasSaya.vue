@@ -7,13 +7,13 @@
                 <h3 align="center" class="main-title">KELAS SAYA</h3>
             </div>
             <div class="container" style="max-width:1024px;">
-                <search></search>
+                <!-- <search></search> -->
                 <div class="row">
                     <div class="col-12 col-sm-4">
                         <div class="sidebar">
                             <md-list>
                                 <md-subheader>
-                                    <span>Filter</span>
+                                    <span> </span>
                                 </md-subheader>
 
                                 <md-list-item @click="loadKelas('site/kelas-saya')">Semua Kelas</md-list-item>
@@ -25,34 +25,34 @@
                     </div>
                     <div class="col-12 col-sm-8">
                         <loading :active.sync="isLoading" :is-full-page="fullPage" class="loader"></loading>
-                        <md-list class="md-triple-line list-kelas" v-if="isLoading==false">
-                            <div v-for="(kelas,index) in list_kelas" :key="index">
-                                <md-list-item  style="padding-top:10px;padding-bottom:10px;">
-                                    <md-avatar class="custom-avatar">
-                                        <img :src="kelas.image?kelas.image:'https://183263-537949-raikfcquaxqncofqfm.stackpathdns.com/wp-content/uploads/2018/05/shutterstock_285147194.jpg'" :alt="kelas.name">
-                                    </md-avatar>
+                        <div class="kelas-list">
+                            <md-list class="md-triple-line list-kelas" v-if="isLoading==false">
+                                <div v-for="(kelas,index) in list_kelas" :key="index">
+                                    <md-list-item  style="padding-bottom:10px;">
+                                        <md-avatar class="custom-avatar">
+                                            <img :src="kelas.image?kelas.image:'https://183263-537949-raikfcquaxqncofqfm.stackpathdns.com/wp-content/uploads/2018/05/shutterstock_285147194.jpg'" :alt="kelas.name">
+                                        </md-avatar>
 
-                                    <div class="md-list-item-text">
-                                        <span>{{kelas.nm_pelatihan}}</span>
-                                        <p> </p>
-                                        <div style="margin-top:10px;">
-                                            <!-- <progress-bar v-if="kelas.status != ''" :progress_percent="kelas.progress_percent" :flex="1" :title="'Progress Kelas'" /> -->
-                                            <md-button class="md-raised md-primary" style="width:auto!important;text-transform:capitalize" @click="$router.push('/details/'+kelas.id_pelatihan)">Ikuti</md-button>
-                                            <!-- <md-button class="md-raised md-primary md-success-btn" style="width:auto!important;text-transform:capitalize" v-if="kelas.status == 'Selesai'" @click="$router.push('/details/'+kelas.id)">Selesai</md-button> -->
+                                        <div class="md-list-item-text">
+                                            <span>{{kelas.nm_pelatihan}}</span>
+                                            <p> </p>
+                                            <div style="margin-top:10px;">
+                                                <!-- <progress-bar v-if="kelas.status != ''" :progress_percent="kelas.progress_percent" :flex="1" :title="'Progress Kelas'" /> -->
+                                                <md-button class="md-raised md-primary" style="width:auto!important;text-transform:capitalize" @click="$router.push('/details/'+kelas.id_pelatihan)">Ikuti</md-button>
+                                                <!-- <md-button class="md-raised md-primary md-success-btn" style="width:auto!important;text-transform:capitalize" v-if="kelas.status == 'Selesai'" @click="$router.push('/details/'+kelas.id)">Selesai</md-button> -->
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <!-- <md-button class="md-icon-button md-list-action">
-                                        <md-icon class="md-primary">star</md-icon>
-                                    </md-button> -->
-                                </md-list-item>
-
-                                <md-divider class="md-inset custom-divider"></md-divider>
-                            </div>
-                            <div v-if="list_kelas.length == 0">
-                                <center><i>Tidak ada kelas!</i></center>
-                            </div>
-                        </md-list>
+                                        <!-- <md-button class="md-icon-button md-list-action">
+                                            <md-icon class="md-primary">star</md-icon>
+                                        </md-button> -->
+                                    </md-list-item>
+                                </div>
+                                <div v-if="list_kelas.length == 0">
+                                    <center><i>Tidak ada kelas!</i></center>
+                                </div>
+                            </md-list>
+                        </div>
                     </div>
                 </div>
             </div>
