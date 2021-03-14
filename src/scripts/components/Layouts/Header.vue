@@ -8,7 +8,7 @@
                         <router-link to="/kelas-saya" :class="{'nav-active':header_aktif=='kelas-saya'}">Kelas Saya</router-link>
                     </li>
                     <li>
-                        <a href="javascript:void(0)" @click="$store.dispatch('dialog/setDialogStatus',true)">{{authData.hasOwnProperty('data')?authData.data.nama_lengkap:'User'}}</a>
+                        <a href="javascript:void(0)" @click="loadProfile()">{{authData.hasOwnProperty('data')?authData.data.nama_lengkap:'User'}}</a>
                     </li>
                     <li>
                         <md-menu md-size="medium" md-align-trigger md-direction="bottom-end" class="account-toggle">
@@ -44,12 +44,25 @@
 import { mapGetters } from 'vuex'
 import Swal from 'sweetalert2';
 export default {
+    data(){
+        return {
+            profile:{}
+        }
+    },
     created(){
         // this.$store.dispatch('global/setHeader',val)
     },
     methods: {
         Alert(val){
             Swal.fire(val)
+        },
+        async loadProfile(){
+            this.$store.dispatch('dialog/setDialogStatus',true)
+            var request = await this.$store.dispatch('global/fetchProfile')
+            if(request.status == 401)
+                Swal.fire('Oops...', 'Authorized Content!', 'error')
+            else
+                this.profile = request.data
         },
         doLogout: async function()
         {

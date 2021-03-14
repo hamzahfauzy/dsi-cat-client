@@ -16,23 +16,22 @@
     </div>
 </template>
 <script>
+import Loading from 'vue-loading-overlay'
 import { mapGetters } from 'vuex'
 export default {
+    components:{
+        Loading
+    },
     data(){
         return {
-            profile:{}
+            isLoading:true,
+            fullPage:true
         }
-    },
-    async created(){
-        var request = await this.$store.dispatch('global/fetchProfile')
-        if(request.status == 401)
-            Swal.fire('Oops...', 'Authorized Content!', 'error')
-        else
-            this.profile = request.data
     },
     computed: {
         ...mapGetters({
             dialogStatus: 'dialog/getDialogStatus',
+            profile: 'global/getProfile',
         }),
         showDialog: {
             get(){

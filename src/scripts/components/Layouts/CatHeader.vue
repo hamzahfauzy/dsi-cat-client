@@ -14,7 +14,7 @@
                             </md-button>
 
                             <md-menu-content>
-                                <md-menu-item @click="$store.dispatch('dialog/setDialogStatus',true)">
+                                <md-menu-item @click="loadProfile()">
                                     <md-icon>account_circle</md-icon>
                                     <span>Profil Saya</span> 
                                 </md-menu-item>
@@ -49,6 +49,10 @@ export default {
         {
             await this.$store.dispatch('global/logout')
             this.$router.push({name:'Login'})
+        },
+        async loadProfile(){
+            this.$store.dispatch('dialog/setDialogStatus',true)
+            await this.$store.dispatch('global/fetchProfile')
         },
         toggleNav(){
             this.$store.dispatch('global/toggleNavSidebar')

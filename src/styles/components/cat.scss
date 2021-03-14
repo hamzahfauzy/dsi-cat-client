@@ -62,9 +62,15 @@
       }
     }
     .item-child-content {
+      display: flex;
       font-weight: 400;
       i.md-icon {
         margin-right: 10px;
+      }
+      span p {
+        margin-top: 10px;
+        font-weight: 600;
+        color: green;
       }
     }
 

@@ -52,8 +52,54 @@ export default {
         fetchMateri({commit}, id){
             var token = this.state.global.token
             return new Promise(function(resolve, reject) {
-                axios.get(env.base_url+'site/single-materi?id_materi='+id,{
+                axios.get(env.base_url+'pelatihan/single-materi?id_materi='+id,{
                     headers: {
+                        'Authorization':'Bearer '+token
+                    }
+                }).then(response => {
+                    resolve(response)
+                }).catch(error => {
+                    resolve(error.response)
+                    // console.log(error)
+                })
+            })
+        },
+        finishMateri({commit}, id){
+            var token = this.state.global.token
+            return new Promise(function(resolve, reject) {
+                axios.get(env.base_url+'pelatihan/finish-materi?id_materi='+id,{
+                    headers: {
+                        'Authorization':'Bearer '+token
+                    }
+                }).then(response => {
+                    resolve(response)
+                }).catch(error => {
+                    resolve(error.response)
+                    // console.log(error)
+                })
+            })
+        },
+        fetchKelasSaya(){
+            var token = this.state.global.token
+            return new Promise(function(resolve) {
+                axios.get(env.base_url+'pelatihan/index',{
+                    headers: {'Authorization':'Bearer '+token}
+                }).then(response => {
+                    resolve(response)
+                }).catch(error => {
+                    resolve(error.response)
+                    // console.log(error)
+                })
+            })
+        },
+        postIkuti({commit},id){
+            var token = this.state.global.token
+            return new Promise(function(resolve, reject) {
+                var formData = new FormData;
+                formData.append('id_pelatihan',id)
+                axios.post(env.base_url+'pelatihan/insert',formData,{
+                    headers: {
+                        "Content-Type": "multipart/form-data",
                         'Authorization':'Bearer '+token
                     }
                 }).then(response => {

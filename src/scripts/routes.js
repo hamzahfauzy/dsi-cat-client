@@ -1,9 +1,18 @@
 import Login from './components/Login'
 import LoginToken from './components/LoginToken'
-import Dashboard from './components/Dashboard/Main'
 import KelasSaya from './components/Dashboard/KelasSaya'
 import Details from './components/Dashboard/Details'
 import store from './store';
+
+async function isNotAuthenticated(to, from, next){
+    store.dispatch('dialog/setFullLoading',true)
+    var data = await store.dispatch('global/fetchGeneralData')
+    if(data.hasOwnProperty('token'))
+        next()
+    else
+        next({'name':'Login'})
+    store.dispatch('dialog/setFullLoading',false)
+}
 
 export default [
     {
@@ -29,21 +38,6 @@ export default [
             title: 'Login'
         },
     },
-    // {
-    //     name:'Dashboard',
-    //     path: '/dashboard',
-    //     component:Dashboard,
-    //     meta: {
-    //         title: 'Dashboard - FPKAD'
-    //     },
-    //     async beforeEnter(to, from, next) {
-    //         var data = await store.dispatch('global/fetchGeneralData')
-    //         if(data)
-    //             next()
-    //         else
-    //             next({'name':'Login'})
-    //     }
-    // },
     {
         name:'KelasSaya',
         path: '/kelas-saya',
@@ -51,13 +45,7 @@ export default [
         meta: {
             title: 'Kelas Saya - FPKAD'
         },
-        async beforeEnter(to, from, next) {
-            var data = await store.dispatch('global/fetchGeneralData')
-            if(data.hasOwnProperty('token'))
-                next()
-            else
-                next({'name':'Login'})
-        }
+        beforeEnter: isNotAuthenticated
     },
     {
         name:'Details',
@@ -66,12 +54,6 @@ export default [
         meta: {
             title: 'CAT - FPKAD'
         },
-        async beforeEnter(to, from, next) {
-            var data = await store.dispatch('global/fetchGeneralData')
-            if(data.hasOwnProperty('token'))
-                next()
-            else
-                next({'name':'Login'})
-        }
+        beforeEnter: isNotAuthenticated
     }
 ]
