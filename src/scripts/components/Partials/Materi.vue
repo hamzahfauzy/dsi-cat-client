@@ -1,0 +1,77 @@
+<template>
+    <div class="responsive-content">
+        <video class="responsive-iframe" controls v-if="materi.hasOwnProperty('jenis_materi') && materi.jenis_materi==1" ref="videoPlayer"
+            @canplay="updatePaused" 
+            @playing="updatePaused" 
+            @pause="updatePaused" 
+            @timeupdate="timeupdate"
+            @seeking="seeking"
+            >
+                <source :src="materi.url_player" type="video/mp4" />
+        </video>
+    </div>
+</template>
+<script>
+import { mapGetters } from 'vuex'
+export default {
+    data(){
+        return {
+            videoElement: null,
+            paused: null,
+            ended_is_send:false,
+            video_handle: {
+                supposedCurrentTime:0,
+            }
+        }
+    },
+    methods:{
+        timeupdate: function(){
+            var video = this.$refs.videoPlayer
+            if (!video.seeking) {
+                this.video_handle.supposedCurrentTime = video.currentTime;
+                var percent = (video.currentTime / video.duration * 100).toFixed(2);
+                // console.log(percent)
+                if(Math.floor(percent) == 75 && !this.materi.status_selesai)
+                {
+                    if(!this.ended_is_send)
+                        this.sendEnded(this.materi.id_materi)
+                }
+            }
+        },
+        seeking: function(){
+            var video = this.$refs.videoPlayer
+            var delta = video.currentTime - this.video_handle.supposedCurrentTime;
+            // if (Math.abs(delta) > 0.01) {
+            if (delta > 0.01 && !this.materi.status_selesai) {
+                console.log("Seeking is disabled");
+                video.currentTime = this.video_handle.supposedCurrentTime;
+            }
+        },
+        async sendEnded(id_materi){
+            this.ended_is_send = true
+            var id = this.$route.params.id
+            await this.$store.dispatch('kelas/finishMateri',id_materi)
+            this.$store.dispatch('kelas/fetchSingleKelas',id)
+            // await this.loadSidebar()
+            // this.loadNavigation()
+            this.ended_is_send = false
+        },
+        updatePaused(event) {
+            this.videoElement = event.target;
+            this.paused = event.target.paused;
+        },
+        play() {
+            this.videoElement.play();
+        },
+        pause() {
+            this.videoElement.pause();
+        },
+    },
+    computed: {
+        ...mapGetters({
+            materi: 'kelas/getMateri'
+        }),
+        playing() { return !this.paused; }
+    }
+}
+</script>

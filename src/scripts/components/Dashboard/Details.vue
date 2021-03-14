@@ -11,49 +11,15 @@
             <loading :active.sync="isLoading" :is-full-page="fullPage" class="loader"></loading>
             <div class="row" v-if="!isLoading">
                 <div class="col-12 col-xs-6 col-sm-4 col-md-3 col collapsed-sidebar" :class="{'show':nav_sidebar}">
-                    <div class="sidebar">
-                        <md-list>
-                            <md-subheader>
-                                <span><b>Konten Kelas</b></span>
-                            </md-subheader>
-                            
-                            <md-list-item md-expand :md-expanded="true" v-for="(content, index) in kelas.refKontens" :key="index">
-                                <md-icon>check_circle_outline</md-icon>
-                                <span class="md-list-item-text">{{content.nm_konten}}</span>
-
-                                <md-list slot="md-expand">
-                                    <md-list-item class="md-inset" v-for="(children,idx) in content.refMateris" :key="idx" @click="activeMateri(index, idx)">
-                                        <div class="item-child-content" :class="{'completed':children.status_selesai,'materi_active':index==active_materi.idx_konten&&idx==active_materi.idx_materi}">
-                                            <md-icon :class="{'completed':children.status_selesai}">check_circle_outline</md-icon>
-                                            <md-icon :class="{'completed':children.status_selesai}">{{tipe_konten[children.jenis_materi]}}</md-icon>
-                                            <span style="display:inline-block">
-                                                {{children.nm_materi}}<br>
-                                                <p class="ket_materi">{{children.ket_materi}}</p>
-                                            </span>
-                                            
-                                        </div>
-                                    </md-list-item>
-                                </md-list>
-                            </md-list-item>
-                        </md-list>
-                    </div>
+                    <sidebar></sidebar>
                 </div>
                 <div class="col-12 col-xs-6 col-sm-8 col-md-9 col main-content" @click="$store.dispatch('global/closeNavSidebar')">
                     <div class="kelas-konten">
                         <loading :active.sync="isContentLoading" :is-full-page="fullPage" class="loader"></loading>
-                        <div v-if="active_materi.idx_konten==-1">
+                        <div v-if="!isContentLoading">
                             <h3 align="center" v-html="kelas.nm_pelatihan"></h3>
-                        </div>
-                        <div class="responsive-content" v-if="!isContentLoading">
-                            <video class="responsive-iframe" controls v-if="materi.jenis_materi==1" ref="videoPlayer"
-                            @canplay="updatePaused" 
-                            @playing="updatePaused" 
-                            @pause="updatePaused" 
-                            @timeupdate="timeupdate"
-                            @seeking="seeking"
-                            >
-                                <source :src="materi.url_player" type="video/mp4" />
-                            </video>
+                            <exam></exam>
+                            <materi></materi>
                         </div>
                         
                     </div>
@@ -82,32 +48,9 @@ export default {
     },
     data(){
         return {
-            videoElement: null,
-            paused: null,
             isLoading:false,
-            isContentLoading:false,
+            // isContentLoading:false,
             fullPage:true,
-            kelas:{},
-            tipe_konten:{
-                '2':'content_paste',
-                '1':'slow_motion_video',
-                'exam':'create',
-            },
-            konten:[],
-            materi:{},
-            kelas:{},
-            ended_is_send:false,
-            navigation_enable:{
-                next:0,
-                prev:0,
-            },
-            active_materi:{
-                idx_konten:-1,
-                idx_materi:-1,
-            },
-            video_handle: {
-                supposedCurrentTime:0,
-            }
         }
     },
     async created(){
@@ -115,7 +58,6 @@ export default {
         this.isLoading = true
         await this.loadSidebar()
         this.isLoading = false
-        
     },
     methods:{
         async loadSidebar(){
@@ -123,137 +65,103 @@ export default {
             var request = await this.$store.dispatch('kelas/fetchSingleKelas',id)
             if(request.status == 401)
                 Swal.fire('Oops...', 'Authorized Content!', 'error')
-            else
-            {
-                this.kelas = request.data
-            }
         },
         blank(){
             // window.alert(val)
         },
-        timeupdate: function(){
-            var video = this.$refs.videoPlayer
-            if (!video.seeking) {
-                this.video_handle.supposedCurrentTime = video.currentTime;
-                var percent = (video.currentTime / video.duration * 100).toFixed(2);
-                // console.log(percent)
-                if(Math.floor(percent) == 75 && !this.materi.status_selesai)
-                {
-                    if(!this.ended_is_send)
-                        this.sendEnded(this.materi.id_materi)
-                }
-            }
-        },
-        seeking: function(){
-            var video = this.$refs.videoPlayer
-            var delta = video.currentTime - this.video_handle.supposedCurrentTime;
-            // if (Math.abs(delta) > 0.01) {
-            if (delta > 0.01 && !this.materi.status_selesai) {
-                console.log("Seeking is disabled");
-                video.currentTime = this.video_handle.supposedCurrentTime;
-            }
-        },
-        async activeMateri(idx_konten,idx_materi){
-            var materi = this.kelas.refKontens[idx_konten].refMateris[idx_materi]
-
-            if(materi.status_materi||(idx_konten==0&idx_materi==0)){
-                this.active_materi.idx_konten = idx_konten
-                this.active_materi.idx_materi = idx_materi
-                await this.loadMateri()
-                return;
-            }
-
-            if(idx_materi == 0 && idx_konten > 0)
-            {
-                // last materi in prev content
-                var temp_idx_konten = idx_konten - 1
-                var temp_materis = this.kelas.refKontens[temp_idx_konten].refMateris.length
-                var temp_idx_materi = temp_materis - 1
-                var temp_materi = this.kelas.refKontens[temp_idx_konten].refMateris[temp_idx_materi]
-                if(temp_materi.status_selesai)
-                {
-                    this.active_materi.idx_konten = idx_konten
-                    this.active_materi.idx_materi = idx_materi
-                    await this.loadMateri()
-                    return;
-                }
-                
-
-            }
-
-            if(idx_materi > 0 && idx_konten >= 0)
-            {
-                // last materi in prev content
-                var temp_idx_konten = idx_konten
-                var temp_idx_materi = idx_materi - 1
-                var temp_materi = this.kelas.refKontens[temp_idx_konten].refMateris[temp_idx_materi]
-                if(temp_materi.status_selesai)
-                {
-                    this.active_materi.idx_konten = idx_konten
-                    this.active_materi.idx_materi = idx_materi
-                    await this.loadMateri()
-                    return;
-                }
-            }
-
-            // if(idx_materi>0)
-            // {
-            //     var temp_idx_konten = idx_konten > 0 ? idx_konten-1 : idx_konten
-            //     var temp_idx_materi = idx_materi-1
-            // }
-        },
         async nextMateri(){
-            this.active_materi.idx_materi++
+            var idx_konten = this.active_materi.idx_konten
+            var idx_materi = this.active_materi.idx_materi
+            var kontens = this.kelas.refKontens
+
+            if(idx_konten == kontens[idx_konten].length-1 && idx_materi == kontens[idx_konten].refMateris.length-1)
+                return
+            
+            if(idx_materi == kontens[idx_konten].refMateris.length-1)
+            {
+                idx_materi = 0
+                idx_konten += 1
+            }
+            else
+                idx_materi += 1
+
+            this.$store.dispatch('cat/setActiveMateri',{
+                idx_konten:idx_konten,
+                idx_materi:idx_materi,
+            })
             await this.loadMateri()
         },
+        async loadMateri(){
+            this.$store.dispatch('cat/setLoading',true)
+            var idx_konten = this.active_materi.idx_konten
+            var idx_materi = this.active_materi.idx_materi
+            var materi = this.kelas.refKontens[idx_konten].refMateris[idx_materi]
+            this.loadNavigation()
+            await this.$store.dispatch('kelas/fetchMateri',materi.id_materi)
+            this.$store.dispatch('cat/setLoading',false)
+        },
         async prevMateri(){
-            this.active_materi.idx_materi--
+            // this.active_materi.idx_materi--
+            // await this.loadMateri()
+            var idx_konten = this.active_materi.idx_konten
+            var idx_materi = this.active_materi.idx_materi
+            var kontens = this.kelas.refKontens
+
+            if(idx_konten == 0 && idx_materi == 0)
+                return
+            
+            if(idx_materi == 0 && idx_konten > 0)
+            {
+                idx_materi = kontens[idx_konten-1].refMateris.length-1
+                idx_konten -= 1
+            }
+            else
+                idx_materi -= 1
+
+            this.$store.dispatch('cat/setActiveMateri',{
+                idx_konten:idx_konten,
+                idx_materi:idx_materi,
+            })
             await this.loadMateri()
         },
         loadNavigation(){
-            var materi = this.kelas.refKontens[this.active_materi.idx_konten].refMateris[this.active_materi.idx_materi]
-            console.log(materi)
-            this.navigation_enable.next = typeof this.kelas.refKontens[this.active_materi.idx_konten].refMateris[this.active_materi.idx_materi+1] === 'object' && materi.status_selesai ? 1 : 0
-            this.navigation_enable.prev = typeof this.kelas.refKontens[this.active_materi.idx_konten].refMateris[this.active_materi.idx_materi-1] === 'undefined' ? 0 : 1
-        },
-        async loadMateri(){
-            this.video_handle.supposedCurrentTime = 0
-            this.isContentLoading = true
-            var materi = this.kelas.refKontens[this.active_materi.idx_konten].refMateris[this.active_materi.idx_materi]
-            
-            this.navigation_enable.next = typeof this.kelas.refKontens[this.active_materi.idx_konten].refMateris[this.active_materi.idx_materi+1] === 'object' && materi.status_selesai ? 1 : 0
-            this.navigation_enable.prev = typeof this.kelas.refKontens[this.active_materi.idx_konten].refMateris[this.active_materi.idx_materi-1] === 'undefined' ? 0 : 1
+            var idx_konten = this.active_materi.idx_konten
+            var idx_materi = this.active_materi.idx_materi
+            var kontens = this.kelas.refKontens
+            var materis = kontens[idx_konten].refMateris
+            var materi = materis[idx_materi]
 
-            var request = await this.$store.dispatch('kelas/fetchMateri',materi.id_materi)
-            if(request.status == 401)
-                Swal.fire('Oops...', 'Authorized Content!', 'error')
-            else
-                this.materi = request.data
-            this.isContentLoading = false
-        },
-        async sendEnded(id_materi){
-            this.ended_is_send = true
-            await this.$store.dispatch('kelas/finishMateri',id_materi)
-            await this.loadSidebar()
-            this.loadNavigation()
-            this.ended_is_send = false
-        },
-        updatePaused(event) {
-            this.videoElement = event.target;
-            this.paused = event.target.paused;
-        },
-        play() {
-            this.videoElement.play();
-        },
-        pause() {
-            this.videoElement.pause();
+            var next = typeof kontens[idx_konten].refMateris[idx_materi+1] === 'object' && materi.status_selesai ? 1 : 0
+            var prev = idx_materi == 0 && idx_konten == 0 ? 0 : 1
+
+            if(idx_materi == materis.length - 1 && typeof kontens[idx_konten+1] === 'object' && materi.status_selesai)
+            {
+                next = 1
+            }
+
+            this.$store.dispatch('cat/setNavigation',{
+                next:next,
+                prev:prev
+            })
         }
     },
     computed: {
         ...mapGetters({
-            nav_sidebar: 'global/getNavSidebar'
+            nav_sidebar: 'global/getNavSidebar',
+            kelas: 'kelas/getSingleKelas',
+            materi: 'kelas/getMateri',
+            loading: 'cat/getLoading',
+            navigation_enable: 'cat/getNavigation',
+            active_materi: 'cat/getActiveMateri'
         }),
-        playing() { return !this.paused; }
+        isContentLoading:{
+            get(){
+                return this.loading
+            },
+            set(val){
+                this.$store.dispatch('cat/setLoading',val)
+            }
+        }
     }
 }
 </script>
