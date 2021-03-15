@@ -4,6 +4,7 @@ export default {
         all_kelas:{},
         materi:{},
         single_kelas:{},
+        session:{},
         exam_content:[]
     },
 
@@ -19,6 +20,9 @@ export default {
         },
         SET_EXAM_CONTENT(state,value){
             state.exam_content = value
+        },
+        SET_SESSION(state,value){
+            state.session = value
         }
     },
 
@@ -26,7 +30,8 @@ export default {
         getAllKelas: (state) => state.all_kelas,
         getSingleKelas: (state) => state.single_kelas,
         getMateri: (state) => state.materi,
-        getExamContent: (state) => state.exam_content
+        getExamContent: (state) => state.exam_content,
+        getSession: (state) => state.session
     },
 
     actions: {
@@ -143,7 +148,7 @@ export default {
                 })
             })
         },
-        fetchSession(state,params){
+        fetchSession({commit},params){
             var token = this.state.global.token
             return new Promise(function(resolve, reject) {
                 var formData = new FormData;
@@ -155,6 +160,7 @@ export default {
                         'Authorization':'Bearer '+token
                     }
                 }).then(response => {
+                    commit('SET_SESSION',response.data)
                     resolve(response)
                 }).catch(error => {
                     resolve(error.response)

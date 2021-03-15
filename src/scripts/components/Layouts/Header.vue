@@ -8,7 +8,7 @@
                         <router-link to="/kelas-saya" :class="{'nav-active':header_aktif=='kelas-saya'}">Kelas Saya</router-link>
                     </li>
                     <li>
-                        <a href="javascript:void(0)" @click="loadProfile()">{{authData.hasOwnProperty('data')?authData.data.nama_lengkap:'User'}}</a>
+                        <a href="javascript:void(0)" @click="loadProfile()">{{nama}}</a>
                     </li>
                     <li>
                         <md-menu md-size="medium" md-align-trigger md-direction="bottom-end" class="account-toggle">
@@ -46,10 +46,20 @@ import Swal from 'sweetalert2';
 export default {
     data(){
         return {
-            profile:{}
+            profile:{},
+            nama:'Pengguna'
         }
     },
     created(){
+        if(this.authData.hasOwnProperty('additional_data'))
+        {
+            if(this.authData.additional_data.hasOwnProperty('id_lembaga'))
+                this.nama = this.authData.additional_data.nm_lembaga
+            if(this.authData.additional_data.hasOwnProperty('id_ap_desa'))
+                this.nama = this.authData.additional_data.nm_ap_desa
+            if(this.authData.additional_data.hasOwnProperty('id_narasumber'))
+                this.nama = this.authData.additional_data.nm_narasumber
+        }
         // this.$store.dispatch('global/setHeader',val)
     },
     methods: {
@@ -83,6 +93,6 @@ export default {
                 this.$store.dispatch('global/setHeader',val)
             }
         }
-    }
+    },
 }
 </script>

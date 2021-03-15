@@ -7,7 +7,7 @@
 
             <md-list-item @click="loadExam(1)">
                 <md-icon>assignment</md-icon>
-                <span class="md-list-item-text">PRE EXAM</span>
+                <span class="md-list-item-text">PRE TEST</span>
             </md-list-item>
             
             <md-list-item md-expand :md-expanded="true" v-for="(content, index) in kelas.refKontens" :key="index">
@@ -17,7 +17,7 @@
                 <md-list slot="md-expand">
                     <md-list-item class="md-inset" v-for="(children,idx) in content.refMateris" :key="idx" @click="activeMateri(index, idx)">
                         <div class="item-child-content" :class="{'completed':children.status_selesai,'materi_active':index==active_materi.idx_konten&&idx==active_materi.idx_materi}">
-                            <md-icon :class="{'completed':children.status_selesai}">check_circle_outline</md-icon>
+                            <md-icon v-if="children.status_selesai" class="completed">check_circle_outline</md-icon>
                             <md-icon :class="{'completed':children.status_selesai}">{{tipe_konten[children.jenis_materi]}}</md-icon>
                             <span style="display:inline-block">
                                 {{children.nm_materi}}<br>
@@ -31,7 +31,7 @@
 
             <md-list-item @click="loadExam(2)">
                 <md-icon>assignment</md-icon>
-                <span class="md-list-item-text">POST EXAM</span>
+                <span class="md-list-item-text">POST TEST</span>
             </md-list-item>
         </md-list>
     </div>
@@ -44,7 +44,7 @@ export default {
         return {
             tipe_konten:{
                 '2':'content_paste',
-                '1':'slow_motion_video',
+                '1':'play_circle_filled',
                 'exam':'create',
             }
         }
@@ -166,7 +166,9 @@ export default {
             }
             else
             {
-                await vm.$store.dispatch('kelas/fetchExam',{id_pelatihan:id,jenis_exam:jenis_exam})
+                if(!(request.data.hasOwnProperty('finished_at')&&request.data.finished_at))
+                    await vm.$store.dispatch('kelas/fetchExam',{id_pelatihan:id,jenis_exam:jenis_exam})
+                
                 vm.$store.dispatch('cat/setLoading',false)
             }
         }

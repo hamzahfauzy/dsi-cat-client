@@ -13,7 +13,7 @@
                         <div class="sidebar">
                             <md-list>
                                 <md-subheader>
-                                    <span> </span>
+                                    <span>FILTER</span>
                                 </md-subheader>
 
                                 <md-list-item @click="loadKelas('site/kelas-saya')">Semua Kelas</md-list-item>
@@ -37,8 +37,8 @@
                                             <span>{{kelas.nm_pelatihan}}</span>
                                             <p> </p>
                                             <div style="margin-top:10px;">
-                                                <progress-bar v-if="kelas.progress" :progress_percent="kelas.progress" :flex="1" :title="'Progress Kelas'" /> 
-                                                <md-button v-if="kelas.status_pelatihan == false" class="md-raised md-primary" style="width:auto!important;text-transform:capitalize" @click="ikuti(kelas.id_pelatihan)">Ikuti</md-button>
+                                                <progress-bar v-if="kelas.status_pelatihan" :progress_percent="kelas.progress" :flex="1" :title="'Progress Kelas'" /> 
+                                                <md-button v-if="kelas.status_pelatihan == false" class="md-raised md-primary" style="width:auto!important;text-transform:capitalize" @click="ikuti(kelas.id_pelatihan)">Ikuti Kelas</md-button>
                                                 <md-button v-if="kelas.status_pelatihan == true" class="md-raised md-accent" style="width:auto!important;text-transform:capitalize" @click="$router.push('/details/'+kelas.id_pelatihan)">Lanjutkan</md-button>
                                                 <!-- <md-button class="md-raised md-primary md-success-btn" style="width:auto!important;text-transform:capitalize" v-if="kelas.status == 'Selesai'" @click="$router.push('/details/'+kelas.id)">Selesai</md-button> -->
                                             </div>
@@ -103,12 +103,5 @@ export default {
                 this.$router.push('/details/'+id_pelatihan)
         }
     }
-    // watch: {
-    //     list_kelas: function() {
-    //         this.list_kelas.forEach(data => {
-    //             data['kelas_saya'] = this.kelas_saya.find(val => val.id_pelatihan == data.id_pelatihan)
-    //         });
-    //     },
-    // },
 }
 </script>

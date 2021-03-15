@@ -52,6 +52,7 @@
     }
     .completed {
       color: green !important;
+      font-weight: 600!important;
     }
 
     .md-list-item-content {
@@ -92,6 +93,22 @@
     justify-content: center;
   }
 
+  span.soal_pilihan, span.kode_soal_pilihan {
+    position: absolute;
+    top: 10px;
+  }
+
+  span.kode_soal_pilihan {  
+    left: 15px;
+    z-index: 2;
+    color: #FFF;
+    font-weight: 700;
+  }
+
+  label > input[type=radio]:checked ~ span.kode_soal_pilihan {
+    display: none;
+  }
+
   .option-input {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -99,7 +116,7 @@
     -o-appearance: none;
     appearance: none;
     position: relative;
-    top: 13.33333px;
+    // top: 13.33333px;
     right: 0;
     bottom: 0;
     left: 0;
@@ -113,8 +130,6 @@
     display: inline-block;
     margin-right: 0.5rem;
     outline: none;
-    position: relative;
-    z-index: 1000;
   }
   .option-input:hover {
     background: #9faab7;

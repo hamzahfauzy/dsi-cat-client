@@ -7,6 +7,7 @@
             <div class="container">
                 <div class="row login-box">
                     <div class="col-lg-7 pad-0 form-info">
+                        <a :href="app_link" class="btn-back-login"><md-icon>keyboard_backspace</md-icon>Kembali</a>
                         <div class="form-section align-self-center">
                             <div class="btn-section clearfix">
                                 <h3>FPKAD - CAT<br>Kementerian Dalam Negeri</h3>
@@ -17,12 +18,12 @@
                                 </a>
                             </div>
                             <h1>Selamat Datang!</h1>
-                            <h3>Masuk ke akun CAT anda untuk memulai pelatihan.</h3>
+                            <h3>Masukkan akun FPKAD digital untuk memulai pelatihan.</h3>
                             <div class="clearfix"></div>
                             <form @submit="doLogin">
                                 <div class="form-group form-box">
                                     <label>Alamat Email</label>
-                                    <input v-model="username" type="email" name="email" class="input-text" placeholder="Email Address">
+                                    <input v-model="username" type="email" name="email" class="input-text" placeholder="Alamat Email">
                                 </div>
                                 <div class="form-group form-box clearfix">
                                     <label>Kata Sandi</label>
@@ -42,7 +43,6 @@
                                 </div>
                             </form>
                             <loading :active.sync="isLoading" :is-full-page="fullPage" class="loader-full"></loading>
-                            <p align="center"><a :href="app_link">Kembali</a></p>
                             <div class="social-list" style="text-align:center">
                                 <a href="#">
                                     <i class="fa fa-facebook"></i>

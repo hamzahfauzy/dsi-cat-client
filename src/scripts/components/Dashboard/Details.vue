@@ -3,7 +3,7 @@
         <cat-header></cat-header>
         <div class="container nav-progress-container">
             <div class="nav-progress">
-                <progress-bar :title="kelas.hasOwnProperty('nm_pelatihan')?'Progress '+kelas.nm_pelatihan:'Loading'" :progress_percent="kelas.hasOwnProperty('progress')?kelas.progress:0"></progress-bar>
+                <progress-bar-mini :title="kelas.hasOwnProperty('nm_pelatihan')?kelas.nm_pelatihan:'Loading...'" :progress_percent="kelas.hasOwnProperty('progress')?kelas.progress:0"></progress-bar-mini>
             </div>
         </div>
 
@@ -17,7 +17,9 @@
                     <div class="kelas-konten">
                         <loading :active.sync="isContentLoading" :is-full-page="fullPage" class="loader"></loading>
                         <div v-if="!isContentLoading">
-                            <h3 align="center" v-html="kelas.nm_pelatihan"></h3>
+                            <div v-if="active_materi.idx_konten == -1 && exam_content.length == 0 && Object.keys(session).length == 0" class="intro">
+                                <h3 align="center" v-html="kelas.nm_pelatihan"></h3>
+                            </div>
                             <exam></exam>
                             <materi></materi>
                         </div>
@@ -152,7 +154,9 @@ export default {
             materi: 'kelas/getMateri',
             loading: 'cat/getLoading',
             navigation_enable: 'cat/getNavigation',
-            active_materi: 'cat/getActiveMateri'
+            active_materi: 'cat/getActiveMateri',
+            exam_content: 'kelas/getExamContent',
+            session: 'kelas/getSession',
         }),
         isContentLoading:{
             get(){
