@@ -47,14 +47,16 @@ export default {
                 video.currentTime = this.video_handle.supposedCurrentTime;
             }
         },
-        async sendEnded(id_materi){
+        sendEnded(id_materi){
+            var vm = this
             this.ended_is_send = true
             var id = this.$route.params.id
-            await this.$store.dispatch('kelas/finishMateri',id_materi)
-            this.$store.dispatch('kelas/fetchSingleKelas',id)
+            this.$store.dispatch('kelas/finishMateri',id_materi).then(res => {
+                vm.$store.dispatch('kelas/fetchSingleKelas',id)
+                vm.ended_is_send = false
+            })
             // await this.loadSidebar()
             // this.loadNavigation()
-            this.ended_is_send = false
         },
         updatePaused(event) {
             this.videoElement = event.target;

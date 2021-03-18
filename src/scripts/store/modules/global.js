@@ -5,6 +5,7 @@ export default {
         token:'',
         header_aktif:'',
         nav_sidebar:0,
+        countDown:-1,
         profile:{}
     },
 
@@ -23,6 +24,9 @@ export default {
         },
         SET_NAV_SIDEBAR(state, value){
             state.nav_sidebar = value
+        },
+        SET_COUNTDOWN(state, value){
+            state.countDown = value
         }
     },
 
@@ -32,11 +36,15 @@ export default {
         getProfile: (state) => state.profile,
         getNavSidebar: (state) => state.nav_sidebar,
         getToken: (state) => state.token,
+        getCountDown: (state) => state.countDown,
     },
 
     actions: {
         setHeader({commit},value){
             commit('SET_HEADER_AKTIF',value)
+        },
+        setCountDown({commit},value){
+            commit('SET_COUNTDOWN',value)
         },
         toggleNavSidebar({commit, getters}){
             var s = !getters.getNavSidebar

@@ -60,6 +60,8 @@ export default {
         this.isLoading = true
         await this.loadSidebar()
         this.isLoading = false
+        var id = this.$route.params.id
+        await this.$store.dispatch('kelas/fetchAllSession',id)
     },
     methods:{
         async loadSidebar(){
@@ -156,7 +158,7 @@ export default {
             navigation_enable: 'cat/getNavigation',
             active_materi: 'cat/getActiveMateri',
             exam_content: 'kelas/getExamContent',
-            session: 'kelas/getSession',
+            session: 'kelas/getSession'
         }),
         isContentLoading:{
             get(){

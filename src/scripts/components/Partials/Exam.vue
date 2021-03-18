@@ -1,10 +1,35 @@
 <template>
     <div>
-        <div v-if="session.hasOwnProperty('finished_at')&&session.finished_at" class="intro">
-            <h3 align="center">Anda sudah melaksanakan {{session.jenis_exam==1?"Pre Test":"Post Test"}}</h3>
+        <div v-if="session.hasOwnProperty('finished_at')&&session.finished_at&&(activeMateri.idx_konten==-1)" class="intro">
+            <div style="text-align:center">
+                <img src="dist/images/congrats.png" alt="" width="150px" style="margin-bottom:15px;">
+                <p></p>
+                <h3 style="font-size:18px;">Selamat, Kamu sudah melaksanakan <br>{{session.jenis_exam==1?"Pre Exam":"Post Exam"}} Kelas ini</h3>
+                <div style="padding:20px;background-color:#FFF;color:#74b9ff!important;border-radius:1rem;margin-top:15px;">
+                    <table align="center" cellpadding="10" style="font-weight:bold;">
+                        <tr>
+                            <td>Benar</td>
+                            <td>Salah</td>
+                            <td>Waktu</td>
+                            <td>Nilai</td>
+                        </tr>
+                        <tr>
+                            <td>{{session.hasil.benar}}</td>
+                            <td>{{session.hasil.salah}}</td>
+                            <td>{{session.waktu}}</td>
+                            <td>{{session.hasil.skor}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
         <div class="container-fluid" v-else>
             <div v-if="exam_content && exam">
+                <div class="row mb-2" v-if="exam.hasOwnProperty('jenis_exam') && exam.jenis_exam==2">
+                    <div class="col-12 text-center">
+                        <span class="badge badge-success" style="font-size:16px;">{{countDown}}</span>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-12" style="margin-bottom:15px">
                         <md-button class="md-icon-button md-raised" v-for="(content,index) in exam_content" :key="index" @click="loadExam(index)" style="margin: 0px 10px 0px 0px;color:#000">
@@ -50,14 +75,28 @@ export default {
                 next:1,
                 prev:1
             },
-            answered:{}
+            answered:{},
         }
     },
     created(){
         if(!(this.session.hasOwnProperty('finished_at') && this.session.finished_at))
+        {
             this.loadExam()
+            if(this.count_down > 0)
+                this.countDownTimer()
+        }
     },
     methods:{
+        countDownTimer() {
+            if(this.count_down > 0) {
+                setTimeout(() => {
+                    this.count_down -= 1
+                    this.countDownTimer()
+                }, 1000)
+            }
+            if(this.count_down == 0)
+                this.selesai(false)
+        },
         loadExam(idx = -1){
             this.soal_aktif = idx > -1 ? idx : this.soal_aktif
             this.exam = this.exam_content[this.soal_aktif]
@@ -69,6 +108,7 @@ export default {
                 this.navigation.prev = false
             else
                 this.navigation.prev = true
+
         },
         next(){
             this.soal_aktif++
@@ -78,29 +118,48 @@ export default {
             this.soal_aktif--
             this.loadExam()
         },
-        selesai(){
+        async selesai(useswal = true){
             var vm = this
+            var id_pelatihan = this.exam_content[0].id_pelatihan
+            var jenis_exam = this.exam_content[0].jenis_exam
             var formData = new FormData;
-            formData.append('id_pelatihan',this.exam_content[0].id_pelatihan)
-            formData.append('jenis_exam',this.exam_content[0].jenis_exam)
+            formData.append('id_pelatihan',id_pelatihan)
+            formData.append('jenis_exam',jenis_exam)
             for ( var key in this.answered ) {
                 formData.append('jawaban['+key+']', this.answered[key]);
             }
 
-            Swal.fire({
-                title: 'Apakah anda yakin telah menyelesaikan Test ini ?',
-                showCancelButton: true,
-                confirmButtonText: `Yakin`,
-                denyButtonText: `Batal`,
-            }).then(async (result) => {
-                if (result.isConfirmed) {
-                    vm.$store.dispatch('cat/setLoading',true)
-                    vm.$store.dispatch('kelas/setExamContent',[])
-                    await vm.$store.dispatch('kelas/setSessionFinish',formData)
-                    await vm.$store.dispatch('kelas/fetchSession',{id_pelatihan:session.id_pelatihan,jenis_exam:session.jenis_exam})
-                    vm.$store.dispatch('cat/setLoading',false)
-                }
-            })
+            if(useswal)
+            {
+                Swal.fire({
+                    title: 'Selesai Exam',
+                    text:'Apakah anda yakin telah menyelesaikan Test ini ?',
+                    icon:'warning',
+                    showCancelButton: true,
+                    confirmButtonText: `Yakin`,
+                    denyButtonText: `Batal`,
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        vm.$store.dispatch('cat/setLoading',true)
+                        vm.$store.dispatch('kelas/setExamContent',[])
+                        await vm.$store.dispatch('kelas/setSessionFinish',formData)
+                        await vm.$store.dispatch('kelas/fetchSession',{id_pelatihan:id_pelatihan,jenis_exam:jenis_exam})
+                        vm.$store.dispatch('kelas/fetchAllSession',id_pelatihan)
+                        vm.$store.dispatch('cat/setLoading',false)
+                    }
+                })
+            }
+            else
+            {
+                this.count_down = -1
+                vm.$store.dispatch('cat/setLoading',true)
+                vm.$store.dispatch('kelas/setExamContent',[])
+                await vm.$store.dispatch('kelas/setSessionFinish',formData)
+                await vm.$store.dispatch('kelas/fetchSession',{id_pelatihan:id_pelatihan,jenis_exam:jenis_exam})
+                vm.$store.dispatch('kelas/fetchAllSession',id_pelatihan)
+                vm.$store.dispatch('cat/setLoading',false)
+            }
+            
         },
         numToSSColumn(num){
             var s = '', t;
@@ -116,8 +175,18 @@ export default {
     computed: {
         ...mapGetters({
             exam_content: 'kelas/getExamContent',
+            activeMateri: 'cat/getActiveMateri',
             session: 'kelas/getSession',
-        })
+            countDown: 'global/getCountDown',
+        }),
+        count_down:{
+            get(){
+                return this.countDown
+            },
+            set(value){
+                this.$store.dispatch('global/setCountDown',value)
+            }
+        }
     }
 }
 </script>

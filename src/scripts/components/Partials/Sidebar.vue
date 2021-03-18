@@ -6,8 +6,8 @@
             </md-subheader>
 
             <md-list-item @click="loadExam(1)">
-                <md-icon>assignment</md-icon>
-                <span class="md-list-item-text">PRE TEST</span>
+                <md-icon :class="{'completed':completed.pre}">assignment</md-icon>
+                <span class="md-list-item-text" :class="{'completed':completed.pre}">PRE TEST</span>
             </md-list-item>
             
             <md-list-item md-expand :md-expanded="true" v-for="(content, index) in kelas.refKontens" :key="index">
@@ -30,8 +30,8 @@
             </md-list-item>
 
             <md-list-item @click="loadExam(2)">
-                <md-icon>assignment</md-icon>
-                <span class="md-list-item-text">POST TEST</span>
+                <md-icon :class="{'completed':completed.post}">assignment</md-icon>
+                <span class="md-list-item-text" :class="{'completed':completed.post}">POST TEST</span>
             </md-list-item>
         </md-list>
     </div>
@@ -42,6 +42,10 @@ import Swal from 'sweetalert2'
 export default {
     data(){
         return {
+            completed:{
+                pre:false,
+                post:false
+            },
             tipe_konten:{
                 '2':'content_paste',
                 '1':'play_circle_filled',
@@ -54,7 +58,6 @@ export default {
             var materi = this.kelas.refKontens[idx_konten].refMateris[idx_materi]
 
             if(materi.status_materi||(idx_konten==0&idx_materi==0)){
-                console.log(materi)
                 this.$store.dispatch('cat/setActiveMateri',{
                     idx_konten:idx_konten,
                     idx_materi:idx_materi,
@@ -149,25 +152,26 @@ export default {
             {
                 var title = jenis_exam == 1 ? 'Pre Exam' : 'Post Exam';
                 Swal.fire({
-                    title: 'Apakah anda yakin akan mengikuti '+title+' ?',
+                    title: 'Mulai '+title,
+                    text: 'Klik mulai jika kamu sudah merasa siap untuk mengikuti '+title,
+                    icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonText: `Yakin`,
+                    confirmButtonText: `Mulai`,
                     denyButtonText: `Batal`,
                 }).then(async (result) => {
-                    if (result.isConfirmed) {
+                    if (result.isConfirmed)
                         await vm.$store.dispatch('kelas/fetchExam',{id_pelatihan:id,jenis_exam:jenis_exam})
-                        vm.$store.dispatch('cat/setLoading',false)
-                    }
-                    else
-                    {
-                        vm.$store.dispatch('cat/setLoading',false)
-                    }
+                    vm.$store.dispatch('cat/setLoading',false)
                 })
             }
             else
             {
                 if(!(request.data.hasOwnProperty('finished_at')&&request.data.finished_at))
-                    await vm.$store.dispatch('kelas/fetchExam',{id_pelatihan:id,jenis_exam:jenis_exam})
+                {
+                    var exam = await vm.$store.dispatch('kelas/fetchExam',{id_pelatihan:id,jenis_exam:jenis_exam})
+                    if(jenis_exam == 2)
+                        this.$store.dispatch('global/setCountDown',exam.data[0].durasi)
+                }
                 
                 vm.$store.dispatch('cat/setLoading',false)
             }
@@ -176,8 +180,19 @@ export default {
     computed: {
         ...mapGetters({
             kelas: 'kelas/getSingleKelas',
-            active_materi:'cat/getActiveMateri'
+            active_materi:'cat/getActiveMateri',
+            all_session: 'kelas/getAllSession',
         })
+    },
+    watch:{
+        all_session:function(){
+            this.all_session.forEach(session => {
+                if(session.jenis_exam == 1 && session.finished_at)
+                    this.completed.pre = true
+                if(session.jenis_exam == 2 && session.finished_at)
+                    this.completed.post = true
+            })
+        }
     }
 }
 </script>

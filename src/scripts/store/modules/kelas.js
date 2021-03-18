@@ -5,6 +5,7 @@ export default {
         materi:{},
         single_kelas:{},
         session:{},
+        all_session:[],
         exam_content:[]
     },
 
@@ -23,6 +24,9 @@ export default {
         },
         SET_SESSION(state,value){
             state.session = value
+        },
+        SET_ALL_SESSION(state,value){
+            state.all_session = value
         }
     },
 
@@ -31,7 +35,8 @@ export default {
         getSingleKelas: (state) => state.single_kelas,
         getMateri: (state) => state.materi,
         getExamContent: (state) => state.exam_content,
-        getSession: (state) => state.session
+        getSession: (state) => state.session,
+        getAllSession: (state) => state.all_session
     },
 
     actions: {
@@ -63,6 +68,9 @@ export default {
                     // console.log(error)
                 })
             })
+        },
+        setSingleKelas({commit},data){
+            commit('SET_SINGLE_KELAS',data)
         },
         fetchMateri({commit}, id){
             var token = this.state.global.token
@@ -192,6 +200,28 @@ export default {
                         'Authorization':'Bearer '+token
                     }
                 }).then(response => {
+                    resolve(response)
+                }).catch(error => {
+                    resolve(error.response)
+                    // console.log(error)
+                })
+            })
+        },
+        setSessionNull({commit}){
+            commit('SET_SESSION',{})
+        },
+        setAllSession({commit}){
+            commit('SET_ALL_SESSION',[])
+        },
+        fetchAllSession({commit},id_pelatihan){
+            var token = this.state.global.token
+            return new Promise(function(resolve, reject) {
+                axios.get(env.base_url+'pelatihan/get-all-session?id_pelatihan='+id_pelatihan,{
+                    headers: {
+                        'Authorization':'Bearer '+token
+                    }
+                }).then(response => {
+                    commit('SET_ALL_SESSION',response.data)
                     resolve(response)
                 }).catch(error => {
                     resolve(error.response)

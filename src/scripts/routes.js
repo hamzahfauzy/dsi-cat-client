@@ -1,3 +1,4 @@
+import axios from 'axios'
 import Login from './components/Login'
 import LoginToken from './components/LoginToken'
 import KelasSaya from './components/Dashboard/KelasSaya'
@@ -5,12 +6,15 @@ import Details from './components/Dashboard/Details'
 import store from './store';
 
 async function isNotAuthenticated(to, from, next){
+    axios.CancelToken.source().cancel('Operation canceled by the user.');
     store.dispatch('dialog/setFullLoading',true)
     var data = await store.dispatch('global/fetchGeneralData')
     if(data.hasOwnProperty('token'))
         next()
     else
         next({'name':'Login'})
+    store.dispatch('kelas/setSessionNull')
+    store.dispatch('kelas/setSingleKelas',{})
     store.dispatch('dialog/setFullLoading',false)
 }
 
