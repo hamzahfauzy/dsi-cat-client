@@ -150,7 +150,7 @@ export default {
             var request = await vm.$store.dispatch('kelas/fetchSession',{id_pelatihan:id,jenis_exam:jenis_exam})
             if(request.status == 404)
             {
-                var title = jenis_exam == 1 ? 'Pre Exam' : 'Post Exam';
+                var title = jenis_exam == 1 ? 'Pre Test' : 'Post Test';
                 Swal.fire({
                     title: 'Mulai '+title,
                     text: 'Klik mulai jika kamu sudah merasa siap untuk mengikuti '+title,

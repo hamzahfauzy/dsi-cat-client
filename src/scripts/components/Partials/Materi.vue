@@ -31,7 +31,7 @@ export default {
                 this.video_handle.supposedCurrentTime = video.currentTime;
                 var percent = (video.currentTime / video.duration * 100).toFixed(2);
                 // console.log(percent)
-                if(Math.floor(percent) == 75 && !this.materi.status_selesai)
+                if(Math.floor(percent) == 99 && !this.materi.status_selesai)
                 {
                     if(!this.ended_is_send)
                         this.sendEnded(this.materi.id_materi)
