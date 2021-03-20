@@ -32811,7 +32811,7 @@ var render = function() {
           ])
         ])
       : _c("div", { staticClass: "container-fluid" }, [
-          _vm.exam_content && _vm.exam
+          _vm.exam_content && _vm.exam && _vm.exam.hasOwnProperty("soal")
             ? _c("div", [
                 _vm.exam.hasOwnProperty("jenis_exam") &&
                 _vm.exam.jenis_exam == 2
@@ -85154,8 +85154,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\Project\DSI\LMS\cat\frontend\src\scripts\app.js */"./src/scripts/app.js");
-module.exports = __webpack_require__(/*! D:\Project\DSI\LMS\cat\frontend\src\styles\app.scss */"./src/styles/app.scss");
+__webpack_require__(/*! /media/fauzy/DATA/Project/DSI/LMS/cat/frontend/src/scripts/app.js */"./src/scripts/app.js");
+module.exports = __webpack_require__(/*! /media/fauzy/DATA/Project/DSI/LMS/cat/frontend/src/styles/app.scss */"./src/styles/app.scss");
 
 
 /***/ })

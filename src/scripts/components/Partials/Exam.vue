@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="container-fluid" v-else>
-            <div v-if="exam_content && exam">
+            <div v-if="exam_content && exam && exam.hasOwnProperty('soal')">
                 <div class="row mb-2" v-if="exam.hasOwnProperty('jenis_exam') && exam.jenis_exam==2">
                     <div class="col-12 text-center">
                         <span class="badge badge-success" style="font-size:16px;">{{countDown}}</span>
