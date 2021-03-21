@@ -56,12 +56,21 @@ export default {
         fetchSingleKelas({commit}, id){
             var token = this.state.global.token
             return new Promise(function(resolve, reject) {
-                axios.get(env.base_url+'site/single-kelas?id_pelatihan='+id,{
+                axios.get(env.base_url+'pelatihan/single-kelas?id_pelatihan='+id,{
                     headers: {
                         'Authorization':'Bearer '+token
                     }
                 }).then(response => {
-                    commit('SET_SINGLE_KELAS',response.data)
+                    commit('SET_SINGLE_KELAS',response.data.kelas)
+                    var all_session = response.data.all_session
+                    for(var i=0;i<all_session.length;i++)
+                    {
+                        all_session[i]['completed'] = false
+                        if(all_session[i].finished_at)
+                            all_session[i]['completed'] = true
+                    }
+
+                    commit('SET_ALL_SESSION',all_session)
                     resolve(response)
                 }).catch(error => {
                     resolve(error.response)
@@ -221,7 +230,14 @@ export default {
                         'Authorization':'Bearer '+token
                     }
                 }).then(response => {
-                    commit('SET_ALL_SESSION',response.data)
+                    var all_session = response.data
+                    for(var i=0;i<all_session.length;i++)
+                    {
+                        all_session[i]['completed'] = false
+                        if(all_session[i].finished_at)
+                            all_session[i]['completed'] = true
+                    }
+                    commit('SET_ALL_SESSION',all_session)
                     resolve(response)
                 }).catch(error => {
                     resolve(error.response)

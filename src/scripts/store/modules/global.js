@@ -6,7 +6,8 @@ export default {
         header_aktif:'',
         nav_sidebar:0,
         countDown:-1,
-        profile:{}
+        profile:{},
+        exam_intro:{}
     },
 
     mutations: {
@@ -27,6 +28,9 @@ export default {
         },
         SET_COUNTDOWN(state, value){
             state.countDown = value
+        },
+        SET_EXAM_INTRO(state, value) {
+            state.exam_intro = value
         }
     },
 
@@ -37,11 +41,15 @@ export default {
         getNavSidebar: (state) => state.nav_sidebar,
         getToken: (state) => state.token,
         getCountDown: (state) => state.countDown,
+        getExamIntro: (state) => state.exam_intro,
     },
 
     actions: {
         setHeader({commit},value){
             commit('SET_HEADER_AKTIF',value)
+        },
+        setExamIntro({commit},value){
+            commit('SET_EXAM_INTRO',value)
         },
         setCountDown({commit},value){
             commit('SET_COUNTDOWN',value)

@@ -25,9 +25,10 @@
         </div>
         <div class="container-fluid" v-else>
             <div v-if="exam_content && exam && exam.hasOwnProperty('soal')">
-                <div class="row mb-2" v-if="exam.hasOwnProperty('jenis_exam') && exam.jenis_exam==2">
+                <div class="row mb-2" v-if="exam.hasOwnProperty('jenis_exam')">
                     <div class="col-12 text-center">
-                        <span class="badge badge-success" style="font-size:16px;">{{countDown}}</span>
+                        <span class="badge badge-success" style="font-size:16px;" v-if="countDown >= 0">{{(new Date(countDown * 1000)).toUTCString().match(/(\d\d:\d\d:\d\d)/)[0]}}</span>
+                        <span class="badge badge-success" style="font-size:16px;" v-if="ticker_time">{{ticker_time}}</span>
                     </div>
                 </div>
                 <div class="row">
@@ -76,6 +77,7 @@ export default {
                 prev:1
             },
             answered:{},
+            ticker_time:0,
         }
     },
     created(){
@@ -84,6 +86,8 @@ export default {
             this.loadExam()
             if(this.count_down > 0)
                 this.countDownTimer()
+            else
+                this.ticker()
         }
     },
     methods:{
@@ -96,6 +100,13 @@ export default {
             }
             if(this.count_down == 0)
                 this.selesai(false)
+        },
+        ticker() {
+            setTimeout(() => {
+                this.ticker_time += 1
+                this.ticker()
+            }, 1000)
+            
         },
         loadExam(idx = -1){
             this.soal_aktif = idx > -1 ? idx : this.soal_aktif

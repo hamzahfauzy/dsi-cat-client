@@ -20,6 +20,15 @@
                             <div v-if="active_materi.idx_konten == -1 && exam_content.length == 0 && Object.keys(session).length == 0" class="intro">
                                 <h3 align="center" v-html="kelas.nm_pelatihan"></h3>
                             </div>
+                            <div v-if="exam_intro.hasOwnProperty('title')" class="intro">
+                                <div>
+                                    <img src="dist/images/exam-icon.png" alt="" width="150px" style="margin-bottom:15px;">
+                                    <p></p>
+                                    <h3 align="center">{{exam_intro.title}}</h3>
+                                    <p align="center">{{exam_intro.content}}</p>
+                                    <button class="btn btn-success" @click="loadExam(exam_intro.jenis_exam)">Mulai {{exam_intro.title}}</button>
+                                </div>
+                            </div>
                             <exam></exam>
                             <materi></materi>
                         </div>
@@ -60,8 +69,8 @@ export default {
         this.isLoading = true
         await this.loadSidebar()
         this.isLoading = false
-        var id = this.$route.params.id
-        await this.$store.dispatch('kelas/fetchAllSession',id)
+        // var id = this.$route.params.id
+        // await this.$store.dispatch('kelas/fetchAllSession',id)
     },
     methods:{
         async loadSidebar(){
@@ -147,11 +156,42 @@ export default {
                 next:next,
                 prev:prev
             })
+        },
+        async loadExam(jenis_exam){
+            var vm = this
+
+            var id = this.$route.params.id
+
+            var title = jenis_exam == 0 ? 'Pre Test' : 'Post Test';
+            jenis_exam = jenis_exam+1
+
+            Swal.fire({
+                title: 'Mulai '+title,
+                text: 'Klik mulai jika kamu sudah merasa siap untuk mengikuti '+title,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: `Mulai`,
+                denyButtonText: `Batal`,
+            }).then(async (result) => {
+                if (result.isConfirmed)
+                {
+                    vm.$store.dispatch('cat/setLoading',true)
+                    var request = await vm.$store.dispatch('kelas/fetchExam',{id_pelatihan:id,jenis_exam:jenis_exam})
+                    if(request.status == 200)
+                    {
+                        var durasi = request.data[0].durasi*60
+                        vm.$store.dispatch('global/setCountDown',durasi)
+                    }
+                    vm.$store.dispatch('global/setExamIntro',{})
+                    vm.$store.dispatch('cat/setLoading',false)
+                }
+            })
         }
     },
     computed: {
         ...mapGetters({
             nav_sidebar: 'global/getNavSidebar',
+            exam_intro: 'global/getExamIntro',
             kelas: 'kelas/getSingleKelas',
             materi: 'kelas/getMateri',
             loading: 'cat/getLoading',

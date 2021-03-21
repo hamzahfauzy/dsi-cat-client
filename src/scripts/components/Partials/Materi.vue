@@ -50,10 +50,31 @@ export default {
         sendEnded(id_materi){
             var vm = this
             this.ended_is_send = true
+            var kelas = JSON.parse(JSON.stringify(this.kelas))
+            kelas.refKontens[this.active_materi.idx_konten].refMateris[this.active_materi.idx_materi].status_selesai = true
+            this.$store.dispatch('kelas/setSingleKelas',kelas)
             var id = this.$route.params.id
             this.$store.dispatch('kelas/finishMateri',id_materi).then(res => {
                 vm.$store.dispatch('kelas/fetchSingleKelas',id)
                 vm.ended_is_send = false
+                var idx_konten = vm.active_materi.idx_konten
+                var idx_materi = vm.active_materi.idx_materi
+                var kontens = vm.kelas.refKontens
+                var materis = kontens[idx_konten].refMateris
+                var materi = materis[idx_materi]
+
+                var next = typeof kontens[idx_konten].refMateris[idx_materi+1] === 'object' && materi.status_selesai ? 1 : 0
+                var prev = idx_materi == 0 && idx_konten == 0 ? 0 : 1
+
+                if(idx_materi == materis.length - 1 && typeof kontens[idx_konten+1] === 'object' && materi.status_selesai)
+                {
+                    next = 1
+                }
+                
+                vm.$store.dispatch('cat/setNavigation',{
+                    next:next,
+                    prev:prev
+                })
             })
             // await this.loadSidebar()
             // this.loadNavigation()
@@ -71,7 +92,9 @@ export default {
     },
     computed: {
         ...mapGetters({
-            materi: 'kelas/getMateri'
+            materi: 'kelas/getMateri',
+            kelas: 'kelas/getSingleKelas',
+            active_materi:'cat/getActiveMateri',
         }),
         playing() { return !this.paused; }
     }

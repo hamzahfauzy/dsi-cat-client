@@ -5,9 +5,9 @@
                 <span><b>Konten Kelas</b></span>
             </md-subheader>
 
-            <md-list-item @click="loadExam(1)">
-                <md-icon :class="{'completed':completed.pre}">assignment</md-icon>
-                <span class="md-list-item-text" :class="{'completed':completed.pre}">PRE TEST</span>
+            <md-list-item @click="loadExam(0)">
+                <md-icon :class="{'completed':!(typeof all_session[0] === 'undefined') && all_session[0].completed}">assignment</md-icon>
+                <span class="md-list-item-text" :class="{'completed':!(typeof all_session[0] === 'undefined') && all_session[0].completed}">PRE TEST</span>
             </md-list-item>
             
             <md-list-item md-expand :md-expanded="true" v-for="(content, index) in kelas.refKontens" :key="index">
@@ -29,9 +29,9 @@
                 </md-list>
             </md-list-item>
 
-            <md-list-item @click="loadExam(2)">
-                <md-icon :class="{'completed':completed.post}">assignment</md-icon>
-                <span class="md-list-item-text" :class="{'completed':completed.post}">POST TEST</span>
+            <md-list-item @click="loadExam(1)">
+                <md-icon :class="{'completed':!(typeof all_session[1] === 'undefined') && all_session[1].completed}">assignment</md-icon>
+                <span class="md-list-item-text" :class="{'completed':!(typeof all_session[1] === 'undefined') && all_session[1].completed}">POST TEST</span>
             </md-list-item>
         </md-list>
     </div>
@@ -55,53 +55,51 @@ export default {
     },
     methods:{
         async activeMateri(idx_konten,idx_materi){
+            // console.log(idx_konten,idx_materi)
             var materi = this.kelas.refKontens[idx_konten].refMateris[idx_materi]
-
-            if(materi.status_materi||(idx_konten==0&idx_materi==0)){
+            if(materi.status_materi)
+            {
                 this.$store.dispatch('cat/setActiveMateri',{
                     idx_konten:idx_konten,
                     idx_materi:idx_materi,
                 })
                 await this.loadMateri()
-                return;
             }
-
-            if(idx_materi == 0 && idx_konten > 0)
+            else
             {
-                // last materi in prev content
-                var temp_idx_konten = idx_konten - 1
-                var temp_materis = this.kelas.refKontens[temp_idx_konten].refMateris.length
-                var temp_idx_materi = temp_materis - 1
-                var temp_materi = this.kelas.refKontens[temp_idx_konten].refMateris[temp_idx_materi]
-                if(temp_materi.status_selesai)
-                {
-                    this.$store.dispatch('cat/setActiveMateri',{
-                        idx_konten:temp_idx_konten,
-                        idx_materi:temp_idx_materi,
-                    })
-                    await this.loadMateri()
-                    return;
-                }
+                var temp_materi;
                 
-
-            }
-
-            if(idx_materi > 0 && idx_konten >= 0)
-            {
-                // last materi in prev content
-                var temp_idx_konten = idx_konten
-                var temp_idx_materi = idx_materi - 1
-                var temp_materi = this.kelas.refKontens[temp_idx_konten].refMateris[temp_idx_materi]
+    
+                if(idx_materi==0&&idx_materi==0)
+                    temp_materi = {status_selesai:!(typeof this.all_session[0] === 'undefined')?this.all_session[0].completed:false}
+    
+                if(idx_materi == 0 && idx_konten > 0)
+                {
+                    // last materi in prev content
+                    var temp_idx_konten = idx_konten - 1
+                    var temp_materis = this.kelas.refKontens[temp_idx_konten].refMateris.length
+                    var temp_idx_materi = temp_materis - 1
+                    temp_materi = this.kelas.refKontens[temp_idx_konten].refMateris[temp_idx_materi]
+                }
+    
+                if(idx_materi > 0 && idx_konten >= 0)
+                {
+                    // last materi in prev content
+                    var temp_idx_konten = idx_konten
+                    var temp_idx_materi = idx_materi - 1
+                    temp_materi = this.kelas.refKontens[temp_idx_konten].refMateris[temp_idx_materi]
+                }
+    
                 if(temp_materi.status_selesai)
                 {
                     this.$store.dispatch('cat/setActiveMateri',{
-                        idx_konten:temp_idx_konten,
-                        idx_materi:temp_idx_materi,
+                        idx_konten:idx_konten,
+                        idx_materi:idx_materi,
                     })
                     await this.loadMateri()
-                    return;
                 }
             }
+            return;
         },
         async loadMateri(){
             var idx_konten = this.active_materi.idx_konten
@@ -131,7 +129,8 @@ export default {
             this.$store.dispatch('cat/setLoading',false)
         },
         async loadExam(jenis_exam){
-            if(jenis_exam == 2 && !(this.kelas.hasOwnProperty('progress') && this.kelas.progress == 100))
+            this.$store.dispatch('kelas/setSessionNull')
+            if(jenis_exam == 1 && !(this.kelas.hasOwnProperty('progress') && this.kelas.progress == 100))
                 return
 
             this.$store.dispatch('cat/setActiveMateri',{
@@ -139,42 +138,30 @@ export default {
                 idx_materi:-1,
             })
 
+            // var id = this.$route.params.id
+
             var vm = this
-            vm.$store.dispatch('kelas/setMateri',{})
             vm.$store.dispatch('cat/setLoading',true)
+            vm.$store.dispatch('kelas/setMateri',{})
             vm.$store.dispatch('cat/setNavigation',{
                 next:false,
                 prev:false
             })
-            var id = vm.$route.params.id
-            var request = await vm.$store.dispatch('kelas/fetchSession',{id_pelatihan:id,jenis_exam:jenis_exam})
-            if(request.status == 404)
+            if(!(typeof this.all_session[jenis_exam] === 'undefined') && this.all_session[jenis_exam].completed)
             {
-                var title = jenis_exam == 1 ? 'Pre Test' : 'Post Test';
-                Swal.fire({
-                    title: 'Mulai '+title,
-                    text: 'Klik mulai jika kamu sudah merasa siap untuk mengikuti '+title,
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: `Mulai`,
-                    denyButtonText: `Batal`,
-                }).then(async (result) => {
-                    if (result.isConfirmed)
-                        await vm.$store.dispatch('kelas/fetchExam',{id_pelatihan:id,jenis_exam:jenis_exam})
-                    vm.$store.dispatch('cat/setLoading',false)
-                })
+                var id = this.$route.params.id
+                await this.$store.dispatch('kelas/fetchSession',{id_pelatihan:id,jenis_exam:(jenis_exam+1)})
             }
             else
             {
-                if(!(request.data.hasOwnProperty('finished_at')&&request.data.finished_at))
-                {
-                    var exam = await vm.$store.dispatch('kelas/fetchExam',{id_pelatihan:id,jenis_exam:jenis_exam})
-                    if(jenis_exam == 2)
-                        this.$store.dispatch('global/setCountDown',exam.data[0].durasi)
-                }
-                
-                vm.$store.dispatch('cat/setLoading',false)
+                var title = jenis_exam == 0 ? 'Pre Test' : 'Post Test';
+                this.$store.dispatch('global/setExamIntro',{
+                    title:title,
+                    content:'10 Soal',
+                    jenis_exam:jenis_exam,
+                })
             }
+            vm.$store.dispatch('cat/setLoading',false)
         }
     },
     computed: {
@@ -184,15 +171,5 @@ export default {
             all_session: 'kelas/getAllSession',
         })
     },
-    watch:{
-        all_session:function(){
-            this.all_session.forEach(session => {
-                if(session.jenis_exam == 1 && session.finished_at)
-                    this.completed.pre = true
-                if(session.jenis_exam == 2 && session.finished_at)
-                    this.completed.post = true
-            })
-        }
-    }
 }
 </script>
