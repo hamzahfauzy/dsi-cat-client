@@ -5,6 +5,9 @@
                 <img src="dist/images/congrats.png" alt="" width="150px" style="margin-bottom:15px;">
                 <p></p>
                 <h3 style="font-size:18px;">Selamat, Kamu sudah melaksanakan <br>{{session.jenis_exam==1?"Pre Exam":"Post Exam"}} Kelas ini</h3>
+                <div class="alert alert-danger" role="alert" v-if="!session.hasil.status">
+                    Anda tidak lulus
+                </div>
                 <div style="padding:20px;background-color:#FFF;color:#74b9ff!important;border-radius:1rem;margin-top:15px;">
                     <table align="center" cellpadding="10" style="font-weight:bold;">
                         <tr>
@@ -20,6 +23,11 @@
                             <td>{{session.hasil.skor}}</td>
                         </tr>
                     </table>
+                </div>
+                <p></p>
+                <div>
+                    <a :href="app_link+'sertifikat/index.php?token='+token+'&id_pelatihan='+session.id_pelatihan" class="btn btn-success" style="color:#FFF;text-decoration:none" target="_blank" v-if="session.jenis_exam == 2 && session.hasil.status">Download Sertifikat</a>
+                    <button class="btn btn-primary" v-if="session.status_coba" @click="tryAgainExam(1)">Coba Lagi</button>
                 </div>
             </div>
         </div>
@@ -70,6 +78,7 @@ import Swal from 'sweetalert2'
 export default {
     data(){
         return {
+            app_link:'',
             soal_aktif:0,
             exam:{},
             navigation:{
@@ -81,6 +90,7 @@ export default {
         }
     },
     created(){
+        this.app_link = env.app_link
         if(!(this.session.hasOwnProperty('finished_at') && this.session.finished_at))
         {
             this.loadExam()
@@ -181,6 +191,37 @@ export default {
                 num = (num - t)/26 | 0;
             }
             return s || undefined;
+        },
+        async tryAgainExam(jenis_exam){
+            var vm = this
+
+            var id = this.$route.params.id
+
+            var title = jenis_exam == 0 ? 'Pre Test' : 'Post Test';
+            jenis_exam = jenis_exam+1
+
+            Swal.fire({
+                title: 'Mulai '+title,
+                text: 'Klik mulai jika kamu sudah merasa siap untuk mengikuti '+title,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: `Mulai`,
+                denyButtonText: `Batal`,
+            }).then(async (result) => {
+                if (result.isConfirmed)
+                {
+                    vm.$store.dispatch('cat/setLoading',true)
+                    vm.$store.dispatch('kelas/setSessionNull',true)
+                    var request = await vm.$store.dispatch('kelas/fetchTryExam',{id_pelatihan:id,jenis_exam:jenis_exam})
+                    if(request.status == 200)
+                    {
+                        var durasi = request.data[0].durasi*60
+                        vm.$store.dispatch('global/setCountDown',durasi)
+                    }
+                    vm.$store.dispatch('global/setExamIntro',{})
+                    vm.$store.dispatch('cat/setLoading',false)
+                }
+            })
         }
     },
     computed: {
@@ -189,6 +230,7 @@ export default {
             activeMateri: 'cat/getActiveMateri',
             session: 'kelas/getSession',
             countDown: 'global/getCountDown',
+            token: 'global/getToken',
         }),
         count_down:{
             get(){

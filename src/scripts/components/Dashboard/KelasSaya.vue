@@ -16,10 +16,10 @@
                                     <span>FILTER</span>
                                 </md-subheader>
 
-                                <md-list-item @click="loadKelas('site/kelas-saya')">Semua Kelas</md-list-item>
-                                <md-list-item @click="loadKelas('site/kelas-saya')">Sedang Dikerjakan</md-list-item>
-                                <md-list-item @click="loadKelas('site/kelas-saya')">Selesai Materi</md-list-item>
-                                <md-list-item @click="loadKelas('site/kelas-saya')">Selesai Test</md-list-item>
+                                <md-list-item @click="loadKelas('semua-kelas')">Semua Kelas</md-list-item>
+                                <md-list-item @click="loadKelas('sedang-dikerjakan')">Sedang Dikerjakan</md-list-item>
+                                <md-list-item @click="loadKelas('selesai-materi')">Selesai Materi</md-list-item>
+                                <md-list-item @click="loadKelas('selesai-test')">Selesai Test</md-list-item>
                             </md-list>
                         </div>
                     </div>
@@ -76,6 +76,7 @@ export default {
             isLoading:false,
             fullPage:true,
             list_kelas:[],
+            master_list_kelas:[],
             kelas_saya:[]
         }
     },
@@ -89,11 +90,34 @@ export default {
         },
         loadKelas: async function(endpoint){
             this.isLoading = true
-            var request = await this.$store.dispatch('kelas/fetchAllKelas',endpoint)
-            if(request.status == 401)
-                Swal.fire('Oops...', 'Authorized Content!', 'error')
+            var master_list_kelas = JSON.parse(JSON.stringify(this.master_list_kelas))
+            if(endpoint == 'sedang-dikerjakan')
+            {
+                this.list_kelas = master_list_kelas.filter(kelas => kelas.status_pelatihan && kelas.progress < 100)
+            }
+            else if(endpoint == 'selesai-materi')
+            {
+                this.list_kelas = master_list_kelas.filter(kelas => kelas.status_pelatihan && kelas.progress == 100)
+            }
+            else if(endpoint == 'semua-kelas')
+            {
+                this.list_kelas = master_list_kelas
+            }
+            else if(endpoint == 'selesai-test')
+            {
+                this.list_kelas = master_list_kelas.filter(kelas => kelas.exam)
+            }
             else
-                this.list_kelas = request.data
+            {
+                var request = await this.$store.dispatch('kelas/fetchAllKelas',endpoint)
+                if(request.status == 401)
+                    Swal.fire('Oops...', 'Authorized Content!', 'error')
+                else
+                {
+                    this.list_kelas = request.data
+                    this.master_list_kelas = request.data
+                }
+            }
 
             this.isLoading = false
         },

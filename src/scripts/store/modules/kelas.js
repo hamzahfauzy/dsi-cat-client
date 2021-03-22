@@ -185,6 +185,42 @@ export default {
                 })
             })
         },
+        fetchTryExam({commit},params){
+            var token = this.state.global.token
+            return new Promise(function(resolve, reject) {
+                axios.get(env.base_url+'pelatihan/try-exam?id_pelatihan='+params.id_pelatihan+'&jenis_exam='+params.jenis_exam,{
+                    headers: {
+                        'Authorization':'Bearer '+token
+                    }
+                }).then(response => {
+                    commit('SET_EXAM_CONTENT',response.data)
+                    resolve(response)
+                }).catch(error => {
+                    resolve(error.response)
+                    // console.log(error)
+                })
+            })
+        },
+        fetchSession({commit},params){
+            var token = this.state.global.token
+            return new Promise(function(resolve, reject) {
+                var formData = new FormData;
+                formData.append('id_pelatihan',params.id_pelatihan)
+                formData.append('jenis_exam',params.jenis_exam)
+                axios.post(env.base_url+'pelatihan/get-session',formData,{
+                    headers: {
+                        'Content-type':'multipart/form-data',
+                        'Authorization':'Bearer '+token
+                    }
+                }).then(response => {
+                    commit('SET_SESSION',response.data)
+                    resolve(response)
+                }).catch(error => {
+                    resolve(error.response)
+                    // console.log(error)
+                })
+            })
+        },
         setSession(state,params){
             var token = this.state.global.token
             return new Promise(function(resolve, reject) {
