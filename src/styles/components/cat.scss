@@ -1,6 +1,11 @@
 .cat-section {
   max-width: 100%;
 
+  .btn-nav-active {
+    background-color: blue!important;
+    color: #FFF!important;
+  }
+
   .kelas-konten {
     background-color: #fff;
     padding: 25px;
@@ -91,6 +96,8 @@
   .navigasi-konten {
     display: flex;
     justify-content: center;
+    position:relative;
+    z-index: 2;
   }
 
   span.soal_pilihan, span.kode_soal_pilihan {

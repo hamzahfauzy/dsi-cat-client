@@ -5,8 +5,11 @@
                 <img src="dist/images/congrats.png" alt="" width="150px" style="margin-bottom:15px;">
                 <p></p>
                 <h3 style="font-size:18px;">Selamat, Kamu sudah melaksanakan <br>{{session.jenis_exam==1?"Pre Exam":"Post Exam"}} Kelas ini</h3>
-                <div class="alert alert-danger" role="alert" v-if="!session.hasil.status">
-                    Anda tidak lulus
+                <div class="alert alert-danger" role="alert" v-if="!session.hasil.status && session.jenis_exam==2">
+                    Maaf, Anda tidak lulus
+                </div>
+                <div class="alert alert-success" role="alert" v-if="session.hasil.status && session.jenis_exam==2">
+                    Selamat, Anda lulus
                 </div>
                 <div style="padding:20px;background-color:#FFF;color:#74b9ff!important;border-radius:1rem;margin-top:15px;">
                     <table align="center" cellpadding="10" style="font-weight:bold;">
@@ -41,7 +44,7 @@
                 </div>
                 <div class="row">
                     <div class="col-12" style="margin-bottom:15px">
-                        <md-button class="md-icon-button md-raised" v-for="(content,index) in exam_content" :key="index" @click="loadExam(index)" style="margin: 0px 10px 0px 0px;color:#000">
+                        <md-button class="md-icon-button md-raised" v-for="(content,index) in exam_content" :key="index" @click="loadExam(index)" style="margin: 0px 10px 0px 0px;color:#000;z-index:2" :class="{'btn-nav-active':soal_aktif==index}">
                             {{index+1}}
                         </md-button>
                         <br>

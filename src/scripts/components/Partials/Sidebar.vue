@@ -118,6 +118,7 @@ export default {
             
             this.$store.dispatch('cat/setLoading',true)
             this.$store.dispatch('kelas/setExamContent',[])
+            this.$store.dispatch('global/setExamIntro',{})
             this.$store.dispatch('cat/setNavigation',{
                 next:next,
                 prev:prev

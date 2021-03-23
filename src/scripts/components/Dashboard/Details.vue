@@ -26,7 +26,9 @@
                                     <p></p>
                                     <h3 align="center">{{exam_intro.title}}</h3>
                                     <p align="center">{{exam_intro.content}}</p>
-                                    <button class="btn btn-success" @click="loadExam(exam_intro.jenis_exam)">Mulai {{exam_intro.title}}</button>
+                                    <center>
+                                        <button class="btn btn-success" @click="loadExam(exam_intro.jenis_exam)">Mulai {{exam_intro.title}}</button>
+                                    </center>
                                 </div>
                             </div>
                             <exam></exam>
