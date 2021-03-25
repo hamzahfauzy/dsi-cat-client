@@ -4,13 +4,7 @@
             <div style="text-align:center">
                 <img src="dist/images/congrats.png" alt="" width="150px" style="margin-bottom:15px;">
                 <p></p>
-                <h3 style="font-size:18px;">Selamat, Kamu sudah melaksanakan <br>{{session.jenis_exam==1?"Pre Exam":"Post Exam"}} Kelas ini</h3>
-                <div class="alert alert-danger" role="alert" v-if="!session.hasil.status && session.jenis_exam==2">
-                    Maaf, Anda tidak lulus
-                </div>
-                <div class="alert alert-success" role="alert" v-if="session.hasil.status && session.jenis_exam==2">
-                    Selamat, Anda lulus
-                </div>
+                <h3 style="font-size:18px;">Selamat, Kamu sudah melaksanakan <br>{{session.jenis_exam==1?"Pre Exam":"Post Exam"}} dengan ringkasan sebagai berikut:</h3>
                 <div style="padding:20px;background-color:#FFF;color:#74b9ff!important;border-radius:1rem;margin-top:15px;">
                     <table align="center" cellpadding="10" style="font-weight:bold;">
                         <tr>
@@ -29,8 +23,9 @@
                 </div>
                 <p></p>
                 <div>
-                    <a :href="app_link+'sertifikat/index.php?token='+token+'&id_pelatihan='+session.id_pelatihan" class="btn btn-success" style="color:#FFF;text-decoration:none" target="_blank" v-if="session.jenis_exam == 2 && session.hasil.status">Download Sertifikat</a>
-                    <button class="btn btn-primary" v-if="session.status_coba" @click="tryAgainExam(1)">Coba Lagi</button>
+                    <a :href="app_link+'sertifikat/index.php?token='+token+'&id_pelatihan='+session.id_pelatihan" class="btn btn-success" style="color:#FFF;text-decoration:none" target="_blank" v-if="session.jenis_exam == 2 && session.status_selesai">Lihat Sertifikat</a>
+                    <button class="btn btn-primary" v-if="session.jenis_exam==2&&session.status_selesai == 0" @click="tryAgainExam(1)">Ulangi Test</button>
+                    <button class="btn btn-primary" v-if="session.jenis_exam==2&&session.status_selesai == 0" @click="finishExam(session.jenis_exam)">Selesai</button>
                 </div>
             </div>
         </div>
@@ -88,6 +83,7 @@ export default {
                 next:1,
                 prev:1
             },
+            mytimeout:null,
             answered:{},
             ticker_time:0,
         }
@@ -96,6 +92,7 @@ export default {
         this.app_link = env.app_link
         if(!(this.session.hasOwnProperty('finished_at') && this.session.finished_at))
         {
+            clearTimeout(this.mytimeout)
             this.loadExam()
             if(this.count_down > 0)
                 this.countDownTimer()
@@ -106,7 +103,7 @@ export default {
     methods:{
         countDownTimer() {
             if(this.count_down > 0) {
-                setTimeout(() => {
+                this.mytimeout = setTimeout(() => {
                     this.count_down -= 1
                     this.countDownTimer()
                 }, 1000)
@@ -115,7 +112,7 @@ export default {
                 this.selesai(false)
         },
         ticker() {
-            setTimeout(() => {
+            this.mytimeout = setTimeout(() => {
                 this.ticker_time += 1
                 this.ticker()
             }, 1000)
@@ -222,6 +219,31 @@ export default {
                         vm.$store.dispatch('global/setCountDown',durasi)
                     }
                     vm.$store.dispatch('global/setExamIntro',{})
+                    vm.$store.dispatch('cat/setLoading',false)
+                }
+            })
+        },
+        async finishExam(jenis_exam){
+            var vm = this
+
+            var id = this.$route.params.id
+
+            var title = jenis_exam == 1 ? 'Pre Test' : 'Post Test';
+
+            Swal.fire({
+                title: 'Selesai Mengikuti '+title,
+                text: 'Klik Ya jika kamu merasa sudah selesai mengikuti '+title,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: `Ya`,
+                denyButtonText: `Batal`,
+            }).then(async (result) => {
+                if (result.isConfirmed)
+                {
+                    vm.$store.dispatch('cat/setLoading',true)
+                    vm.$store.dispatch('kelas/setSessionNull',true)
+                    await vm.$store.dispatch('kelas/finishExam',{id_pelatihan:id,jenis_exam:jenis_exam})
+                    await vm.$store.dispatch('kelas/fetchSession',{id_pelatihan:id,jenis_exam:jenis_exam})
                     vm.$store.dispatch('cat/setLoading',false)
                 }
             })

@@ -1,14 +1,25 @@
 <template>
-    <div class="responsive-content">
-        <video class="responsive-iframe" controls v-if="materi.hasOwnProperty('jenis_materi') && materi.jenis_materi==1" ref="videoPlayer"
-            @canplay="updatePaused" 
-            @playing="updatePaused" 
-            @pause="updatePaused" 
-            @timeupdate="timeupdate"
-            @seeking="seeking"
-            >
-                <source :src="materi.url_player" type="video/mp4" />
-        </video>
+    <div>
+        <div class="responsive-content">
+            <video class="responsive-iframe" controls v-if="materi.hasOwnProperty('jenis_materi') && materi.jenis_materi==1" ref="videoPlayer"
+                @canplay="updatePaused" 
+                @playing="updatePaused" 
+                @pause="updatePaused" 
+                @timeupdate="timeupdate"
+                @seeking="seeking"
+                >
+                    <source :src="materi.url_player" type="video/mp4" />
+            </video>
+        </div>
+        <div v-if="materi.hasOwnProperty('jenis_materi') && materi.jenis_materi==2" class="intro">
+            <div style="text-align:center">
+                <img src="dist/images/file.png" alt="" width="150px" style="margin-bottom:15px;">
+                <p></p>
+                <div>
+                    <button class="btn btn-success" @click="downloadMateri(materi)" style="color:#FFF;text-decoration:none" target="_blank">Download File</button>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -19,12 +30,24 @@ export default {
             videoElement: null,
             paused: null,
             ended_is_send:false,
+            app_link:'',
             video_handle: {
                 supposedCurrentTime:0,
             }
         }
     },
+    created(){
+        this.app_link = env.app_link
+    },
     methods:{
+        downloadMateri(materi){
+            var id = this.$route.params.id
+            var vm = this
+            this.$store.dispatch('kelas/finishMateri',materi.id_materi).then(res => {
+                vm.$store.dispatch('kelas/fetchSingleKelas',id)
+            })
+            window.open(this.app_link+'e-sistem/public/download?key='+materi.encode_file)
+        },
         timeupdate: function(){
             var video = this.$refs.videoPlayer
             if (!video.seeking) {

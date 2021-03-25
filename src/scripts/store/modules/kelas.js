@@ -201,6 +201,21 @@ export default {
                 })
             })
         },
+        finishExam({commit},params){
+            var token = this.state.global.token
+            return new Promise(function(resolve, reject) {
+                axios.get(env.base_url+'pelatihan/finish-exam?id_pelatihan='+params.id_pelatihan+'&jenis_exam='+params.jenis_exam,{
+                    headers: {
+                        'Authorization':'Bearer '+token
+                    }
+                }).then(response => {
+                    resolve(response)
+                }).catch(error => {
+                    resolve(error.response)
+                    // console.log(error)
+                })
+            })
+        },
         fetchSession({commit},params){
             var token = this.state.global.token
             return new Promise(function(resolve, reject) {
