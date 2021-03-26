@@ -6,10 +6,14 @@ export default {
         single_kelas:{},
         session:{},
         all_session:[],
+        histories:[],
         exam_content:[]
     },
 
     mutations: {
+        SET_HISTORIES(state, value) {
+            state.histories = value
+        },
         SET_ALL_KELAS(state, value) {
             state.all_kelas = value
         },
@@ -32,6 +36,7 @@ export default {
 
     getters: {
         getAllKelas: (state) => state.all_kelas,
+        getHistories: (state) => state.histories,
         getSingleKelas: (state) => state.single_kelas,
         getMateri: (state) => state.materi,
         getExamContent: (state) => state.exam_content,
@@ -40,6 +45,20 @@ export default {
     },
 
     actions: {
+        fetchHistories({commit}, id_pelatihan){
+            var token = this.state.global.token
+            return new Promise(function(resolve, reject) {
+                axios.get(env.base_url+'pelatihan/history?id_pelatihan='+id_pelatihan,{
+                    headers: {'Authorization':'Bearer '+token}
+                }).then(response => {
+                    commit('SET_HISTORIES',response.data)
+                    resolve(response)
+                }).catch(error => {
+                    resolve(error.response)
+                    // console.log(error)
+                })
+            })
+        },
         fetchAllKelas(state, endpoint){
             var token = this.state.global.token
             return new Promise(function(resolve, reject) {

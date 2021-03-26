@@ -1,5 +1,6 @@
 <template>
     <div>
+        <history></history>
         <div v-if="session.hasOwnProperty('finished_at')&&session.finished_at&&(activeMateri.idx_konten==-1)" class="intro">
             <div style="text-align:center">
                 <img src="dist/images/congrats.png" alt="" width="150px" style="margin-bottom:15px;">
@@ -23,9 +24,9 @@
                 </div>
                 <p></p>
                 <div>
-                    <a :href="app_link+'sertifikat/index.php?token='+token+'&id_pelatihan='+session.id_pelatihan" class="btn btn-success" style="color:#FFF;text-decoration:none" target="_blank" v-if="session.jenis_exam == 2 && session.status_selesai">Lihat Sertifikat</a>
+                    <button class="btn btn-primary" v-if="session.jenis_exam==2" @click="showHistory(1)">Riwayat Test</button>
                     <button class="btn btn-primary" v-if="session.jenis_exam==2&&session.status_selesai == 0" @click="tryAgainExam(1)">Ulangi Test</button>
-                    <button class="btn btn-primary" v-if="session.jenis_exam==2&&session.status_selesai == 0" @click="finishExam(session.jenis_exam)">Selesai</button>
+                    <a :href="app_link+'sertifikat/index.php?token='+token+'&id_pelatihan='+session.id_pelatihan" class="btn btn-success" style="color:#FFF;text-decoration:none" target="_blank" v-if="session.jenis_exam == 2 && session.status_selesai">Lihat Sertifikat</a>
                 </div>
             </div>
         </div>
@@ -153,7 +154,7 @@ export default {
             if(useswal)
             {
                 Swal.fire({
-                    title: 'Selesai Exam',
+                    title: 'Selesai Test',
                     text:'Apakah anda yakin telah menyelesaikan Test ini ?',
                     icon:'warning',
                     showCancelButton: true,
@@ -161,6 +162,7 @@ export default {
                     denyButtonText: `Batal`,
                 }).then(async (result) => {
                     if (result.isConfirmed) {
+                        clearTimeout(vm.mytimeout)
                         vm.$store.dispatch('cat/setLoading',true)
                         vm.$store.dispatch('kelas/setExamContent',[])
                         await vm.$store.dispatch('kelas/setSessionFinish',formData)
@@ -195,6 +197,8 @@ export default {
         async tryAgainExam(jenis_exam){
             var vm = this
 
+            clearTimeout(this.mytimeout)
+
             var id = this.$route.params.id
 
             var title = jenis_exam == 0 ? 'Pre Test' : 'Post Test';
@@ -223,30 +227,10 @@ export default {
                 }
             })
         },
-        async finishExam(jenis_exam){
-            var vm = this
-
+        showHistory(){
             var id = this.$route.params.id
-
-            var title = jenis_exam == 1 ? 'Pre Test' : 'Post Test';
-
-            Swal.fire({
-                title: 'Selesai Mengikuti '+title,
-                text: 'Klik Ya jika kamu merasa sudah selesai mengikuti '+title,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: `Ya`,
-                denyButtonText: `Batal`,
-            }).then(async (result) => {
-                if (result.isConfirmed)
-                {
-                    vm.$store.dispatch('cat/setLoading',true)
-                    vm.$store.dispatch('kelas/setSessionNull',true)
-                    await vm.$store.dispatch('kelas/finishExam',{id_pelatihan:id,jenis_exam:jenis_exam})
-                    await vm.$store.dispatch('kelas/fetchSession',{id_pelatihan:id,jenis_exam:jenis_exam})
-                    vm.$store.dispatch('cat/setLoading',false)
-                }
-            })
+            this.$store.dispatch('dialog/setHistoryDialogStatus',true)
+            this.$store.dispatch('kelas/fetchHistories',id)
         }
     },
     computed: {
