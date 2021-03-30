@@ -25,6 +25,13 @@
                             </md-menu-content>
                         </md-menu>
                     </li>
+                    <li>
+                        <md-menu md-size="medium" md-align-trigger md-direction="bottom-end" class="account-toggle toggle-sidebar-btn">
+                            <md-button md-menu-trigger @click="toggleNav()">
+                                <md-icon>table_rows</md-icon>
+                            </md-button>
+                        </md-menu>
+                    </li>
                 </ul>
             </div>
             <div class="logo" style="background-image:url(dist/images/logo_app_small.png)"></div>

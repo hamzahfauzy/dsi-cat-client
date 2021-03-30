@@ -20,6 +20,9 @@
                 </div>
             </div>
         </div>
+        <br>
+        <h4 v-html="materi.nm_materi"></h4>
+        <p v-html="materi.ket_materi"></p>
     </div>
 </template>
 <script>

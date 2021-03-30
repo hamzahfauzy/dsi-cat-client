@@ -22,7 +22,7 @@
                     </tr>
                 </table>
                 <center>
-                    <button class="btn btn-primary" v-if="session.jenis_exam==2&&session.status_selesai == 0" @click="finishExam()">Simpan Nilai Tertinggi</button>
+                    <button class="btn btn-primary" v-if="session.status_selesai == 0" @click="finishExam(session.jenis_exam)">Simpan Nilai Tertinggi</button>
                 </center>
                 </div>
                 <div v-else>
@@ -51,7 +51,7 @@ export default {
         }
     },
     methods:{
-        async finishExam(){
+        async finishExam(jenis_exam){
             var vm = this
             var id = this.$route.params.id
 
@@ -68,8 +68,8 @@ export default {
                     vm.showDialog = false
                     vm.$store.dispatch('cat/setLoading',true)
                     vm.$store.dispatch('kelas/setSessionNull',true)
-                    await vm.$store.dispatch('kelas/finishExam',{id_pelatihan:id,jenis_exam:2})
-                    await vm.$store.dispatch('kelas/fetchSession',{id_pelatihan:id,jenis_exam:2})
+                    await vm.$store.dispatch('kelas/finishExam',{id_pelatihan:id,jenis_exam:jenis_exam})
+                    await vm.$store.dispatch('kelas/fetchSession',{id_pelatihan:id,jenis_exam:jenis_exam})
                     vm.$store.dispatch('cat/setLoading',false)
                 }
             })

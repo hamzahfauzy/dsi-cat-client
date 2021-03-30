@@ -27,7 +27,7 @@
                                     <h3 align="center">{{exam_intro.title}}</h3>
                                     <p align="center">{{exam_intro.content}}</p>
                                     <center>
-                                        <button class="btn btn-success" @click="loadExam(exam_intro.jenis_exam)">Mulai {{exam_intro.title}}</button>
+                                        <button class="btn btn-success" v-if="exam_intro.enable_btn" @click="loadExam(exam_intro.jenis_exam)">Mulai {{exam_intro.title}}</button>
                                     </center>
                                 </div>
                             </div>
@@ -183,7 +183,7 @@ export default {
                     {
                         if(jenis_exam == 2)
                         {
-                            var durasi = request.data[0].durasi*60
+                            var durasi = request.data[0].parameter.durasi*60
                             vm.$store.dispatch('global/setCountDown',durasi)
                         }
                     }

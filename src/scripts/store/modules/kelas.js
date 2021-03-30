@@ -6,6 +6,8 @@ export default {
         single_kelas:{},
         session:{},
         all_session:[],
+        pre_exam:{},
+        post_exam:{},
         histories:[],
         exam_content:[]
     },
@@ -31,6 +33,12 @@ export default {
         },
         SET_ALL_SESSION(state,value){
             state.all_session = value
+        },
+        SET_PRE_EXAM(state,value){
+            state.pre_exam = value
+        },
+        SET_POST_EXAM(state,value){
+            state.post_exam = value
         }
     },
 
@@ -41,14 +49,16 @@ export default {
         getMateri: (state) => state.materi,
         getExamContent: (state) => state.exam_content,
         getSession: (state) => state.session,
-        getAllSession: (state) => state.all_session
+        getAllSession: (state) => state.all_session,
+        getPreExam: (state) => state.pre_exam,
+        getPostExam: (state) => state.post_exam
     },
 
     actions: {
-        fetchHistories({commit}, id_pelatihan){
+        fetchHistories({commit}, param){
             var token = this.state.global.token
             return new Promise(function(resolve, reject) {
-                axios.get(env.base_url+'pelatihan/history?id_pelatihan='+id_pelatihan,{
+                axios.get(env.base_url+'pelatihan/history?id_pelatihan='+param.id+'&jenis_exam='+param.jenis_exam,{
                     headers: {'Authorization':'Bearer '+token}
                 }).then(response => {
                     commit('SET_HISTORIES',response.data)
@@ -90,6 +100,8 @@ export default {
                     }
 
                     commit('SET_ALL_SESSION',all_session)
+                    commit('SET_PRE_EXAM',response.data.pre_exam)
+                    commit('SET_POST_EXAM',response.data.post_exam)
                     resolve(response)
                 }).catch(error => {
                     resolve(error.response)

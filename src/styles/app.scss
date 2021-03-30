@@ -156,6 +156,10 @@ body {
   z-index: 5;
 }
 
+.toggle-sidebar-btn {
+  display: none!important;
+}
+
 @media screen and (max-width: 768px) {
   .collapsed-sidebar {
     position: absolute;
@@ -172,6 +176,11 @@ body {
       }
     }
   }
+
+  .toggle-sidebar-btn {
+    display: inline-flex!important;
+  }
+
   .main-content {
     max-width: 100%;
     width: 100%;

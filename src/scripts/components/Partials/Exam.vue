@@ -24,8 +24,8 @@
                 </div>
                 <p></p>
                 <div>
-                    <button class="btn btn-primary" v-if="session.jenis_exam==2" @click="showHistory(1)">Riwayat Test</button>
-                    <button class="btn btn-primary" v-if="session.jenis_exam==2&&session.status_selesai == 0" @click="tryAgainExam(1)">Ulangi Test</button>
+                    <button class="btn btn-primary" @click="showHistory(session.jenis_exam)">Riwayat Test</button>
+                    <button class="btn btn-primary" v-if="session.status_selesai == 0 && session.status_coba" @click="tryAgainExam(session.jenis_exam)">Ulangi Test</button>
                     <a :href="app_link+'sertifikat/index.php?token='+token+'&id_pelatihan='+session.id_pelatihan" class="btn btn-success" style="color:#FFF;text-decoration:none" target="_blank" v-if="session.jenis_exam == 2 && session.status_selesai">Lihat Sertifikat</a>
                 </div>
             </div>
@@ -147,8 +147,9 @@ export default {
             var formData = new FormData;
             formData.append('id_pelatihan',id_pelatihan)
             formData.append('jenis_exam',jenis_exam)
-            for ( var key in this.answered ) {
-                formData.append('jawaban['+key+']', this.answered[key]);
+            for ( var i = 0; i<this.exam_content.length; i++ ) {
+                var exam_content = this.exam_content[i]
+                formData.append('jawaban['+exam_content.id_exam+']', !(typeof this.answered[exam_content.id_exam] === 'undefined')?this.answered[exam_content.id_exam]:0);
             }
 
             if(useswal)
@@ -201,8 +202,7 @@ export default {
 
             var id = this.$route.params.id
 
-            var title = jenis_exam == 0 ? 'Pre Test' : 'Post Test';
-            jenis_exam = jenis_exam+1
+            var title = jenis_exam == 1 ? 'Pre Test' : 'Post Test';
 
             Swal.fire({
                 title: 'Mulai '+title,
@@ -219,18 +219,21 @@ export default {
                     var request = await vm.$store.dispatch('kelas/fetchTryExam',{id_pelatihan:id,jenis_exam:jenis_exam})
                     if(request.status == 200)
                     {
-                        var durasi = request.data[0].durasi*60
-                        vm.$store.dispatch('global/setCountDown',durasi)
+                        if(jenis_exam == 2)
+                        {
+                            var durasi = request.data[0].parameter.durasi*60
+                            vm.$store.dispatch('global/setCountDown',durasi)
+                        }
                     }
                     vm.$store.dispatch('global/setExamIntro',{})
                     vm.$store.dispatch('cat/setLoading',false)
                 }
             })
         },
-        showHistory(){
+        showHistory(jenis_exam){
             var id = this.$route.params.id
             this.$store.dispatch('dialog/setHistoryDialogStatus',true)
-            this.$store.dispatch('kelas/fetchHistories',id)
+            this.$store.dispatch('kelas/fetchHistories',{id:id,jenis_exam:jenis_exam})
         }
     },
     computed: {

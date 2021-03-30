@@ -14,8 +14,8 @@
                     <span>{{profile.email_lembaga}}</span>
                 </div>
                 <div class="form-group">
-                    <label for="">Penganggung Jawab</label>
-                    <span>{{profile.nm_penanggung_jawab}}</span>
+                    <label for="">Penanggung Jawab</label>
+                    <span>{{profile.nm_penangung_jwb}}</span>
                 </div>
                 <div class="form-group">
                     <label for="">No. Telepon</label>

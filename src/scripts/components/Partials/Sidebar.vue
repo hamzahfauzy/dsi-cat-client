@@ -21,7 +21,7 @@
                             <md-icon :class="{'completed':children.status_selesai}">{{tipe_konten[children.jenis_materi]}}</md-icon>
                             <span style="display:inline-block">
                                 {{children.nm_materi}}<br>
-                                <p class="ket_materi">{{children.ket_materi}}</p>
+                                <!-- <p class="ket_materi">{{children.ket_materi}}</p> -->
                             </span>
                             
                         </div>
@@ -148,18 +148,20 @@ export default {
                 next:false,
                 prev:false
             })
+            var id = this.$route.params.id
             if(!(typeof this.all_session[jenis_exam] === 'undefined') && this.all_session[jenis_exam].completed)
-            {
-                var id = this.$route.params.id
                 await this.$store.dispatch('kelas/fetchSession',{id_pelatihan:id,jenis_exam:(jenis_exam+1)})
-            }
             else
             {
                 var title = jenis_exam == 0 ? 'Pre Test' : 'Post Test';
+                var soal = (jenis_exam==0?this.pre_exam.jumlah_soal:this.post_exam.jumlah_soal)
+                var content = soal + ' Soal - '
+                content += (jenis_exam==0?this.pre_exam.waktu:this.post_exam.waktu)+ ' Menit'
                 this.$store.dispatch('global/setExamIntro',{
                     title:title,
-                    content:'10 Soal',
+                    content:content,
                     jenis_exam:jenis_exam,
+                    enable_btn:soal==0?false:true
                 })
             }
             vm.$store.dispatch('cat/setLoading',false)
@@ -168,6 +170,8 @@ export default {
     computed: {
         ...mapGetters({
             kelas: 'kelas/getSingleKelas',
+            pre_exam: 'kelas/getPreExam',
+            post_exam: 'kelas/getPostExam',
             active_materi:'cat/getActiveMateri',
             all_session: 'kelas/getAllSession',
         })

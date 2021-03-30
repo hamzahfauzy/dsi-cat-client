@@ -35,7 +35,7 @@
 
                                         <div class="md-list-item-text">
                                             <span>{{kelas.nm_pelatihan}}</span>
-                                            <p> </p>
+                                            <p style="font-size:11px;">{{kelas.tgl_selesai}}</p>
                                             <div style="margin-top:10px;">
                                                 <progress-bar v-if="kelas.status_pelatihan" :progress_percent="kelas.progress" :flex="1" :title="'Progress Kelas'" /> 
                                                 <md-button v-if="kelas.status_pelatihan == false" class="md-raised md-primary" style="width:auto!important;text-transform:capitalize" @click="ikuti(kelas.id_pelatihan)">Ikuti Kelas</md-button>
