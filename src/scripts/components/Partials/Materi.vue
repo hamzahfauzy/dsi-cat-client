@@ -23,8 +23,19 @@
         <br>
         <h4 v-html="materi.nm_materi"></h4>
         <p v-html="materi.ket_materi"></p>
+        <p v-if="!(materi.lampiran == null)">
+            <md-button :href="materi.lampiran.url" class="md-raised md-accent">
+                <md-icon>download</md-icon>
+                Download
+            </md-button>
+        </p>
     </div>
 </template>
+<style scoped>
+a:hover {
+    text-decoration: none;
+}
+</style>
 <script>
 import { mapGetters } from 'vuex'
 export default {
