@@ -9,16 +9,14 @@
                 <div style="padding:20px;background-color:#FFF;color:#74b9ff!important;border-radius:1rem;margin-top:15px;">
                     <table align="center" cellpadding="10" style="font-weight:bold;">
                         <tr>
-                            <td>Benar</td>
-                            <td>Salah</td>
                             <td>Waktu</td>
                             <td>Nilai</td>
+                            <td>Predikat</td>
                         </tr>
                         <tr>
-                            <td>{{session.hasil.benar}}</td>
-                            <td>{{session.hasil.salah}}</td>
                             <td>{{session.waktu}}</td>
                             <td>{{session.hasil.skor}}</td>
+                            <td>{{session.hasil.predikat}}</td>
                         </tr>
                     </table>
                 </div>
@@ -34,8 +32,8 @@
             <div v-if="exam_content && exam && exam.hasOwnProperty('soal')">
                 <div class="row mb-2" v-if="exam.hasOwnProperty('jenis_exam')">
                     <div class="col-12 text-center">
-                        <span class="badge badge-success" style="font-size:16px;" v-if="countDown >= 0">{{(new Date(countDown * 1000)).toUTCString().match(/(\d\d:\d\d:\d\d)/)[0]}}</span>
-                        <span class="badge badge-success" style="font-size:16px;" v-if="ticker_time">{{ticker_time}}</span>
+                        <span class="badge badge-success" style="font-size:16px;" v-if="timer_type=='countdown'">{{(new Date(countDown * 1000)).toUTCString().match(/(\d\d:\d\d:\d\d)/)[0]}}</span>
+                        <span class="badge badge-success" style="font-size:16px;" v-if="ticker_time">{{(new Date(ticker_time * 1000)).toUTCString().match(/(\d\d:\d\d:\d\d)/)[0]}}</span>
                     </div>
                 </div>
                 <div class="row">
@@ -87,6 +85,7 @@ export default {
             mytimeout:null,
             answered:{},
             ticker_time:0,
+            timer_type:'ticker'
         }
     },
     created(){
@@ -96,7 +95,10 @@ export default {
             clearTimeout(this.mytimeout)
             this.loadExam()
             if(this.count_down > 0)
+            {
                 this.countDownTimer()
+                this.timer_type = 'countdown'
+            }
             else
                 this.ticker()
         }

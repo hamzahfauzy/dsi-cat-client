@@ -8,17 +8,15 @@
                 <table class="table table-bordered table-striped" align="center" cellpadding="10">
                     <tr>
                         <th>#</th>
-                        <th>Benar</th>
-                        <th>Salah</th>
                         <th>Skor</th>
                         <th>Mulai - Selesai</th>
+                        <th>Predikat</th>
                     </tr>
                     <tr v-for="(history,index) in histories" :key="index">
                         <td>{{index+1}}</td>
-                        <td>{{history.benar}}</td>
-                        <td>{{history.salah}}</td>
                         <td>{{history.skor}}</td>
                         <td>{{history.started_at}} - {{history.finished_at}}</td>
+                        <td>{{history.predikat}}</td>
                     </tr>
                 </table>
                 <center>
