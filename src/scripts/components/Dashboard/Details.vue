@@ -21,7 +21,7 @@
                                 <h3 align="center" v-html="kelas.nm_pelatihan"></h3>
                             </div>
                             <div v-if="exam_intro.hasOwnProperty('title')" class="intro">
-                                <div>
+                                <div style="text-align:center;">
                                     <img src="dist/images/exam-icon.png" alt="" width="150px" style="margin-bottom:15px;">
                                     <p></p>
                                     <h3 align="center">{{exam_intro.title}}</h3>

@@ -24,7 +24,7 @@
                 <div>
                     <button class="btn btn-primary" @click="showHistory(session.jenis_exam)">Riwayat Test</button>
                     <button class="btn btn-primary" v-if="session.status_selesai == 0 && session.status_coba" @click="tryAgainExam(session.jenis_exam)">Ulangi Test</button>
-                    <a :href="app_link+'sertifikat/index.php?token='+token+'&id_pelatihan='+session.id_pelatihan" class="btn btn-success" style="color:#FFF;text-decoration:none" target="_blank" v-if="session.jenis_exam == 2 && session.status_selesai">Lihat Sertifikat</a>
+                    <a :href="sertifikat_link+'?token='+token+'&id_pelatihan='+session.id_pelatihan" class="btn btn-success" style="color:#FFF;text-decoration:none" target="_blank" v-if="session.jenis_exam == 2 && session.status_selesai">Lihat Sertifikat</a>
                 </div>
             </div>
         </div>
@@ -38,9 +38,11 @@
                 </div>
                 <div class="row">
                     <div class="col-12" style="margin-bottom:15px">
-                        <md-button class="md-icon-button md-raised" v-for="(content,index) in exam_content" :key="index" @click="loadExam(index)" style="margin: 0px 10px 0px 0px;color:#000;z-index:2" :class="{'btn-nav-active':soal_aktif==index}">
+                        <div style="height: 100px;white-space: nowrap;position: relative;overflow-x: scroll;overflow-y: hidden;-webkit-overflow-scrolling: touch;">
+                        <md-button class="md-icon-button md-raised" v-for="(content,index) in exam_content" :key="index" @click="loadExam(index)" style="margin: 0px 10px 0px 0px;color:#000;z-index:2;display: inline-block;" :class="{'btn-nav-active':soal_aktif==index}">
                             {{index+1}}
                         </md-button>
+                        </div>
                         <br>
                     </div>
                 </div>
@@ -51,9 +53,19 @@
                     <div class="col-12 col-sm-4">
                         <div v-for="(jawaban,j) in exam.soal.refSoalPilihans" :key="j">
                             <label style="position:relative;width:100%;">
-                                <input type="radio" class="option-input radio" v-model="answered[exam.id_exam]" :value="jawaban.id_soal_pilihan" style="z-index:2;" />
-                                <span class="kode_soal_pilihan">{{numToSSColumn(jawaban.kode_soal_pilihan)}}</span>
-                                <span class="soal_pilihan">{{jawaban.soal_pilihan}}</span>
+                                <table>
+                                    <tr>
+                                        <td style="vertical-align:middle;position:relative;">
+                                            <input type="radio" class="option-input radio" v-model="answered[exam.id_exam]" :value="jawaban.id_soal_pilihan" style="z-index:2;" />
+                                            <span class="kode_soal_pilihan">{{numToSSColumn(jawaban.kode_soal_pilihan)}}</span>
+                                        </td>
+                                        <td>
+                                            <span class="soal_pilihan" v-html="jawaban.soal_pilihan"></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                                
+                                
                             </label>
                         </div>
                     </div>
@@ -76,6 +88,7 @@ export default {
     data(){
         return {
             app_link:'',
+            sertifikat_link:'',
             soal_aktif:0,
             exam:{},
             navigation:{
@@ -90,6 +103,7 @@ export default {
     },
     created(){
         this.app_link = env.app_link
+        this.sertifikat_link = env.sertifikat_link
         if(!(this.session.hasOwnProperty('finished_at') && this.session.finished_at))
         {
             clearTimeout(this.mytimeout)
