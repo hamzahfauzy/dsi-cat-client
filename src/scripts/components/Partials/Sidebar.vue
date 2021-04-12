@@ -19,7 +19,7 @@
                         <div class="item-child-content" :class="{'completed':children.status_selesai,'materi_active':index==active_materi.idx_konten&&idx==active_materi.idx_materi}">
                             <md-icon v-if="children.status_selesai" class="completed">check_circle_outline</md-icon>
                             <md-icon :class="{'completed':children.status_selesai}">{{tipe_konten[children.jenis_materi]}}</md-icon>
-                            <span style="display:inline-block">
+                            <span style="display:inline-block;white-space:normal">
                                 {{children.nm_materi}}<br>
                                 <!-- <p class="ket_materi">{{children.ket_materi}}</p> -->
                             </span>
