@@ -30,7 +30,7 @@
                                 <div v-for="(kelas,index) in list_kelas" :key="index">
                                     <md-list-item  style="padding-bottom:10px;">
                                         <md-avatar class="custom-avatar">
-                                            <img :src="kelas.image?kelas.image:'https://183263-537949-raikfcquaxqncofqfm.stackpathdns.com/wp-content/uploads/2018/05/shutterstock_285147194.jpg'" :alt="kelas.name">
+                                            <img :src="kelas.url_foto?kelas.url_foto:'https://183263-537949-raikfcquaxqncofqfm.stackpathdns.com/wp-content/uploads/2018/05/shutterstock_285147194.jpg'" :alt="kelas.name">
                                         </md-avatar>
 
                                         <div class="md-list-item-text">
