@@ -9,7 +9,7 @@
                         {{authData.additional_data.hasOwnProperty('id_narasumber')?'Daftar Kelas':'Kelas Saya'}}
                         </router-link>
                     </li>
-                    <li>
+                    <li v-if="authData.additional_data.hasOwnProperty('id_lembaga') == false">
                         <router-link :to="'/forum-diskusi/'+$route.params.id" :class="{'nav-active':header_aktif=='forum-diskusi'}">Forum Diskusi</router-link>
                     </li>
                     <li>
