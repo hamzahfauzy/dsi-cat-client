@@ -3,7 +3,7 @@
         <cat-header></cat-header>
         <div class="container nav-progress-container">
             <div class="nav-progress">
-                <progress-bar-mini :title="kelas.hasOwnProperty('nm_pelatihan')?kelas.nm_pelatihan:'Loading...'" :progress_percent="kelas.hasOwnProperty('progress')?kelas.progress:0"></progress-bar-mini>
+                <progress-bar-mini :level="authData.additional_data.hasOwnProperty('id_narasumber')" :title="kelas.hasOwnProperty('nm_pelatihan')?kelas.nm_pelatihan:'Loading...'" :progress_percent="kelas.hasOwnProperty('progress')?kelas.progress:0"></progress-bar-mini>
             </div>
         </div>
 
@@ -149,7 +149,7 @@ export default {
             var next = typeof kontens[idx_konten].refMateris[idx_materi+1] === 'object' && materi.status_selesai ? 1 : 0
             var prev = idx_materi == 0 && idx_konten == 0 ? 0 : 1
 
-            if(idx_materi == materis.length - 1 && typeof kontens[idx_konten+1] === 'object' && materi.status_selesai)
+            if((idx_materi == materis.length - 1 && typeof kontens[idx_konten+1] === 'object' && materi.status_selesai) || this.authData.additional_data.hasOwnProperty('id_narasumber'))
             {
                 next = 1
             }
@@ -203,6 +203,7 @@ export default {
             navigation_enable: 'cat/getNavigation',
             active_materi: 'cat/getActiveMateri',
             exam_content: 'kelas/getExamContent',
+            authData: 'global/getAuthData',
             session: 'kelas/getSession'
         }),
         isContentLoading:{

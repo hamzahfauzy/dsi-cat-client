@@ -5,7 +5,7 @@
                 <span><b>Konten Kelas</b></span>
             </md-subheader>
 
-            <md-list-item @click="loadExam(0)">
+            <md-list-item @click="loadExam(0)" v-if="authData.additional_data.hasOwnProperty('id_narasumber')==false">
                 <md-icon :class="{'completed':!(typeof all_session[0] === 'undefined') && all_session[0].completed}">assignment</md-icon>
                 <span class="md-list-item-text" :class="{'completed':!(typeof all_session[0] === 'undefined') && all_session[0].completed}">PRE TEST</span>
             </md-list-item>
@@ -29,7 +29,7 @@
                 </md-list>
             </md-list-item>
 
-            <md-list-item @click="loadExam(1)">
+            <md-list-item @click="loadExam(1)" v-if="authData.additional_data.hasOwnProperty('id_narasumber')==false">
                 <md-icon :class="{'completed':!(typeof all_session[1] === 'undefined') && all_session[1].completed}">assignment</md-icon>
                 <span class="md-list-item-text" :class="{'completed':!(typeof all_session[1] === 'undefined') && all_session[1].completed}">POST TEST</span>
             </md-list-item>
@@ -57,7 +57,7 @@ export default {
         async activeMateri(idx_konten,idx_materi){
             // console.log(idx_konten,idx_materi)
             var materi = this.kelas.refKontens[idx_konten].refMateris[idx_materi]
-            if(materi.status_materi)
+            if(materi.status_materi || this.authData.additional_data.hasOwnProperty('id_narasumber'))
             {
                 this.$store.dispatch('cat/setActiveMateri',{
                     idx_konten:idx_konten,
@@ -111,7 +111,7 @@ export default {
             var next = typeof kontens[idx_konten].refMateris[idx_materi+1] === 'object' && materi.status_selesai ? 1 : 0
             var prev = idx_materi == 0 && idx_konten == 0 ? 0 : 1
 
-            if(idx_materi == materis.length - 1 && typeof kontens[idx_konten+1] === 'object' && materi.status_selesai)
+            if((idx_materi == materis.length - 1 && typeof kontens[idx_konten+1] === 'object' && materi.status_selesai) || this.authData.additional_data.hasOwnProperty('id_narasumber'))
             {
                 next = 1
             }
@@ -174,6 +174,7 @@ export default {
             post_exam: 'kelas/getPostExam',
             active_materi:'cat/getActiveMateri',
             all_session: 'kelas/getAllSession',
+            authData: 'global/getAuthData'
         })
     },
 }

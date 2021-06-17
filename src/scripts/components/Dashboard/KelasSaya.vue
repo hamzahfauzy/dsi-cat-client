@@ -9,7 +9,7 @@
             <div class="container" style="max-width:1024px;">
                 <!-- <search></search> -->
                 <div class="row">
-                    <div class="col-12 col-sm-4">
+                    <div class="col-12 col-sm-4" v-if="authData && authData.additional_data.hasOwnProperty('id_ap_desa')">
                         <div class="sidebar">
                             <md-list>
                                 <md-subheader>
@@ -23,7 +23,7 @@
                             </md-list>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-8">
+                    <div class="col-12" :class="{'col-md-8':authData && authData.additional_data.hasOwnProperty('id_ap_desa')}">
                         <loading :active.sync="isLoading" :is-full-page="fullPage" class="loader"></loading>
                         <div class="kelas-list">
                             <md-list class="md-triple-line list-kelas" v-if="isLoading==false">
@@ -35,15 +35,24 @@
 
                                         <div class="md-list-item-text">
                                             <span>{{kelas.nm_pelatihan}}</span>
+                                            <span style="color:#999;font-size:12px;">{{kelas.nm_lembaga}}</span>
                                             <p style="font-size:11px;">{{kelas.tanggal}}</p>
                                             <div style="margin-top:10px;">
-                                                <progress-bar v-if="kelas.status_pelatihan" :progress_percent="kelas.progress" :flex="1" :title="'Progress Kelas'" /> 
-                                                <md-button v-if="kelas.status_pelatihan == false" class="md-raised md-primary" style="width:auto!important;text-transform:capitalize" @click="ikuti(kelas.id_pelatihan)">Ikuti Kelas</md-button>
-                                                <md-button v-if="kelas.status_pelatihan == true" class="md-raised md-accent" style="width:auto!important;text-transform:capitalize" @click="$router.push('/details/'+kelas.id_pelatihan)">
-                                                {{kelas.status_pelatihan && kelas.progress == 100 ? 'Lihat' : 'Lanjutkan'}}
-                                                </md-button>
-                                                <!-- <md-button class="md-raised md-primary md-success-btn" style="width:auto!important;text-transform:capitalize" v-if="kelas.status == 'Selesai'" @click="$router.push('/details/'+kelas.id)">Selesai</md-button> -->
+                                                <template v-if="authData && authData.additional_data.hasOwnProperty('id_ap_desa')">
+                                                    <progress-bar v-if="kelas.status_pelatihan" :progress_percent="kelas.progress" :flex="1" :title="'Progress Kelas'" /> 
+                                                    <md-button v-if="kelas.status_pelatihan == false" class="md-raised md-primary" style="width:auto!important;text-transform:capitalize" @click="ikuti(kelas.id_pelatihan)">Ikuti Kelas</md-button>
+                                                    <md-button v-if="kelas.status_pelatihan == true" class="md-raised md-accent" style="width:auto!important;text-transform:capitalize" @click="$router.push('/details/'+kelas.id_pelatihan)">
+                                                    {{kelas.status_pelatihan && kelas.progress == 100 ? 'Lihat' : 'Lanjutkan'}}
+                                                    </md-button>
+                                                </template>
+                                                <template v-else>
+                                                    <md-button class="md-raised md-primary" style="width:auto!important;text-transform:capitalize" @click="$router.push('/details/'+kelas.id_pelatihan)">
+                                                    Lihat
+                                                    </md-button>
+                                                    <!-- <md-button class="md-raised md-primary md-success-btn" style="width:auto!important;text-transform:capitalize" v-if="kelas.status == 'Selesai'" @click="$router.push('/details/'+kelas.id)">Selesai</md-button> -->
+                                                </template>
                                             </div>
+                                                    
                                         </div>
 
                                         <!-- <md-button class="md-icon-button md-list-action">
@@ -65,6 +74,7 @@
     </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import Swal from 'sweetalert2';
 import Loading from 'vue-loading-overlay';
 export default {
@@ -81,6 +91,7 @@ export default {
         }
     },
     async created(){
+        console.log(this.authData)
         this.$store.dispatch('global/setHeader','kelas-saya')
         await this.loadKelas('site/kelas-saya')
     },
@@ -128,6 +139,11 @@ export default {
             else
                 this.$router.push('/details/'+id_pelatihan)
         }
+    },
+    computed:{
+        ...mapGetters({
+            authData: 'global/getAuthData'
+        }),
     }
 }
 </script>

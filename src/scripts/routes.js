@@ -3,6 +3,7 @@ import Login from './components/Login'
 import LoginToken from './components/LoginToken'
 import KelasSaya from './components/Dashboard/KelasSaya'
 import Details from './components/Dashboard/Details'
+import ForumDiskusi from './components/Dashboard/ForumDiskusi'
 import store from './store';
 
 async function isNotAuthenticated(to, from, next){
@@ -55,6 +56,15 @@ export default [
         name:'Details',
         path: '/details/:id',
         component:Details,
+        meta: {
+            title: 'CAT - FPKAD'
+        },
+        beforeEnter: isNotAuthenticated
+    },
+    {
+        name:'ForumDiskusi',
+        path: '/forum-diskusi/:id',
+        component:ForumDiskusi,
         meta: {
             title: 'CAT - FPKAD'
         },

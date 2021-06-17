@@ -5,7 +5,12 @@
             <div class="right-menu">
                 <ul>
                     <li>
-                        <router-link to="/kelas-saya" :class="{'nav-active':header_aktif=='kelas-saya'}">Kelas Saya</router-link>
+                        <router-link to="/kelas-saya" :class="{'nav-active':header_aktif=='kelas-saya'}">
+                        {{authData.additional_data.hasOwnProperty('id_narasumber')?'Daftar Kelas':'Kelas Saya'}}
+                        </router-link>
+                    </li>
+                    <li>
+                        <router-link :to="'/forum-diskusi/'+$route.params.id" :class="{'nav-active':header_aktif=='forum-diskusi'}">Forum Diskusi</router-link>
                     </li>
                     <li>
                         <md-menu md-size="medium" md-align-trigger md-direction="bottom-end" class="account-toggle">
@@ -48,6 +53,9 @@
 import { mapGetters } from 'vuex'
 import Swal from 'sweetalert2';
 export default {
+    created(){
+
+    },
     methods: {
         Alert(val){
             Swal.fire(val)
