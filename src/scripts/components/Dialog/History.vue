@@ -19,9 +19,10 @@
                         <td>{{history.predikat}}</td>
                     </tr>
                 </table>
-                <center>
+                
+                <!-- <center>
                     <button class="btn btn-primary" v-if="session.status_selesai == 0" @click="finishExam(session.jenis_exam)">Simpan Nilai Tertinggi</button>
-                </center>
+                </center> -->
                 </div>
                 <div v-else>
                     <center><i>Tidak ada data</i></center>

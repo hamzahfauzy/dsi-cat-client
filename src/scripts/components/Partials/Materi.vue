@@ -63,7 +63,7 @@ export default {
             window.open(this.app_link+'e-sistem/public/download?key='+materi.encode_file)
         },
         timeupdate: function(){
-            if(this.authData.additional_data.hasOwnProperty('id_narasumber')==false) return
+            if(this.authData.additional_data.hasOwnProperty('id_narasumber')) return
             var video = this.$refs.videoPlayer
             if (!video.seeking) {
                 this.video_handle.supposedCurrentTime = video.currentTime;
@@ -77,7 +77,7 @@ export default {
             }
         },
         seeking: function(){
-            if(this.authData.additional_data.hasOwnProperty('id_narasumber')==false) return
+            if(this.authData.additional_data.hasOwnProperty('id_narasumber')) return
             var video = this.$refs.videoPlayer
             var delta = video.currentTime - this.video_handle.supposedCurrentTime;
             // if (Math.abs(delta) > 0.01) {
@@ -87,7 +87,7 @@ export default {
             }
         },
         sendEnded(id_materi){
-            if(this.authData.additional_data.hasOwnProperty('id_narasumber')==false) return
+            if(this.authData.additional_data.hasOwnProperty('id_narasumber')) return
             var vm = this
             this.ended_is_send = true
             var kelas = JSON.parse(JSON.stringify(this.kelas))
@@ -120,7 +120,7 @@ export default {
             // this.loadNavigation()
         },
         updatePaused(event) {
-            if(this.authData.additional_data.hasOwnProperty('id_narasumber')==false) return
+            if(this.authData.additional_data.hasOwnProperty('id_narasumber')) return
             this.videoElement = event.target;
             this.paused = event.target.paused;
         },
