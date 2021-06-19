@@ -5,7 +5,9 @@
             <div class="right-menu">
                 <ul>
                     <li>
-                        <router-link to="/kelas-saya" :class="{'nav-active':header_aktif=='kelas-saya'}">Kelas Saya</router-link>
+                        <router-link to="/kelas-saya" :class="{'nav-active':header_aktif=='kelas-saya'}">
+                        {{authData.additional_data.hasOwnProperty('id_narasumber')?'Daftar Kelas':'Kelas Saya'}}
+                        </router-link>
                     </li>
                     <li>
                         <a href="javascript:void(0)" @click="loadProfile()">{{nama}}</a>

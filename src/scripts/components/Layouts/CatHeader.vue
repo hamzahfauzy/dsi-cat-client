@@ -4,6 +4,11 @@
         <div class="container-fluid" style="position:relative;">
             <div class="right-menu">
                 <ul>
+                    <li v-if="authData.additional_data.hasOwnProperty('id_narasumber')">
+                        <router-link :to="'/konten-saya/'+$route.params.id" :class="{'nav-active':header_aktif=='konten-saya'}">
+                        Konten Saya
+                        </router-link>
+                    </li>
                     <li>
                         <router-link to="/kelas-saya" :class="{'nav-active':header_aktif=='kelas-saya'}">
                         {{authData.additional_data.hasOwnProperty('id_narasumber')?'Daftar Kelas':'Kelas Saya'}}

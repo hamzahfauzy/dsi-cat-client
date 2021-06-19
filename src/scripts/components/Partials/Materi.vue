@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div class="responsive-content">
-            <video class="responsive-iframe" controls v-if="materi.hasOwnProperty('jenis_materi') && materi.jenis_materi==1" ref="videoPlayer"
+        <div class="responsive-content" v-if="materi.hasOwnProperty('jenis_materi') && materi.jenis_materi==1">
+            <video class="responsive-iframe" controls ref="videoPlayer"
                 @canplay="updatePaused" 
                 @playing="updatePaused" 
                 @pause="updatePaused" 

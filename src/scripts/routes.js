@@ -2,6 +2,7 @@ import axios from 'axios'
 import Login from './components/Login'
 import LoginToken from './components/LoginToken'
 import KelasSaya from './components/Dashboard/KelasSaya'
+import KontenSaya from './components/Dashboard/KontenSaya'
 import Details from './components/Dashboard/Details'
 import ForumDiskusi from './components/Dashboard/ForumDiskusi'
 import store from './store';
@@ -56,6 +57,15 @@ export default [
         name:'Details',
         path: '/details/:id',
         component:Details,
+        meta: {
+            title: 'CAT - FPKAD'
+        },
+        beforeEnter: isNotAuthenticated
+    },
+    {
+        name:'Konten Saya',
+        path: '/konten-saya/:id',
+        component:KontenSaya,
         meta: {
             title: 'CAT - FPKAD'
         },

@@ -35,7 +35,7 @@
 
                                         <div class="md-list-item-text">
                                             <span>{{kelas.nm_pelatihan}}</span>
-                                            <span style="color:#999;font-size:12px;">{{kelas.nm_lembaga}}</span>
+                                            <span style="color:#999;font-size:12px;">Oleh : {{kelas.nm_lembaga}}</span>
                                             <p style="font-size:11px;">{{kelas.tanggal}}</p>
                                             <div style="margin-top:10px;">
                                                 <template v-if="authData && authData.additional_data.hasOwnProperty('id_narasumber') == false">
@@ -48,6 +48,10 @@
                                                 <template v-else>
                                                     <md-button class="md-raised md-primary" style="width:auto!important;text-transform:capitalize" @click="$router.push('/details/'+kelas.id_pelatihan)">
                                                     Lihat
+                                                    </md-button>
+
+                                                    <md-button class="md-raised md-accent" style="width:auto!important;text-transform:capitalize" @click="$router.push('/konten-saya/'+kelas.id_pelatihan)">
+                                                    Konten Saya
                                                     </md-button>
                                                     <!-- <md-button class="md-raised md-primary md-success-btn" style="width:auto!important;text-transform:capitalize" v-if="kelas.status == 'Selesai'" @click="$router.push('/details/'+kelas.id)">Selesai</md-button> -->
                                                 </template>
