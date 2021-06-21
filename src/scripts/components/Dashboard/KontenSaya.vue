@@ -6,7 +6,7 @@
                 <div>
                     <h2 style="font-size:22px;margin:0;" v-html="kelas.hasOwnProperty('nm_pelatihan')?kelas.nm_pelatihan:'Loading...'"></h2>
                     <div class="progress-section">
-                        <b>Konten Saya - <router-link :to="'/details/'+$route.params.id">Kembali Ke Kelas</router-link></b>
+                        <b>Konten Saya - <router-link :to="'/details/'+$route.params.id">Kembali Ke Pelatihan</router-link></b>
                     </div>
                 </div>
             </div>

@@ -11,7 +11,7 @@
                     </li>
                     <li>
                         <router-link to="/kelas-saya" :class="{'nav-active':header_aktif=='kelas-saya'}">
-                        {{authData.additional_data.hasOwnProperty('id_narasumber')?'Daftar Kelas':'Kelas Saya'}}
+                        Daftar Pelatihan
                         </router-link>
                     </li>
                     <li v-if="authData.additional_data.hasOwnProperty('id_lembaga') == false">

@@ -4,7 +4,7 @@
 
         <div class="homepage-content container list-kelas">
             <div class="main-title-container">
-                <h3 align="center" class="main-title">KELAS SAYA</h3>
+                <h3 align="center" class="main-title">DAFTAR PELATIHAN</h3>
             </div>
             <div class="container" style="max-width:1024px;">
                 <!-- <search></search> -->
@@ -16,7 +16,7 @@
                                     <span>FILTER</span>
                                 </md-subheader>
 
-                                <md-list-item @click="loadKelas('semua-kelas')">Semua Kelas</md-list-item>
+                                <md-list-item @click="loadKelas('semua-kelas')">Semua Pelatihan</md-list-item>
                                 <md-list-item @click="loadKelas('sedang-dikerjakan')">Sedang Dikerjakan</md-list-item>
                                 <md-list-item @click="loadKelas('selesai-materi')">Selesai Materi</md-list-item>
                                 <md-list-item @click="loadKelas('selesai-test')">Selesai Test</md-list-item>
@@ -39,8 +39,8 @@
                                             <p style="font-size:11px;">{{kelas.tanggal}}</p>
                                             <div style="margin-top:10px;">
                                                 <template v-if="authData && authData.additional_data.hasOwnProperty('id_narasumber') == false">
-                                                    <progress-bar v-if="kelas.status_pelatihan" :progress_percent="kelas.progress" :flex="1" :title="'Progress Kelas'" /> 
-                                                    <md-button v-if="kelas.status_pelatihan == false" class="md-raised md-primary" style="width:auto!important;text-transform:capitalize" @click="ikuti(kelas.id_pelatihan)">Ikuti Kelas</md-button>
+                                                    <progress-bar v-if="kelas.status_pelatihan" :progress_percent="kelas.progress" :flex="1" :title="'Progress Pelatihan'" /> 
+                                                    <md-button v-if="kelas.status_pelatihan == false" class="md-raised md-primary" style="width:auto!important;text-transform:capitalize" @click="ikuti(kelas.id_pelatihan)">Ikuti Pelatihan</md-button>
                                                     <md-button v-if="kelas.status_pelatihan == true" class="md-raised md-accent" style="width:auto!important;text-transform:capitalize" @click="$router.push('/details/'+kelas.id_pelatihan)">
                                                     {{kelas.status_pelatihan && kelas.progress == 100 ? 'Lihat' : 'Lanjutkan'}}
                                                     </md-button>
@@ -65,7 +65,7 @@
                                     </md-list-item>
                                 </div>
                                 <div v-if="list_kelas.length == 0">
-                                    <center><i>Tidak ada kelas!</i></center>
+                                    <center><i>Tidak ada pelatihan!</i></center>
                                 </div>
                             </md-list>
                         </div>

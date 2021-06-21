@@ -4,7 +4,7 @@
 
         <div class="homepage-content container list-kelas">
             <div class="main-title-container">
-                <h3 class="main-title">KELAS UNTUK ANDA</h3>
+                <h3 class="main-title">DAFTAR PELATIHAN</h3>
             </div>
             <div class="container" style="max-width:1024px;">
                 <search></search>
@@ -16,7 +16,7 @@
                                     <span>Filter</span>
                                 </md-subheader>
 
-                                <md-list-item @click="loadKelas('semua-kelas')">Semua Kelas</md-list-item>
+                                <md-list-item @click="loadKelas('semua-kelas')">Semua Pelatihan</md-list-item>
                                 <md-list-item @click="loadKelas('kelas-by-pengikut')">Paling Banyak Di ikuti</md-list-item>
                                 <md-list-item @click="loadKelas('kelas-by-selesai')">Paling Banyak Terselesaikan</md-list-item>
                             </md-list>
@@ -47,7 +47,7 @@
                                 <md-divider class="md-inset custom-divider"></md-divider>
                             </div>
                             <div v-if="list_kelas.length == 0">
-                                <center><i>Tidak ada kelas!</i></center>
+                                <center><i>Tidak ada pelatihan!</i></center>
                             </div>
                         </md-list>
                     </div>

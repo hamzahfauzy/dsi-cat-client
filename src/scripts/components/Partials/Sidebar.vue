@@ -2,7 +2,7 @@
     <div class="sidebar">
         <md-list>
             <md-subheader>
-                <span><b>Konten Kelas</b></span>
+                <span><b>Konten Pelatihan</b></span>
             </md-subheader>
 
             <md-list-item @click="loadExam(0)" v-if="authData.additional_data.hasOwnProperty('id_narasumber')==false">
