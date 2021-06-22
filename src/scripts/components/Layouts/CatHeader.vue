@@ -47,7 +47,7 @@
             <div class="logo" style="background-image:url(dist/images/logo_app_small.png)"></div>
             <div class="title-section">
                 <a href="javascript:void(0)" @click="toggleNav()">
-                    <h4>FPKAD-CAT</h4>
+                    <h4>LMS-PEMDES</h4>
                     <span>Kementerian Dalam Negeri</span>
                 </a>
             </div>

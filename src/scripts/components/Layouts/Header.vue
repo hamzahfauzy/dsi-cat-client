@@ -35,7 +35,7 @@
             <div class="logo" style="background-image:url(dist/images/logo_app_small.png)"></div>
             <div class="title-section">
                 <router-link to="/kelas-saya">
-                    <h4>FPKAD-CAT</h4>
+                    <h4>LMS-PEMDES</h4>
                     <span>Kementerian Dalam Negeri</span>
                 </router-link>
             </div>
