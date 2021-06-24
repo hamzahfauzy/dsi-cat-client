@@ -1,5 +1,6 @@
 <template>
     <div>
+        <template v-if="getId(materi.nm_file) == null">
         <div class="responsive-content" v-if="materi.hasOwnProperty('jenis_materi') && materi.jenis_materi==1">
             <video class="responsive-iframe" controls ref="videoPlayer"
                 @canplay="updatePaused" 
@@ -11,6 +12,13 @@
                     <source :src="materi.url_player" type="video/mp4" />
             </video>
         </div>
+        </template>
+        <template v-else>
+            <div style="height: calc(100vh - 200px);">
+            <iframe width="100%" style="height:100%!important;" :src="'https://www.youtube.com/embed/' 
+            + getId(materi.nm_file)" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </template>
         <div v-if="materi.hasOwnProperty('jenis_materi') && materi.jenis_materi==2" class="intro">
             <div style="text-align:center">
                 <img src="dist/images/file.png" alt="" width="150px" style="margin-bottom:15px;">
@@ -47,7 +55,8 @@ export default {
             app_link:'',
             video_handle: {
                 supposedCurrentTime:0,
-            }
+            },
+            yt_id:null
         }
     },
     created(){
@@ -130,6 +139,21 @@ export default {
         pause() {
             this.videoElement.pause();
         },
+        getId(url){
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+            const match = url.match(regExp);
+
+            return (match && match[2].length === 11)
+            ? match[2]
+            : null;
+        },
+        embed(){
+            const videoId = this.getId();
+            const iframeMarkup = '<iframe width="560" height="315" src="//www.youtube.com/embed/' 
+                + videoId + '" frameborder="0" allowfullscreen></iframe>';
+            return iframeMarkup
+            // console.log('Video ID:', videoId)
+        }
     },
     computed: {
         ...mapGetters({
@@ -139,6 +163,15 @@ export default {
             authData: 'global/getAuthData'
         }),
         playing() { return !this.paused; }
+    },
+    watch: {
+        materi: function(){
+            console.log(this.materi.nm_file)
+            if(this.getId(this.materi.nm_file))
+            {
+                this.yt_id = this.getId()
+            }
+        },
     }
 }
 </script>
