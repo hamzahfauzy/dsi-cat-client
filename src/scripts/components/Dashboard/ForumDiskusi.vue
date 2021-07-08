@@ -80,6 +80,11 @@ export default {
         async sendMessage(){
             var id = this.$route.params.id
             var pesan = this.pesan
+            if(pesan == "")
+            {
+                alert('Pesan tidak boleh kosong')
+                return
+            } 
             await this.$store.dispatch('forum/postForumKonten',{
                 id:id,
                 pesan:pesan

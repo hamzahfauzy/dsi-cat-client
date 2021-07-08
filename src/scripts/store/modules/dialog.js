@@ -2,7 +2,10 @@ export default {
     namespaced: true,
     state: {
         dialogStatus:false,
+        detailDialogStatus:false,
         historyDialogStatus:false,
+        pinDialogStatus:false,
+        id_pelatihan:0,
         kontenDialogStatus:false,
         materiDialogStatus:false,
         fullLoading:false
@@ -12,8 +15,17 @@ export default {
         SET_DIALOG_STATUS(state, value) {
             state.dialogStatus = value
         },
+        SET_DETAIL_DIALOG_STATUS(state, value) {
+            state.detailDialogStatus = value
+        },
         SET_HISTORY_DIALOG_STATUS(state, value) {
             state.historyDialogStatus = value
+        },
+        SET_PIN_DIALOG_STATUS(state, value) {
+            state.pinDialogStatus = value
+        },
+        SET_ID_PELATIHAN(state, value) {
+            state.id_pelatihan = value
         },
         SET_KONTEN_DIALOG_STATUS(state, value) {
             state.kontenDialogStatus = value
@@ -28,7 +40,10 @@ export default {
 
     getters: {
         getDialogStatus: (state) => state.dialogStatus,
+        getDetailDialogStatus: (state) => state.detailDialogStatus,
         getHistoryDialogStatus: (state) => state.historyDialogStatus,
+        getPinDialogStatus: (state) => state.pinDialogStatus,
+        getIdPelatihan: (state) => state.id_pelatihan,
         getKontenDialogStatus: (state) => state.kontenDialogStatus,
         getMateriDialogStatus: (state) => state.materiDialogStatus,
         isFullLoading: (state) => state.fullLoading
@@ -38,8 +53,15 @@ export default {
         setDialogStatus({commit}, value){
             commit('SET_DIALOG_STATUS',value)
         },
+        setDetailDialogStatus({commit}, value){
+            commit('SET_DETAIL_DIALOG_STATUS',value)
+        },
         setHistoryDialogStatus({commit}, value){
             commit('SET_HISTORY_DIALOG_STATUS',value)
+        },
+        setPinDialogStatus({commit}, value){
+            commit('SET_PIN_DIALOG_STATUS',value.status)
+            commit('SET_ID_PELATIHAN',value.id_pelatihan)
         },
         setKontenDialogStatus({commit}, value){
             commit('SET_KONTEN_DIALOG_STATUS',value)

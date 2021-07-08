@@ -34,7 +34,8 @@ export default {
     methods:{
         search:function(e){
             e.preventDefault();
-            Swal.fire(this.keyword)
+            // Swal.fire(this.keyword)
+            this.$parent.loadKelas('search',this.keyword)
         }
     }
 }

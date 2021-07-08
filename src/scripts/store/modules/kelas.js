@@ -9,7 +9,8 @@ export default {
         pre_exam:{},
         post_exam:{},
         histories:[],
-        exam_content:[]
+        exam_content:[],
+        temp_kelas:[]
     },
 
     mutations: {
@@ -39,6 +40,9 @@ export default {
         },
         SET_POST_EXAM(state,value){
             state.post_exam = value
+        },
+        SET_TEMP_KELAS(state,value){
+            state.temp_kelas = value
         }
     },
 
@@ -51,10 +55,14 @@ export default {
         getSession: (state) => state.session,
         getAllSession: (state) => state.all_session,
         getPreExam: (state) => state.pre_exam,
-        getPostExam: (state) => state.post_exam
+        getPostExam: (state) => state.post_exam,
+        getTempKelas: (state) => state.temp_kelas
     },
 
     actions: {
+        setTempKelas({commit},value){
+            commit('SET_TEMP_KELAS', value)
+        },
         fetchHistories({commit}, param){
             var token = this.state.global.token
             return new Promise(function(resolve, reject) {
@@ -102,6 +110,22 @@ export default {
                     commit('SET_ALL_SESSION',all_session)
                     commit('SET_PRE_EXAM',response.data.pre_exam)
                     commit('SET_POST_EXAM',response.data.post_exam)
+                    resolve(response)
+                }).catch(error => {
+                    resolve(error.response)
+                    // console.log(error)
+                })
+            })
+        },
+        fetchSinglePelatihan({commit}, id){
+            var token = this.state.global.token
+            return new Promise(function(resolve, reject) {
+                axios.get(env.base_url+'pelatihan/single-kelas?id_pelatihan='+id,{
+                    headers: {
+                        'Authorization':'Bearer '+token
+                    }
+                }).then(response => {
+                    commit('SET_SINGLE_KELAS',response.data.kelas)
                     resolve(response)
                 }).catch(error => {
                     resolve(error.response)
@@ -162,11 +186,12 @@ export default {
                 })
             })
         },
-        postIkuti({commit},id){
+        postIkuti({commit},data){
             var token = this.state.global.token
             return new Promise(function(resolve, reject) {
                 var formData = new FormData;
-                formData.append('id_pelatihan',id)
+                formData.append('id_pelatihan',data.id_pelatihan)
+                formData.append('pin',data.pin)
                 axios.post(env.base_url+'pelatihan/insert',formData,{
                     headers: {
                         "Content-Type": "multipart/form-data",

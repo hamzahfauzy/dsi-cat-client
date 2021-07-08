@@ -28,6 +28,10 @@
                                     <md-icon>account_circle</md-icon>
                                     <span>Profil Saya</span> 
                                 </md-menu-item>
+                                <md-menu-item @click="ubahPassword()">
+                                    <md-icon>manage_accounts</md-icon>
+                                    <span>Ubah Password</span> 
+                                </md-menu-item>
                                 <md-menu-item @click="doLogout()">
                                     <md-icon>logout</md-icon>
                                     <span>Keluar</span> 
@@ -76,6 +80,9 @@ export default {
         },
         toggleNav(){
             this.$store.dispatch('global/toggleNavSidebar')
+        },
+        ubahPassword(){
+            
         }
     },
     computed: {
