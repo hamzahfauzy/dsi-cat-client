@@ -94,6 +94,9 @@ section.top.cat {
 
       &:hover {
         color: #f9a507;
+        i.md-icon {
+          color: #f9a507 !important;
+        }
       }
     }
 

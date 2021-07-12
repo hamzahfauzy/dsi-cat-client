@@ -5,6 +5,7 @@ import KelasSaya from './components/Dashboard/KelasSaya'
 import KontenSaya from './components/Dashboard/KontenSaya'
 import Details from './components/Dashboard/Details'
 import ForumDiskusi from './components/Dashboard/ForumDiskusi'
+import KelasVirtual from './components/Dashboard/KelasVirtual'
 import store from './store';
 
 async function isNotAuthenticated(to, from, next){
@@ -75,6 +76,15 @@ export default [
         name:'ForumDiskusi',
         path: '/forum-diskusi/:id',
         component:ForumDiskusi,
+        meta: {
+            title: 'CAT - FPKAD'
+        },
+        beforeEnter: isNotAuthenticated
+    },
+    {
+        name:'ForumDiskusi',
+        path: '/kelas-virtual/:id',
+        component:KelasVirtual,
         meta: {
             title: 'CAT - FPKAD'
         },

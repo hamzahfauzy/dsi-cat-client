@@ -1,7 +1,7 @@
 <template>
     <div class="profile-dialog">
         <md-dialog :md-active.sync="showDialog">
-            <md-dialog-title>Detail Kelas</md-dialog-title>
+            <md-dialog-title>Detail Pelatihan</md-dialog-title>
 
             <md-dialog-content md-dynamic-height>
                 <template v-if="pelatihan.hasOwnProperty('nm_pelatihan')">
@@ -11,7 +11,7 @@
                             <td>{{pelatihan.nm_pelatihan}}</td>
                         </tr>
                         <tr>
-                            <th>Lembaga Penyelenggara</th>
+                            <th>Penyelenggara</th>
                             <td>{{pelatihan.nm_lembaga}}</td>
                         </tr>
                         <tr>

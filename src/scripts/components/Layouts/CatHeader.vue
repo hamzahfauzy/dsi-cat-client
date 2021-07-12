@@ -5,17 +5,24 @@
             <div class="right-menu">
                 <ul>
                     <li v-if="authData.additional_data.hasOwnProperty('id_narasumber')">
-                        <router-link :to="'/konten-saya/'+$route.params.id" :class="{'nav-active':header_aktif=='konten-saya'}">
-                        Konten Saya
+                        <router-link title="Konten Saya" :to="'/konten-saya/'+$route.params.id" :class="{'nav-active':header_aktif=='konten-saya'}">
+                            <md-icon>article</md-icon>
                         </router-link>
                     </li>
                     <li>
-                        <router-link to="/kelas-saya" :class="{'nav-active':header_aktif=='kelas-saya'}">
-                        Daftar Pelatihan
+                        <router-link title="Daftar Pelatihan" to="/kelas-saya" :class="{'nav-active':header_aktif=='kelas-saya'}">
+                            <md-icon>event</md-icon>
+                        </router-link>
+                    </li>
+                    <li>
+                        <router-link title="Kelas Virtual" :to="'/kelas-virtual/'+$route.params.id" :class="{'nav-active':header_aktif=='kelas-virtual'}">
+                            <md-icon>record_voice_over</md-icon>
                         </router-link>
                     </li>
                     <li v-if="authData.additional_data.hasOwnProperty('id_lembaga') == false">
-                        <router-link :to="'/forum-diskusi/'+$route.params.id" :class="{'nav-active':header_aktif=='forum-diskusi'}">Forum Diskusi</router-link>
+                        <router-link title="Forum Diskusi" :to="'/forum-diskusi/'+$route.params.id" :class="{'nav-active':header_aktif=='forum-diskusi'}">
+                            <md-icon>question_answer</md-icon>
+                        </router-link>
                     </li>
                     <li>
                         <md-menu md-size="medium" md-align-trigger md-direction="bottom-end" class="account-toggle">

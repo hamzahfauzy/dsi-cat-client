@@ -140,6 +140,7 @@ export default {
             this.videoElement.pause();
         },
         getId(url){
+            if(url == '') return
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
             const match = url.match(regExp);
 
@@ -166,8 +167,8 @@ export default {
     },
     watch: {
         materi: function(){
-            console.log(this.materi.nm_file)
-            if(this.getId(this.materi.nm_file))
+            console.log(this.materi)
+            if(this.materi && this.getId(this.materi.nm_file))
             {
                 this.yt_id = this.getId()
             }
