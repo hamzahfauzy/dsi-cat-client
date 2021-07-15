@@ -10,7 +10,7 @@
                         <a :href="app_link" class="btn-back-login"><md-icon>keyboard_backspace</md-icon>Kembali</a>
                         <div class="form-section align-self-center">
                             <div class="btn-section clearfix">
-                                <h3>FPKAD - CAT<br>Kementerian Dalam Negeri</h3>
+                                <h3>LMS PEMDES<br>Kementerian Dalam Negeri</h3>
                             </div>
                             <div class="logo">
                                 <a href="login-4.html">
@@ -18,7 +18,7 @@
                                 </a>
                             </div>
                             <h1>Selamat Datang!</h1>
-                            <h3>Masukkan akun FPKAD digital untuk memulai pelatihan.</h3>
+                            <h3>Masukkan akun LMS PEMDES untuk memulai pelatihan.</h3>
                             <div class="clearfix"></div>
                             <form @submit="doLogin">
                                 <div class="form-group form-box">

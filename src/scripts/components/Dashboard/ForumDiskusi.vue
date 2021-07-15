@@ -19,20 +19,25 @@
                     <div class="diskusi-konten">
                         <div v-for="forum in forumDiskusi" :key="forum.id" class="talk-bubble" :class="{'left-top':!forum.is_me,'right-top':forum.is_me}">
                             <div class="talktext">
-                                <div class="img">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="" class="mr-3 rounded-circle">
-                                </div>
-                                <div class="content">
-                                    <b>{{forum.is_me?'Anda':forum.from.nama_lengkap}}</b> <small>{{forum.tanggal}}</small><br>
-                                    <p v-html="forum.msg"></p>
+                                <div class="tt-content">
+                                    <div class="img">
+                                        <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="" class="mr-3 rounded-circle">
+                                    </div>
+                                    <div class="content">
+                                        <small>{{forum.tanggal}}</small><br>
+                                        <b>{{forum.is_me?'Anda':forum.from.nama_lengkap}}</b>
+                                        <p v-html="forum.msg"></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-group" style="position:absolut;bottom:0;">
-                        <textarea class="form-control" v-model="pesan" style="border-radius:0px" placeholder="Pesan disini..."></textarea>
-                        <button class="btn btn-primary btn-block" style="border-radius:0px" @click="sendMessage()">Submit</button>
+                    <div class="form-group message-group" style="position:absolut;bottom:0;">
+                        <textarea class="form-control message-form" v-model="pesan" placeholder="Pesan disini..."></textarea>
+                        <button class="btn btn-primary" @click="sendMessage()">
+                            <md-icon>send</md-icon>
+                        </button>
                     </div>
                 </div>
             </div>

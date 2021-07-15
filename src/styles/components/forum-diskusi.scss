@@ -1,7 +1,7 @@
 .forum-diskusi {
     .forum-konten {
         padding-top:20px;
-        height: calc(100vh - 100px);
+        height: calc(100vh - 60px);
         position: relative;
     }
 
@@ -14,10 +14,12 @@
         position: relative;
         width: auto;
         height: auto;
-        margin-bottom:10px;
-        padding-left:10px;
-        padding-right:10px;
+        // margin-bottom:4px;
+        padding:5px 10px;
+        // padding-left:10px;
+        // padding-right:10px;
         overflow:auto;
+        font-size: 12px;
     }
     
     /* Right triangle placed top left flush. */
@@ -29,24 +31,29 @@
         height: 0;
         left: 0px;
         right: auto;
-        top: 0px;
+        top: 5px;
         bottom: auto;
         border: 22px solid;
         border-color: #FFF transparent transparent transparent;
     }
     .talktext{
-        display:flex;
-        flex-wrap: wrap;
+        display: inline-block;
         width:auto;
         padding: 1em;
         text-align: left;
         line-height: 1.5em;
+        border-radius: 8px;
         background:#FFF;
         box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
 
+        .tt-content {
+            display:flex;
+            flex-wrap: wrap;
+        }
+
         .img {
+            margin-top:5px;
             margin-right: 20px;
-            width: 10%;
             max-width: 50px;
             img {
                 width: 100%;
@@ -54,7 +61,7 @@
         }
 
         .content {
-            width: 89%;
+            width: calc(100% - 70px);
         }
 
     }
@@ -71,13 +78,38 @@
         height: 0;
         left: auto;
         right: 0px;
-        top: 0px;
+        top: 5px;
         bottom: auto;
         border: 22px solid;
         border-color: #afd8a8 transparent transparent transparent;
     }
     
     .right-top .talktext {
+        float: right;
         background:#afd8a8;
+        color:#FFF;
+        font-weight: 500;
     }
+
+    .message-group {
+        padding-top:10px;
+        position:relative;
+        
+        .message-form {
+            padding:15px 20px;
+            height: 50px;
+            font-size: 12px;
+            border-radius: 50px;
+            resize: none;
+        }
+
+        button {
+            position: absolute;
+            top: 13px;
+            padding: 8px;
+            border-radius: 100%;
+            right: 3px;
+        }
+    }
+
 }
