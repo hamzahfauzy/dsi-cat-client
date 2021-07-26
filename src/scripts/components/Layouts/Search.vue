@@ -2,7 +2,7 @@
     <div class="search-container">
         <form @submit="search">
             <div class="search">
-                <input type="text" v-model="keyword" placeholder="Pencarian.." @change="search" />
+                <input type="text" v-model="keyword" placeholder="Pencarian.." @keyup="search" />
                 <div class="symbol">
                     <svg class="lens">
                         <use xlink:href="#lens" />

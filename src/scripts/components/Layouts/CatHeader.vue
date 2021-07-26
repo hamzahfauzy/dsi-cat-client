@@ -69,8 +69,13 @@
 import { mapGetters } from 'vuex'
 import Swal from 'sweetalert2';
 export default {
+    data(){
+        return {
+            app_link:''
+        }
+    },
     created(){
-
+        this.app_link = env.app_link
     },
     methods: {
         Alert(val){
@@ -89,7 +94,7 @@ export default {
             this.$store.dispatch('global/toggleNavSidebar')
         },
         ubahPassword(){
-            
+            location.href=this.app_link+'/e-data/password'
         }
     },
     computed: {

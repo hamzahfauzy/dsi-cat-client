@@ -11,7 +11,7 @@
             <div class="container" style="max-width:1024px;">
                 <search></search>
                 <div class="row">
-                    <div class="col-12 col-sm-4" v-if="authData && authData.additional_data.hasOwnProperty('id_narasumber') == false">
+                    <div class="col-12 col-md-4" v-if="authData && authData.additional_data.hasOwnProperty('id_narasumber') == false" style="margin-bottom:10px">
                         <div class="sidebar">
                             <md-list>
                                 <md-subheader>
@@ -24,6 +24,7 @@
                                 <md-list-item @click="loadKelas('selesai-test')">Selesai Test ({{master_list_kelas.filter(kelas => kelas.exam).length}})</md-list-item>
                                 <md-list-item @click="loadKelas('lembaga')">Pelatihan Oleh Lembaga ({{master_list_kelas.filter(kelas => kelas.nm_lembaga != "Kementerian Dalam Negeri").length}})</md-list-item>
                                 <md-list-item @click="loadKelas('kemendagri')">Pelatihan Oleh Kemendagri ({{master_list_kelas.filter(kelas => kelas.nm_lembaga == "Kementerian Dalam Negeri").length}})</md-list-item>
+                                <md-list-item v-if="authData && authData.additional_data.hasOwnProperty('id_narasumber') == false" @click="loadRiwayat()">Riwayat Pelatihan</md-list-item>
                             </md-list>
                         </div>
                     </div>
@@ -41,7 +42,7 @@
                                             <span>{{kelas.nm_pelatihan}}</span>
                                             <span style="color:#999;font-size:12px;">Oleh : {{kelas.nm_lembaga}}</span>
                                             <p style="font-size:11px;">{{kelas.tanggal}}</p>
-                                            <div style="margin-top:10px;">
+                                            <div style="margin-top:10px;" v-if="list_type=='kelas'">
                                                 <template v-if="authData && authData.additional_data.hasOwnProperty('id_narasumber') == false">
                                                     <progress-bar v-if="kelas.status_pelatihan" :progress_percent="kelas.progress" :flex="1" :title="'Progress Pelatihan'" /> 
                                                     <md-button class="md-raised md-primary" style="width:auto!important;text-transform:capitalize;background-color:#f9a507" @click="openDetailDialog(kelas.id_pelatihan)">Detail</md-button>
@@ -63,6 +64,23 @@
                                                     <!-- <md-button class="md-raised md-primary md-success-btn" style="width:auto!important;text-transform:capitalize" v-if="kelas.status == 'Selesai'" @click="$router.push('/details/'+kelas.id)">Selesai</md-button> -->
                                                 </template>
                                             </div>
+                                            <div style="margin-top:10px;" v-else>
+                                                <template v-if="authData && authData.additional_data.hasOwnProperty('id_narasumber') == false">
+                                                    <progress-bar v-if="kelas.status_pelatihan" :progress_percent="kelas.progress" :flex="1" :title="'Progress Pelatihan'" /> 
+                                                    <md-button class="md-raised md-primary" style="width:auto!important;text-transform:capitalize;background-color:#f9a507" @click="openDetailDialog(kelas.id_pelatihan)">Detail</md-button>
+                                                    <md-button v-if="kelas.status_pelatihan == true" class="md-raised md-accent" style="width:auto!important;text-transform:capitalize;color:#FFF;" @click="$router.push('/details/'+kelas.id_pelatihan)">
+                                                    Lihat
+                                                    </md-button>
+                                                </template>
+                                                <template v-else>
+                                                    <md-button class="md-raised md-primary" style="width:auto!important;text-transform:capitalize;background-color:#f9a507" @click="openDetailDialog(kelas.id_pelatihan)">Detail</md-button>
+                                                    <md-button class="md-raised md-primary" style="width:auto!important;text-transform:capitalize" @click="$router.push('/details/'+kelas.id_pelatihan)">
+                                                    Lihat
+                                                    </md-button>
+
+                                                    <!-- <md-button class="md-raised md-primary md-success-btn" style="width:auto!important;text-transform:capitalize" v-if="kelas.status == 'Selesai'" @click="$router.push('/details/'+kelas.id)">Selesai</md-button> -->
+                                                </template>
+                                            </div>
                                                     
                                         </div>
 
@@ -75,7 +93,7 @@
                                     <center><i>Tidak ada pelatihan!</i></center>
                                 </div>
 
-                                <div class="row">
+                                <div class="row" v-if="pages.length > 1">
                                     <div class="col-12" style="margin-bottom:15px">
                                         <div style="height: 100px;white-space: nowrap;position: relative;overflow-x: scroll;overflow-y: hidden;-webkit-overflow-scrolling: touch;">
                                         <md-button class="md-icon-button md-raised" v-for="i in pages" :key="i" @click="loadKelas('site/kelas-saya','',i)" style="margin: 0px 10px 0px 0px;color:#000;z-index:2;display: inline-block;" :class="{'btn-nav-active':offset==i}">
@@ -110,6 +128,7 @@ export default {
             limit:20,
             offset:1,
             pages:0,
+            list_type:'kelas',
             isLoading:false,
             fullPage:true,
             list_kelas:[],
@@ -125,7 +144,20 @@ export default {
         alert () {
             window.alert('...')
         },
+        loadRiwayat: async function(){
+            this.list_type = 'riwayat'
+            this.isLoading = true
+            var request = await this.$store.dispatch('kelas/fetchRiwayat')
+            if(request.status == 401)
+                Swal.fire('Oops...', 'Authorized Content!', 'error')
+            else
+            {
+                this.list_kelas = request.data.rows
+            }
+            this.isLoading = false
+        },
         loadKelas: async function(endpoint, keyword = false, offset = 1){
+            this.list_type = 'kelas'
             this.isLoading = true
             var master_list_kelas = JSON.parse(JSON.stringify(this.master_list_kelas))
             if(endpoint == 'sedang-dikerjakan')
@@ -154,7 +186,7 @@ export default {
             }
             else if(endpoint == 'search')
             {
-                this.list_kelas = master_list_kelas.filter(kelas => kelas.nm_pelatihan.includes(keyword))
+                this.list_kelas = master_list_kelas.filter(kelas => kelas.nm_pelatihan.toLowerCase().includes(keyword.toLowerCase()))
             }
             else
             {

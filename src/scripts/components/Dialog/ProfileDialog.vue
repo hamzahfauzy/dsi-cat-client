@@ -28,6 +28,9 @@ export default {
             fullPage:true
         }
     },
+    created(){
+
+    },
     computed: {
         ...mapGetters({
             dialogStatus: 'dialog/getDialogStatus',

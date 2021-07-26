@@ -77,6 +77,19 @@ export default {
                 })
             })
         },
+        fetchRiwayat(state){
+            var token = this.state.global.token
+            return new Promise(function(resolve, reject) {
+                axios.get(env.base_url+'site/riwayat',{
+                    headers: {'Authorization':'Bearer '+token}
+                }).then(response => {
+                    resolve(response)
+                }).catch(error => {
+                    resolve(error.response)
+                    // console.log(error)
+                })
+            })
+        },
         fetchAllKelas(state, endpoint){
             var token = this.state.global.token
             return new Promise(function(resolve, reject) {

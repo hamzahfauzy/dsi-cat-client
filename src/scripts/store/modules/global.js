@@ -3,6 +3,7 @@ export default {
     state: {
         auth_data:{},
         token:'',
+        timeout_id:'',
         header_aktif:'',
         nav_sidebar:0,
         countDown:-1,
@@ -31,6 +32,9 @@ export default {
         },
         SET_EXAM_INTRO(state, value) {
             state.exam_intro = value
+        },
+        SET_TIMEOUT_ID(state, value) {
+            state.timeout_id = value
         }
     },
 
@@ -42,11 +46,15 @@ export default {
         getToken: (state) => state.token,
         getCountDown: (state) => state.countDown,
         getExamIntro: (state) => state.exam_intro,
+        getTimeoutId: (state) => state.timeout_id,
     },
 
     actions: {
         setHeader({commit},value){
             commit('SET_HEADER_AKTIF',value)
+        },
+        setTimeoutId({commit},value){
+            commit('SET_TIMEOUT_ID',value)
         },
         setExamIntro({commit},value){
             commit('SET_EXAM_INTRO',value)

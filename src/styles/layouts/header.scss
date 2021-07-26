@@ -4,6 +4,19 @@ section.top {
   background-image: url(../images/img-2.jpg);
   background-position: center;
   background-size: cover;
+
+  .mobile {
+    display: none;
+  }
+
+  @media screen and (max-width:600px) {
+    .desktop {
+      display: none;
+    }
+    .mobile {
+      display: block;
+    }
+  }
   &:before {
     position: absolute;
     content: "";
@@ -59,14 +72,6 @@ section.top {
     }
   }
 
-  @media screen and (max-width: 560px) {
-    &:not(.cat) {
-      .title-section {
-        display: none;
-      }
-    }
-  }
-
   .logo {
     z-index: 1;
     width: 55px;
@@ -116,6 +121,17 @@ section.top {
         width: auto;
         min-width: 0px;
       }
+    }
+  }
+
+  .mobile .right-menu {
+    float: none;
+    text-align: center;
+  }
+
+  @media screen and (max-width:450px) {
+    .mobile .profile-name {
+      display: none;
     }
   }
 }

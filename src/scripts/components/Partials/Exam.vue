@@ -1,12 +1,12 @@
 <template>
     <div>
         <history></history>
-        <div v-if="session.hasOwnProperty('finished_at')&&session.finished_at&&(activeMateri.idx_konten==-1)" class="intro">
+        <div v-if="session.hasOwnProperty('finished_at')&&session.finished_at&&(activeMateri.idx_konten==-1)" class="intro" style="z-index:9">
             <div style="text-align:center">
                 <img src="dist/images/congrats.png" alt="" width="150px" style="margin-bottom:15px;">
                 <p></p>
                 <h3 style="font-size:18px;">Selamat, Kamu sudah melaksanakan <br>{{session.jenis_exam==1?"Pre Exam":"Post Exam"}} dengan ringkasan sebagai berikut:</h3>
-                <div style="padding:20px;background-color:#FFF;color:#74b9ff!important;border-radius:1rem;margin-top:15px;">
+                <div style="padding:20px;background-color:#FFF;color:#74b9ff!important;border-radius:1rem;margin-top:15px;margin-left:10px;margin-right:10px;">
                     <table align="center" cellpadding="10" style="font-weight:bold;">
                         <tr>
                             <td>Waktu</td>
@@ -102,6 +102,7 @@ export default {
         }
     },
     created(){
+        clearTimeout(this.time_out_id)
         this.app_link = env.app_link
         this.sertifikat_link = env.sertifikat_link
         if(!(this.session.hasOwnProperty('finished_at') && this.session.finished_at))
@@ -120,10 +121,11 @@ export default {
     methods:{
         countDownTimer() {
             if(this.count_down > 0) {
-                this.mytimeout = setTimeout(() => {
+                this.mytimeout = setTimeout((e) => {
                     this.count_down -= 1
                     this.countDownTimer()
                 }, 1000)
+                this.time_out_id = this.mytimeout
             }
             if(this.count_down == 0)
                 this.selesai(false)
@@ -133,6 +135,7 @@ export default {
                 this.ticker_time += 1
                 this.ticker()
             }, 1000)
+            this.time_out_id = this.mytimeout
             
         },
         loadExam(idx = -1){
@@ -259,6 +262,7 @@ export default {
             session: 'kelas/getSession',
             countDown: 'global/getCountDown',
             token: 'global/getToken',
+            timeout_id: 'global/getTimeoutId',
         }),
         count_down:{
             get(){
@@ -267,7 +271,15 @@ export default {
             set(value){
                 this.$store.dispatch('global/setCountDown',value)
             }
-        }
+        },
+        time_out_id:{
+            get(){
+                return this.timeout_id
+            },
+            set(value){
+                this.$store.dispatch('global/setTimeoutId',value)
+            }
+        },
     }
 }
 </script>

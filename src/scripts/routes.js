@@ -82,7 +82,7 @@ export default [
         beforeEnter: isNotAuthenticated
     },
     {
-        name:'ForumDiskusi',
+        name:'KelasVirtual',
         path: '/kelas-virtual/:id',
         component:KelasVirtual,
         meta: {

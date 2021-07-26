@@ -181,11 +181,11 @@ export default {
                     var request = await vm.$store.dispatch('kelas/fetchExam',{id_pelatihan:id,jenis_exam:jenis_exam})
                     if(request.status == 200)
                     {
-                        if(jenis_exam == 2)
-                        {
+                        // if(jenis_exam == 2)
+                        // {
                             var durasi = request.data[0].parameter.durasi*60
                             vm.$store.dispatch('global/setCountDown',durasi)
-                        }
+                        // }
                     }
                     vm.$store.dispatch('global/setExamIntro',{})
                     vm.$store.dispatch('cat/setLoading',false)
