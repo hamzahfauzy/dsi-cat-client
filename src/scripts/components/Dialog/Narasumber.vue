@@ -2,28 +2,28 @@
     <div class="profile-dialog">
         <div class="row">
             <div class="col-12 col-md-4">
-                <img src="dist/images/logo_app_small.png" alt="" width="100%">
+                <img :src="app_link+profile.picture" alt="" width="100%">
             </div>
             <div class="col-12 col-md-8">
                 <div class="form-group">
                     <label for="">Nama</label>
-                    <span>{{profile.nm_narasumber}}</span>
+                    <span>{{profile.profile.nm_narasumber}}</span>
                 </div>
                 <div class="form-group">
                     <label for="">Tempat Lahir</label>
-                    <span>{{profile.tempat_lahir}}</span>
+                    <span>{{profile.profile.tempat_lahir}}</span>
                 </div>
                 <div class="form-group">
                     <label for="">Tanggal Lahir</label>
-                    <span>{{profile.tgl_lahir}}</span>
+                    <span>{{profile.profile.tgl_lahir}}</span>
                 </div>
                 <div class="form-group">
                     <label for="">Email</label>
-                    <span>{{profile.email_narasumber}}</span>
+                    <span>{{profile.profile.email_narasumber}}</span>
                 </div>
                 <div class="form-group">
                     <label for="">Alamat</label>
-                    <span>{{profile.alamat}}</span>
+                    <span>{{profile.profile.alamat}}</span>
                 </div>
             </div>
         </div>
@@ -32,10 +32,18 @@
 <script>
 import { mapGetters } from 'vuex'
 export default {
+    data(){
+        return {
+            app_link:''
+        }
+    },
     computed: {
         ...mapGetters({
             profile: 'global/getProfile',
         })
+    },
+    created(){
+        this.app_link = env.image_link
     }
 }
 </script>

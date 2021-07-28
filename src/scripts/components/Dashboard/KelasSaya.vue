@@ -35,7 +35,7 @@
                                 <div v-for="(kelas,index) in list_kelas" :key="index">
                                     <md-list-item  style="padding-bottom:10px;">
                                         <md-avatar class="custom-avatar">
-                                            <img :src="kelas.url_foto?kelas.thumb:'https://183263-537949-raikfcquaxqncofqfm.stackpathdns.com/wp-content/uploads/2018/05/shutterstock_285147194.jpg'" :alt="kelas.name">
+                                            <img :src="kelas.url_foto?image_link+kelas.thumb:'https://183263-537949-raikfcquaxqncofqfm.stackpathdns.com/wp-content/uploads/2018/05/shutterstock_285147194.jpg'" :alt="kelas.name">
                                         </md-avatar>
 
                                         <div class="md-list-item-text">
@@ -133,10 +133,12 @@ export default {
             fullPage:true,
             list_kelas:[],
             master_list_kelas:[],
-            kelas_saya:[]
+            kelas_saya:[],
+            image_link:''
         }
     },
     async created(){
+        this.image_link = env.image_link
         this.$store.dispatch('global/setHeader','kelas-saya')
         await this.loadKelas('site/kelas-saya')
     },

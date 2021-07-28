@@ -4,9 +4,9 @@
             <md-dialog-title>Profil</md-dialog-title>
 
             <md-dialog-content md-dynamic-height>
-                <lembaga v-if="profile.hasOwnProperty('id_lembaga')"></lembaga>
-                <ap-desa v-if="profile.hasOwnProperty('id_ap_desa')"></ap-desa>
-                <narasumber v-if="profile.hasOwnProperty('id_narasumber')"></narasumber>
+                <lembaga v-if="profile.profile.hasOwnProperty('id_lembaga')"></lembaga>
+                <ap-desa v-if="profile.profile.hasOwnProperty('id_ap_desa')"></ap-desa>
+                <narasumber v-if="profile.profile.hasOwnProperty('id_narasumber')"></narasumber>
             </md-dialog-content>
 
             <md-dialog-actions>

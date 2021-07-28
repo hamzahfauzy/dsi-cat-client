@@ -129,6 +129,7 @@ export default {
         },
         logout(){
             window.localStorage.removeItem('token')
+            location=env.app_link+'e-data/site/logout'
         }
     },
 };

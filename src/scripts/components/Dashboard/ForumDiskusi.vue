@@ -21,7 +21,7 @@
                             <div class="talktext">
                                 <div class="tt-content">
                                     <div class="img">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="" class="mr-3 rounded-circle">
+                                        <img :src="app_link+forum.picture" alt="" class="mr-3 rounded-circle">
                                     </div>
                                     <div class="content">
                                         <small>{{forum.tanggal}}</small><br>
@@ -58,10 +58,12 @@ export default {
             // isContentLoading:false,
             fullPage:true,
             pesan:'',
+            app_link:'',
             forumDiskusi:[]
         }
     },
     async created(){
+        this.app_link = env.image_link
         this.isLoading = true
         this.$store.dispatch('global/setHeader','forum-diskusi')
         var id = this.$route.params.id
