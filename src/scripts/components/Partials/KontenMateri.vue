@@ -1,5 +1,16 @@
 <template>
     <div>
+        <edit-materi :id_pelatihan="id_pelatihan" :id_konten="materi.id_konten" :id_materi="materi.id_materi" :nm_materi="materi.nm_materi" :ket_materi="materi.ket_materi" :jenis_materi="materi.jenis_materi" :file_url="materi.nm_file?materi.nm_file:materi.url_dokumen"></edit-materi>
+        <template v-if="materi.hasOwnProperty('id_materi')">
+            <md-button class="md-raised md-primary" @click="editMateri()">
+                <md-icon>create</md-icon>
+                Edit
+            </md-button>
+            <md-button class="md-raised md-accent" @click="hapusMateri()">
+                <md-icon>delete</md-icon>
+                Hapus
+            </md-button>
+        </template>
         <template v-if="getId(materi.nm_file) == null">
         <div class="responsive-content" v-if="materi.hasOwnProperty('jenis_materi') && materi.jenis_materi==1">
             <video class="responsive-iframe" controls ref="videoPlayer"
@@ -45,10 +56,12 @@ a:hover {
 }
 </style>
 <script>
+import Swal from 'sweetalert2'
 import { mapGetters } from 'vuex'
 export default {
     data(){
         return {
+            id_pelatihan:0,
             videoElement: null,
             paused: null,
             ended_is_send:false,
@@ -61,6 +74,7 @@ export default {
     },
     created(){
         this.app_link = env.app_link
+        this.id_pelatihan = this.$route.params.id
     },
     methods:{
         downloadMateri(materi){
@@ -154,7 +168,40 @@ export default {
                 + videoId + '" frameborder="0" allowfullscreen></iframe>';
             return iframeMarkup
             // console.log('Video ID:', videoId)
-        }
+        },
+        editMateri(){
+            this.$store.dispatch('dialog/setEditMateriDialogStatus',1)
+        },
+        hapusMateri(){
+            var vm = this
+            Swal.fire({
+                title: 'Hapus Materi',
+                text: 'Apakah anda yakin akan menghapus materi ini?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: `Hapus`,
+                denyButtonText: `Batal`,
+            }).then(async (result) => {
+                if (result.isConfirmed)
+                {
+                    var id_pelatihan = vm.$route.params.id
+                    var id_konten = vm.materi.id_konten
+                    var id_materi = vm.materi.id_materi
+                    var request = await vm.$store.dispatch('konten/hapusMateri',{id_pelatihan:id_pelatihan,id_konten:id_konten,id_materi:id_materi})
+                    console.log(request)
+                    if(request.data.message == 'success')
+                    {
+                        Swal.fire('Berhasil', 'Materi Berhasil Di Hapus', 'success')
+                        await vm.$store.dispatch('konten/get',id_pelatihan)
+                        this.$store.dispatch('kelas/setMateri',{})
+                    }
+                    else
+                    {
+                        Swal.fire('Gagal', 'Materi Gagal Di Hapus', 'error')
+                    }
+                }
+            })
+        },
     },
     computed: {
         ...mapGetters({

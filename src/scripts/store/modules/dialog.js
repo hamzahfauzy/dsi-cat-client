@@ -7,7 +7,9 @@ export default {
         pinDialogStatus:false,
         id_pelatihan:0,
         kontenDialogStatus:false,
+        editKontenDialogStatus:false,
         materiDialogStatus:false,
+        editMateriDialogStatus:false,
         fullLoading:false
     },
 
@@ -30,8 +32,14 @@ export default {
         SET_KONTEN_DIALOG_STATUS(state, value) {
             state.kontenDialogStatus = value
         },
+        SET_EDIT_KONTEN_DIALOG_STATUS(state, value) {
+            state.editKontenDialogStatus = value
+        },
         SET_MATERI_DIALOG_STATUS(state, value) {
             state.materiDialogStatus = value
+        },
+        SET_EDIT_MATERI_DIALOG_STATUS(state, value) {
+            state.editMateriDialogStatus = value
         },
         SET_FULL_LOADING(state, value) {
             state.fullLoading = value
@@ -45,7 +53,9 @@ export default {
         getPinDialogStatus: (state) => state.pinDialogStatus,
         getIdPelatihan: (state) => state.id_pelatihan,
         getKontenDialogStatus: (state) => state.kontenDialogStatus,
+        getEditKontenDialogStatus: (state) => state.editKontenDialogStatus,
         getMateriDialogStatus: (state) => state.materiDialogStatus,
+        getEditMateriDialogStatus: (state) => state.editMateriDialogStatus,
         isFullLoading: (state) => state.fullLoading
     },
 
@@ -66,8 +76,14 @@ export default {
         setKontenDialogStatus({commit}, value){
             commit('SET_KONTEN_DIALOG_STATUS',value)
         },
+        setEditKontenDialogStatus({commit}, value){
+            commit('SET_EDIT_KONTEN_DIALOG_STATUS',value)
+        },
         setMateriDialogStatus({commit}, value){
             commit('SET_MATERI_DIALOG_STATUS',value)
+        },
+        setEditMateriDialogStatus({commit}, value){
+            commit('SET_EDIT_MATERI_DIALOG_STATUS',value)
         },
         setFullLoading({commit}, value){
             commit('SET_FULL_LOADING',value)

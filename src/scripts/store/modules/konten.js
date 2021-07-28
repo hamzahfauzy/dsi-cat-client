@@ -52,12 +52,25 @@ export default {
                 })
             })
         },
+        single({commit},id){
+            var token = this.state.global.token
+            return new Promise(function(resolve, reject) {
+                axios.get(env.base_url+'konten/single?id_konten='+id,{
+                    headers: {'Authorization':'Bearer '+token},
+                }).then(response => {
+                    resolve(response)
+                }).catch(error => {
+                    resolve(error.response)
+                    // console.log(error)
+                })
+            })
+        },
         update({commit},data){
             var token = this.state.global.token
             return new Promise(function(resolve, reject) {
                 var formData = new FormData;
                 formData.append('nm_konten',data.nm_konten)
-                axios.post(env.base_url+'update/create?id_pelatihan='+data.id+'&id_konten='+data.id_konten,formData,{
+                axios.post(env.base_url+'konten/update?id_pelatihan='+data.id+'&id_konten='+data.id_konten,formData,{
                     headers: {'Authorization':'Bearer '+token},
                 }).then(response => {
                     resolve(response)
@@ -70,7 +83,7 @@ export default {
         hapus({commit},data){
             var token = this.state.global.token
             return new Promise(function(resolve, reject) {
-                axios.get(env.base_url+'konten/delete?id_pelatihan='+data.id+'&id_konten='+data.id_konten,{
+                axios.get(env.base_url+'konten/delete?id_pelatihan='+data.id_pelatihan+'&id_konten='+data.id_konten,{
                     headers: {'Authorization':'Bearer '+token},
                 }).then(response => {
                     resolve(response)
@@ -90,6 +103,38 @@ export default {
                 formData.append('ket_materi',data.ket_materi)
                 formData.append('file_url',data.file_url)
                 axios.post(env.base_url+'konten/create-materi?id_pelatihan='+data.id+'&id_konten='+data.id_konten,formData,{
+                    headers: {'Authorization':'Bearer '+token},
+                }).then(response => {
+                    resolve(response)
+                }).catch(error => {
+                    resolve(error.response)
+                    // console.log(error)
+                })
+            })
+        },
+        updateMateri({commit},data){
+            var token = this.state.global.token
+            return new Promise(function(resolve, reject) {
+                var formData = new FormData;
+                formData.append('id_konten',data.id_konten)
+                formData.append('nm_materi',data.nm_materi)
+                formData.append('jenis_materi',data.jenis_materi)
+                formData.append('ket_materi',data.ket_materi)
+                formData.append('file_url',data.file_url)
+                axios.post(env.base_url+'konten/update-materi?id_pelatihan='+data.id+'&id_konten='+data.id_konten+'&id_materi='+data.id_materi,formData,{
+                    headers: {'Authorization':'Bearer '+token},
+                }).then(response => {
+                    resolve(response)
+                }).catch(error => {
+                    resolve(error.response)
+                    // console.log(error)
+                })
+            })
+        },
+        hapusMateri({commit},data){
+            var token = this.state.global.token
+            return new Promise(function(resolve, reject) {
+                axios.get(env.base_url+'konten/delete-materi?id_pelatihan='+data.id_pelatihan+'&id_konten='+data.id_konten+'&id_materi='+data.id_materi,{
                     headers: {'Authorization':'Bearer '+token},
                 }).then(response => {
                     resolve(response)

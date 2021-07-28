@@ -22,7 +22,7 @@
                     <div class="kelas-konten" style="height:calc(100vh - 80px) !important;">
                         <loading :active.sync="isContentLoading" :is-full-page="fullPage" class="loader"></loading>
                         <div v-if="!isContentLoading">
-                            <materi></materi>
+                            <konten-materi></konten-materi>
                         </div>
                     </div>
                 </div>
