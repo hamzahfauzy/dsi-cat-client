@@ -21,7 +21,7 @@
                 </span>
 
                 <md-list slot="md-expand">
-                    <md-list-item class="md-inset" style="margin-top:-15px;">
+                    <md-list-item class="md-inset" style="margin-top:-15px;" v-if="content.status_data != 1">
                         <div class="item-child-content">
                             <md-button @click="openEditKonten(content.id_konten)" style="margin:0;min-width:0px;">
                                 <md-icon>create</md-icon>
@@ -40,7 +40,7 @@
                             
                         </div>
                     </md-list-item>
-                    <md-list-item class="md-inset" v-for="(children,idx) in content.refMateris" :key="idx" @click="activeMateri(index, idx)">
+                    <md-list-item class="md-inset" v-for="(children,idx) in content.refMateris" :key="idx" @click="activeMateri(index, idx, content.status_data)">
                         <div class="item-child-content" :class="{'materi_active':index==active_materi.idx_konten&&idx==active_materi.idx_materi}">
                             <md-icon>{{tipe_konten[children.jenis_materi]}}</md-icon>
                             <span style="display:inline-block;white-space:normal;padding-top:3px;">
@@ -76,11 +76,12 @@ export default {
         this.id_pelatihan = this.$route.params.id
     },
     methods:{
-        async activeMateri(idx_konten,idx_materi){
+        async activeMateri(idx_konten,idx_materi,status_data){
             // console.log(idx_konten,idx_materi)
             this.$store.dispatch('cat/setActiveMateri',{
                 idx_konten:idx_konten,
                 idx_materi:idx_materi,
+                status_data:status_data
             })
             await this.loadMateri()
             return;

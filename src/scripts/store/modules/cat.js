@@ -11,6 +11,7 @@ export default {
         active_materi:{
             idx_konten:-1,
             idx_materi:-1,
+            status_data:null
         }
     },
 

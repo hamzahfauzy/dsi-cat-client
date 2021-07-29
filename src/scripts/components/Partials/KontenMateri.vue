@@ -1,7 +1,7 @@
 <template>
     <div>
         <edit-materi :id_pelatihan="id_pelatihan" :id_konten="materi.id_konten" :id_materi="materi.id_materi" :nm_materi="materi.nm_materi" :ket_materi="materi.ket_materi" :jenis_materi="materi.jenis_materi" :file_url="materi.nm_file?materi.nm_file:materi.url_dokumen"></edit-materi>
-        <template v-if="materi.hasOwnProperty('id_materi')">
+        <template v-if="materi.hasOwnProperty('id_materi') && active_materi.status_data != 1">
             <md-button class="md-raised md-primary" @click="editMateri()">
                 <md-icon>create</md-icon>
                 Edit
