@@ -16,7 +16,32 @@
             <loading :active.sync="isLoading" :is-full-page="fullPage" class="loader"></loading>
             <div class="row" v-if="!isLoading">
                 <div class="col-12 col-md-8 mx-auto main-content forum-konten">
-                    <h3 align="center">Fitur ini sedang dalam pengembangan</h3>
+                    <template v-if="kelas.kelas_virtual.length == 0">
+                    <h3 align="center" >Tidak ada jadwal kelas virtual</h3>
+                    </template>
+                    <template v-else>
+                    <div class="bg-light" style="padding:30px">
+
+                        <h3 align="center">Jadwal Kelas Virtual</h3>
+
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>No</th>
+                                <th>Tanggal</th>
+                                <th>Aksi</th>
+                            </tr>
+                            <tr v-for="(v,i) in kelas.kelas_virtual" :key="i">
+                                <td>{{++i}}</td>
+                                <td>{{v.tanggal}}</td>
+                                <td v-if="v.is_today">
+                                    <a :href="'/meeting.html?apiKey='+kelas.zoom_auth.apikey+'&mn='+v.response_data.pmi+'&name='+nama+'&pwd='+v.response_data.password+'&email=lmspemdes@kemendagri.go.id&role=0&signature='+v.signature" style="color:#FFF;" target="_blank" class="btn btn-success">Ikuti</a>
+                                    <a :href="v.response_data.join_url" class="btn btn-success" style="color:#FFF;" target="_blank">Ikuti Via Zoom</a>
+                                </td>
+                                <td v-else>-</td>
+                            </tr>
+                        </table>
+                    </div>
+                    </template>
                 </div>
             </div>
         </div>
@@ -36,11 +61,21 @@ export default {
             // isContentLoading:false,
             fullPage:true,
             pesan:'',
+            nama:'',
             forumDiskusi:[]
         }
     },
     async created(){
         this.isLoading = true
+        if(this.authData.hasOwnProperty('additional_data'))
+        {
+            if(this.authData.additional_data.hasOwnProperty('id_lembaga'))
+                this.nama = this.authData.additional_data.nm_lembaga
+            if(this.authData.additional_data.hasOwnProperty('id_ap_desa'))
+                this.nama = this.authData.additional_data.nm_ap_desa
+            if(this.authData.additional_data.hasOwnProperty('id_narasumber'))
+                this.nama = this.authData.additional_data.nm_narasumber
+        }
         this.$store.dispatch('global/setHeader','kelas-virtual')
         var id = this.$route.params.id
         var request = await this.$store.dispatch('kelas/fetchSingleKelas',id)
@@ -92,7 +127,8 @@ export default {
     },
     computed: {
         ...mapGetters({
-            kelas: 'kelas/getSingleKelas'
+            kelas: 'kelas/getSingleKelas',
+            authData: 'global/getAuthData',
             // forumDiskusi: 'forum/getForumKonten',
         })
     }
