@@ -78,12 +78,17 @@ export default {
     },
     methods:{
         downloadMateri(materi){
-            var id = this.$route.params.id
-            var vm = this
-            this.$store.dispatch('kelas/finishMateri',materi.id_materi).then(res => {
-                vm.$store.dispatch('kelas/fetchSingleKelas',id)
-            })
-            window.open(this.app_link+'e-sistem/public/download?key='+materi.encode_file)
+            if(materi.nm_file != null && materi.url_dokumen != null)
+            {
+                var id = this.$route.params.id
+                var vm = this
+                this.$store.dispatch('kelas/finishMateri',materi.id_materi).then(res => {
+                    vm.$store.dispatch('kelas/fetchSingleKelas',id)
+                })
+                window.open(this.app_link+'e-sistem/public/download?key='+materi.encode_file)
+            }
+            else if(materi.nm_file == null && materi.url_dokumen != null)
+                window.open(materi.url_dokumen)
         },
         timeupdate: function(){
             if(this.authData.additional_data.hasOwnProperty('id_narasumber')) return
