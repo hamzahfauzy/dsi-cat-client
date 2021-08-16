@@ -24,7 +24,7 @@
                         <div class="row">
                             <div class="col-sm-12 col-md-6 mb-3" v-for="(v,i) in kelas.kelas_virtual" :key="i">
                                 <div class="bg-light" style="padding:30px;border-radius:10px;">
-                                    Tanggal : <b>{{v.tanggal}}</b>
+                                    Tanggal : <b>{{v.tanggal_indo}}</b>
                                     <div v-if="v.is_today">
                                         <a :href="'/e-cat/meeting.html?apiKey='+kelas.zoom_auth.apikey+'&mn='+v.response_data.pmi+'&name='+nama+'&pwd='+v.response_data.password+'&email=lmspemdes@kemendagri.go.id&role=0&signature='+v.signature" style="color:#FFF;" target="_blank" class="btn btn-success">Ikuti</a>
                                         <a :href="v.response_data.join_url" class="btn btn-success" style="color:#FFF;" target="_blank">Ikuti Via Zoom</a>
