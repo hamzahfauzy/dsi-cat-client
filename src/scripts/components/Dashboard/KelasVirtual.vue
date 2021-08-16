@@ -12,7 +12,7 @@
             </div>
         </div>
 
-        <div class="cat-section" style="padding-top:20px;">
+        <div class="cat-section" style="padding-top:20px;padding-bottom:100px;">
             <loading :active.sync="isLoading" :is-full-page="fullPage" class="loader"></loading>
             <div class="row" v-if="!isLoading">
                 <div class="col-12 col-md-8 mx-auto main-content forum-konten">
@@ -20,27 +20,22 @@
                     <h3 align="center" >Tidak ada jadwal kelas virtual</h3>
                     </template>
                     <template v-else>
-                    <div class="bg-light" style="padding:30px">
-
                         <h3 align="center">Jadwal Kelas Virtual</h3>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6 mb-3" v-for="(v,i) in kelas.kelas_virtual" :key="i">
+                                <div class="bg-light" style="padding:30px;border-radius:10px;">
+                                    Tanggal : <b>{{v.tanggal}}</b>
+                                    <div v-if="v.is_today">
+                                        <a :href="'/e-cat/meeting.html?apiKey='+kelas.zoom_auth.apikey+'&mn='+v.response_data.pmi+'&name='+nama+'&pwd='+v.response_data.password+'&email=lmspemdes@kemendagri.go.id&role=0&signature='+v.signature" style="color:#FFF;" target="_blank" class="btn btn-success">Ikuti</a>
+                                        <a :href="v.response_data.join_url" class="btn btn-success" style="color:#FFF;" target="_blank">Ikuti Via Zoom</a>
+                                    </div>
+                                    <div v-else>
+                                        <i>Belum memasuki jadwal</i>
+                                    </div>
+                                </div>
 
-                        <table class="table table-bordered">
-                            <tr>
-                                <th>No</th>
-                                <th>Tanggal</th>
-                                <th>Aksi</th>
-                            </tr>
-                            <tr v-for="(v,i) in kelas.kelas_virtual" :key="i">
-                                <td>{{++i}}</td>
-                                <td>{{v.tanggal}}</td>
-                                <td v-if="v.is_today">
-                                    <a :href="'/meeting.html?apiKey='+kelas.zoom_auth.apikey+'&mn='+v.response_data.pmi+'&name='+nama+'&pwd='+v.response_data.password+'&email=lmspemdes@kemendagri.go.id&role=0&signature='+v.signature" style="color:#FFF;" target="_blank" class="btn btn-success">Ikuti</a>
-                                    <a :href="v.response_data.join_url" class="btn btn-success" style="color:#FFF;" target="_blank">Ikuti Via Zoom</a>
-                                </td>
-                                <td v-else>-</td>
-                            </tr>
-                        </table>
-                    </div>
+                            </div>
+                        </div>
                     </template>
                 </div>
             </div>
