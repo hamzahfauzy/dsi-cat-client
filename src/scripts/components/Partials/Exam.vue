@@ -39,7 +39,7 @@
                 <div class="row">
                     <div class="col-12" style="margin-bottom:15px">
                         <div style="height: 100px;white-space: nowrap;position: relative;overflow-x: scroll;overflow-y: hidden;-webkit-overflow-scrolling: touch;">
-                        <md-button class="md-icon-button md-raised" v-for="(content,index) in exam_content" :key="index" @click="loadExam(index)" style="margin: 0px 10px 0px 0px;color:#000;z-index:2;display: inline-block;" :class="{'btn-nav-active':soal_aktif==index,'btn-nav-answered':!(typeof answered[exam.id_exam] === 'undefined')}">
+                        <md-button class="md-icon-button md-raised" v-for="(content,index) in exam_content" :key="index" @click="loadExam(index)" style="margin: 0px 10px 0px 0px;color:#000;z-index:2;display: inline-block;" :class="{'btn-nav-active':soal_aktif==index,'btn-nav-answered':examAnswered(index)}">
                             {{index+1}}
                         </md-button>
                         </div>
@@ -119,6 +119,10 @@ export default {
         }
     },
     methods:{
+        examAnswered(idx){
+            var exam = this.exam_content[idx]
+            return !(typeof this.answered[exam.id_exam] === 'undefined')
+        },
         countDownTimer() {
             if(this.count_down > 0) {
                 this.mytimeout = setTimeout((e) => {
