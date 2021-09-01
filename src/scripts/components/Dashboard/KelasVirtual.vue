@@ -29,6 +29,9 @@
                                         <a :href="'/e-cat/meeting.html?apiKey='+kelas.zoom_auth.apikey+'&mn='+v.response_data.pmi+'&name='+nama+'&pwd='+v.response_data.password+'&email=lmspemdes@kemendagri.go.id&role=0&signature='+v.signature" style="color:#FFF;" target="_blank" class="btn btn-success">Ikuti</a>
                                         <a :href="v.response_data.join_url" class="btn btn-success" style="color:#FFF;" target="_blank">Ikuti Via Zoom</a>
                                     </div>
+                                    <div v-else-if="v.is_yesterday">
+                                        <i>Jadwal Telah Berlalu</i>
+                                    </div>
                                     <div v-else>
                                         <i>Belum memasuki jadwal</i>
                                     </div>
