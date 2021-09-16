@@ -27,6 +27,7 @@
                         <label for="first-name">File URL</label>
                         <md-input v-model="file_url"/>
                     </md-field>
+                    <a :href="lms_drive_url+'index.php?action=auth/login-via-token&token='+token" target="_blank" class="btn btn-primary" style="color:#FFF">Buka LMS Drive</a>
                 </div>
             </md-dialog-content>
 
@@ -57,10 +58,16 @@ export default {
             ket_materi:'',
             jenis_materi:'',
             file_url:'',
+            token:'',
+            lms_drive_url:'',
             isLoading:true,
             isLoading:true,
             fullPage:true
         }
+    },
+    created(){
+        this.lms_drive_url = env.lms_drive_url
+        this.token = window.localStorage.getItem('token')
     },
     methods:{
         async simpan(){

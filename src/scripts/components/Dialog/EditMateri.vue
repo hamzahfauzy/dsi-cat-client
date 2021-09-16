@@ -27,6 +27,7 @@
                         <label for="first-name">File URL</label>
                         <md-input v-model="file_url"/>
                     </md-field>
+                    <a :href="lms_drive_url+'index.php?action=auth/login-via-token&token='+token" target="_blank" class="btn btn-primary" style="color:#FFF">Buka LMS Drive</a>
                 </div>
             </md-dialog-content>
 
