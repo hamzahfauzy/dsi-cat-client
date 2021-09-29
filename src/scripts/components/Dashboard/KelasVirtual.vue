@@ -26,8 +26,8 @@
                                 <div class="bg-light" style="padding:30px;border-radius:10px;">
                                     Tanggal : <b>{{v.tanggal_indo}}</b>
                                     <div v-if="v.is_today">
-                                        <a :href="'/e-cat/meeting.html?apiKey='+kelas.zoom_auth.apikey+'&mn='+v.response_data.pmi+'&name='+nama+'&pwd='+v.response_data.password+'&email=lmspemdes@kemendagri.go.id&role=0&signature='+v.signature" style="color:#FFF;" target="_blank" class="btn btn-success">Ikuti</a>
-                                        <a :href="v.response_data.join_url" class="btn btn-success" style="color:#FFF;" target="_blank">Ikuti Via Zoom</a>
+                                        <a :href="ecat_link+'/meeting.html?apiKey='+kelas.zoom_auth.apikey+'&mn='+v.pmi+'&name='+nama+'&pwd='+v.response_data.password+'&email=lmspemdes@kemendagri.go.id&role='+role+'&signature='+v.signature" style="color:#FFF;" target="_blank" class="btn btn-success">Ikuti</a>
+                                        <a :href="role==1?v.response_data.start_url:v.response_data.join_url" class="btn btn-success" style="color:#FFF;" target="_blank">Ikuti Via Zoom</a>
                                     </div>
                                     <div v-else-if="v.is_yesterday">
                                         <i>Jadwal Telah Berlalu</i>
@@ -60,6 +60,8 @@ export default {
             fullPage:true,
             pesan:'',
             nama:'',
+            ecat_link:'/e-cat',
+            role:0,
             forumDiskusi:[]
         }
     },
@@ -72,15 +74,20 @@ export default {
             if(this.authData.additional_data.hasOwnProperty('id_ap_desa'))
                 this.nama = this.authData.additional_data.nm_ap_desa
             if(this.authData.additional_data.hasOwnProperty('id_narasumber'))
+            {
                 this.nama = this.authData.additional_data.nm_narasumber
+                this.role = 1
+            }
         }
+        if(env.app_link == 'http://lmskemendagri.test/')
+            this.ecat_link = ''
         this.$store.dispatch('global/setHeader','kelas-virtual')
         var id = this.$route.params.id
         var request = await this.$store.dispatch('kelas/fetchSingleKelas',id)
         if(request.status == 401)
             Swal.fire('Oops...', 'Authorized Content!', 'error')
 
-        this.loadForumDiskusi()
+        // this.loadForumDiskusi()
         // var vm = this
 
         // setInterval(function(){
