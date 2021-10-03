@@ -78,6 +78,20 @@ export default {
     },
     methods:{
         downloadMateri(materi){
+            // 
+            let is_url;  
+            try {
+                var url = new URL(materi.nm_file);
+                is_url = url.protocol === "http:" || url.protocol === "https:"
+                if(is_url)
+                {
+                    window.open(materi.nm_file)
+                    return 
+                }
+            } catch (_) {
+                is_url = false  
+            }
+
             if(materi.nm_file != null && materi.url_dokumen != null)
                 window.open(this.app_link+'e-sistem/public/download?key='+materi.encode_file)
             else if(materi.nm_file == null && materi.url_dokumen != null)
