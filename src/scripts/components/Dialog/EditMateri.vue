@@ -61,9 +61,14 @@ export default {
                 enable:true,
             },
             isLoading:true,
-            isLoading:true,
+            token:'',
+            lms_drive_url:'',
             fullPage:true
         }
+    },
+    created(){
+        this.lms_drive_url = env.lms_drive_url
+        this.token = window.localStorage.getItem('token')
     },
     methods:{
         async simpan(){
