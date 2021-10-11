@@ -21,7 +21,7 @@
                             <div class="talktext">
                                 <div class="tt-content">
                                     <div class="img">
-                                        <img :src="app_link+forum.picture" alt="" class="mr-3 rounded-circle">
+                                        <img :src="app_link+forum.picture" alt="" class="mr-3 rounded-circle" width="100px" height="100px" style="object-fit:cover;">
                                     </div>
                                     <div class="content">
                                         <small>{{forum.tanggal}}</small><br>
